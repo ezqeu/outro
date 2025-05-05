@@ -1,21 +1,35 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Leitura da Planilha</title>
+    <title>Planilha Google</title>
     <style>
-      table { border-collapse: collapse; width: 100%; }
+      body { font-family: Arial, sans-serif; margin: 20px; }
+      table { border-collapse: collapse; width: 100%; margin-top: 20px; }
       th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+      input, button { margin: 5px 0; padding: 8px; width: 100%; }
+      form { max-width: 300px; }
     </style>
   </head>
   <body>
     <h1>Dados da Planilha</h1>
+
+    <form id="formulario">
+      <input name="Nome" placeholder="Nome" required><br>
+      <input name="Idade" placeholder="Idade" type="number" required><br>
+      <input name="Cidade" placeholder="Cidade" required><br>
+      <button type="submit">Enviar</button>
+    </form>
+
     <table id="tabela">
       <thead></thead>
       <tbody></tbody>
     </table>
 
     <script>
-      fetch("https://script.google.com/macros/s/AKfycbz-XkVc--F6-1gMMpNT-m1dCqtAzvPd0j31T_PglDzudsgnNOLATIUXdFTRZGzRJbZPRg/exec")
+      const url = "https://script.google.com/macros/s/AKfycbz-XkVc--F6-1gMMpNT-m1dCqtAzvPd0j31T_PglDzudsgnNOLATIUXdFTRZGzRJbZPRg/exec"; // Substitua aqui
+
+      // Leitura da planilha
+      fetch(url)
         .then(response => response.json())
         .then(data => {
           const tabela = document.getElementById("tabela");
@@ -43,6 +57,22 @@
             tbody.appendChild(tr);
           });
         });
+
+      // Envio de dados
+      document.getElementById("formulario").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const dados = Object.fromEntries(new FormData(this).entries());
+
+        fetch(url, {
+          method: "POST",
+          body: JSON.stringify(dados)
+        })
+        .then(r => r.json())
+        .then(resp => {
+          alert("Dados enviados com sucesso!");
+          location.reload();
+        });
+      });
     </script>
   </body>
 </html>
