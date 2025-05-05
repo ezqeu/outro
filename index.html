@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Leitura da Planilha</title>
+    <style>
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    </style>
+  </head>
+  <body>
+    <h1>Dados da Planilha</h1>
+    <table id="tabela">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      fetch("https://script.google.com/macros/s/AKfycbz-XkVc--F6-1gMMpNT-m1dCqtAzvPd0j31T_PglDzudsgnNOLATIUXdFTRZGzRJbZPRg/exec")
+        .then(response => response.json())
+        .then(data => {
+          const tabela = document.getElementById("tabela");
+          const thead = tabela.querySelector("thead");
+          const tbody = tabela.querySelector("tbody");
+
+          // Cabeçalho
+          const headers = Object.keys(data[0]);
+          let trHead = document.createElement("tr");
+          headers.forEach(h => {
+            let th = document.createElement("th");
+            th.textContent = h;
+            trHead.appendChild(th);
+          });
+          thead.appendChild(trHead);
+
+          // Linhas
+          data.forEach(linha => {
+            let tr = document.createElement("tr");
+            headers.forEach(h => {
+              let td = document.createElement("td");
+              td.textContent = linha[h];
+              tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+          });
+        });
+    </script>
+  </body>
+</html>
