@@ -32,14 +32,30 @@
   <div id="user-info"></div>
 
   <script>
+    const savedCredential = localStorage.getItem("google_credential");
+    if (savedCredential) {
+      const data = parseJwt(savedCredential);
+      document.getElementById('user-info').innerHTML =
+        `<p><strong>Nome:</strong> ${data.name}</p>
+         <p><strong>Email:</strong> ${data.email}</p>
+         <img src="${data.picture}" alt="Foto de perfil" width="100">`;
+}
+
+
+    
     function handleCredentialResponse(response) {
       const data = parseJwt(response.credential);
       const email = data.email;
+    
+      // Salva a credencial no localStorage
+      localStorage.setItem("google_credential", response.credential);
+    
       document.getElementById('user-info').innerHTML =
         `<p><strong>Nome:</strong> ${data.name}</p>
          <p><strong>Email:</strong> ${email}</p>
          <img src="${data.picture}" alt="Foto de perfil" width="100">`;
     }
+
 
     function parseJwt(token) {
       const base64Url = token.split('.')[1];
