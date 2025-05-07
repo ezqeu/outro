@@ -57,15 +57,17 @@
          <img src="${data.picture}" alt="Foto de perfil" width="100">`;
 
       // 🔽 Envia o e-mail para o Apps Script
-      fetch("https://script.google.com/macros/s/AKfycbyeUeSNsav4RUIEyOOvHxiiiuc19AQwKraP6Ur6Pq4oKjKgZ5Pm6po1aGGNe-eVzZlD/exec", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email })
-      })
-      .then(response => response.text())
-      .then(result => console.log("Enviado com sucesso:", result))
-      .catch(error => console.error("Erro ao enviar:", error));
-    }
+fetch("https://script.google.com/macros/s/AKfycbyeUeSNsav4RUIEyOOvHxiiiuc19AQwKraP6Ur6Pq4oKjKgZ5Pm6po1aGGNe-eVzZlD/exec", {
+  method: "POST",
+  mode: "no-cors",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ email: email })
+})
+.then(() => console.log("Email enviado com sucesso"))
+.catch((erro) => console.error("Erro ao enviar:", erro));
+
 
     function parseJwt(token) {
       const base64Url = token.split('.')[1];
