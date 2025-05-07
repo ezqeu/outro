@@ -32,7 +32,6 @@
   <div id="user-info"></div>
 
   <script>
-    // Verifica se já tem credencial salva
     const savedCredential = localStorage.getItem("google_credential");
     if (savedCredential) {
       handleCredentialResponse({ credential: savedCredential });
@@ -46,17 +45,26 @@
         alert("Por favor, use um e-mail institucional do IFSC.");
         localStorage.removeItem("google_credential");
         document.getElementById("user-info").innerHTML = "";
-        google.accounts.id.prompt(); // força novo login
+        google.accounts.id.prompt();
         return;
       }
 
-      // Salva a credencial válida
       localStorage.setItem("google_credential", response.credential);
 
       document.getElementById('user-info').innerHTML =
         `<p><strong>Nome:</strong> ${data.name}</p>
          <p><strong>Email:</strong> ${email}</p>
          <img src="${data.picture}" alt="Foto de perfil" width="100">`;
+
+      // 🔽 Envia o e-mail para o Apps Script
+      fetch("https://script.google.com/macros/s/AKfycbyeUeSNsav4RUIEyOOvHxiiiuc19AQwKraP6Ur6Pq4oKjKgZ5Pm6po1aGGNe-eVzZlD/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email })
+      })
+      .then(response => response.text())
+      .then(result => console.log("Enviado com sucesso:", result))
+      .catch(error => console.error("Erro ao enviar:", error));
     }
 
     function parseJwt(token) {
