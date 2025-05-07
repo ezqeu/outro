@@ -5,57 +5,59 @@
   <style>
     body { font-family: Arial; padding: 20px; }
     #user-info { margin-top: 20px; }
+    #login-container { margin-top: 20px; }
   </style>
 </head>
 <body>
   <h2>Login com Google</h2>
 
-  <!-- Configuração do One Tap login -->
   <div id="g_id_onload"
        data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
        data-callback="handleCredentialResponse"
-       data-context="signin"
        data-auto_select="true"
        data-itp_support="true">
   </div>
 
-  <!-- Botão de login manual -->
-  <div class="g_id_signin"
-       data-type="standard"
-       data-size="large"
-       data-theme="outline"
-       data-text="sign_in_with"
-       data-shape="rectangular"
-       data-logo_alignment="left">
+  <div id="login-container">
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
   </div>
 
   <div id="user-info"></div>
 
   <script>
+    // Verifica se já tem credencial salva
     const savedCredential = localStorage.getItem("google_credential");
     if (savedCredential) {
-      const data = parseJwt(savedCredential);
-      document.getElementById('user-info').innerHTML =
-        `<p><strong>Nome:</strong> ${data.name}</p>
-         <p><strong>Email:</strong> ${data.email}</p>
-         <img src="${data.picture}" alt="Foto de perfil" width="100">`;
-}
+      handleCredentialResponse({ credential: savedCredential });
+    }
 
-
-    
     function handleCredentialResponse(response) {
       const data = parseJwt(response.credential);
       const email = data.email;
-    
-      // Salva a credencial no localStorage
+
+      if (!email.endsWith("ifsc.edu.br")) {
+        alert("Por favor, use um e-mail institucional do IFSC.");
+        localStorage.removeItem("google_credential");
+        document.getElementById("user-info").innerHTML = "";
+        google.accounts.id.prompt(); // força novo login
+        return;
+      }
+
+      // Salva a credencial válida
       localStorage.setItem("google_credential", response.credential);
-    
+
       document.getElementById('user-info').innerHTML =
         `<p><strong>Nome:</strong> ${data.name}</p>
          <p><strong>Email:</strong> ${email}</p>
          <img src="${data.picture}" alt="Foto de perfil" width="100">`;
     }
-
 
     function parseJwt(token) {
       const base64Url = token.split('.')[1];
