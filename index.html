@@ -32,41 +32,30 @@
   <div id="user-info"></div>
 
   <script>
+    // Verifica se já tem credencial salva
     const savedCredential = localStorage.getItem("google_credential");
     if (savedCredential) {
       handleCredentialResponse({ credential: savedCredential });
     }
 
     function handleCredentialResponse(response) {
-      const data = parseJwt(response.credential);
-      const email = data.email;
+  const data = parseJwt(response.credential);
+  const email = data.email;
 
-      if (!email.endsWith("ifsc.edu.br")) {
-        alert("Por favor, use um e-mail institucional do IFSC.");
-        localStorage.removeItem("google_credential");
-        document.getElementById("user-info").innerHTML = "";
-        google.accounts.id.prompt();
-        return;
-      }
+  if (!email.endsWith("ifsc.edu.br")) {
+    alert("Por favor, use um e-mail institucional do IFSC.");
+    localStorage.removeItem("google_credential");
+    document.getElementById("user-info").innerHTML = "";
+    google.accounts.id.prompt(); // força novo login
+    return;
+  }
 
-      localStorage.setItem("google_credential", response.credential);
+  // Salva a credencial válida
+  localStorage.setItem("google_credential", response.credential);
 
-      document.getElementById('user-info').innerHTML =
-        `<p><strong>Nome:</strong> ${data.name}</p>
-         <p><strong>Email:</strong> ${email}</p>
-         <img src="${data.picture}" alt="Foto de perfil" width="100">`;
-
-      // 🔽 Envia o e-mail para o Apps Script
-fetch("https://script.google.com/macros/s/AKfycbyeUeSNsav4RUIEyOOvHxiiiuc19AQwKraP6Ur6Pq4oKjKgZ5Pm6po1aGGNe-eVzZlD/exec", {
-  method: "POST",
-  mode: "no-cors",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({ email: email })
-})
-.then(() => console.log("Email enviado com sucesso"))
-.catch((erro) => console.error("Erro ao enviar:", erro));
+  // Redireciona para o app web
+  window.location.href = "https://script.google.com/macros/s/AKfycbyeUeSNsav4RUIEyOOvHxiiiuc19AQwKraP6Ur6Pq4oKjKgZ5Pm6po1aGGNe-eVzZlD/exec";
+}
 
 
     function parseJwt(token) {
