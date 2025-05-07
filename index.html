@@ -9,12 +9,17 @@
 </head>
 <body>
   <h2>Login com Google</h2>
+
+  <!-- Configuração do One Tap login -->
   <div id="g_id_onload"
        data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
        data-callback="handleCredentialResponse"
-       data-auto_prompt="true"
-       data-auto_select="true">
+       data-context="signin"
+       data-auto_select="true"
+       data-itp_support="true">
   </div>
+
+  <!-- Botão de login manual -->
   <div class="g_id_signin"
        data-type="standard"
        data-size="large"
