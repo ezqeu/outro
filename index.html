@@ -885,7 +885,7 @@ function parseJwt(token) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
 
-function atualTabela(numero) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:email}); }
+function atualTabela(numero) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:"ezequiel.melo@ifsc.edu.br"/*email*/}); }
                                     //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
  
 
@@ -927,9 +927,9 @@ function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////COMUNICAÇÃO COM GAS//////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      const urlDoScript = "https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec";
+      // const urlDoScript = "https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec";
 
-      function enviarArray(jsonParaEnviar) { console.log(jsonParaEnviar)
+      function enviarArray(jsonParaEnviar) { console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
           const mensagemRespostaDiv = document.getElementById('mensagemResposta');
 
           mensagemRespostaDiv.innerHTML = 'Enviando dados...';
@@ -939,7 +939,7 @@ function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
           // É crucial converter o objeto JSON em uma string para enviá-lo corretamente via FormData.
           formData.append('payloadJson', JSON.stringify(jsonParaEnviar));
 
-          fetch(urlDoScript, {
+          fetch("https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec", {
               method: 'POST',
               body: formData
           })
