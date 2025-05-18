@@ -816,7 +816,7 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
 
 
-    <button type="button" value='Clique para enviar JSON específico' onclick="chamarenviarArray()">Clique para enviar JSON: <div id="mensagemResposta" style="background-color: #3cb94f;"></div></button>
+    <button type="button" value='Clique para enviar JSON específico' onclick='enviarArray({ tipo: "tabela_inicio",  linha_aluno: 9 , mail:"ezequiel.melo@ifsc.edu.br"})'>Clique para enviar JSON: <div id="mensagemResposta" style="background-color: #3cb94f;"></div></button>
 
     
 
@@ -1363,23 +1363,14 @@ function closeNav() {
 //////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
-atualTabela();
-function atualTabela(numero,eMail) {
-  chamarenviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:eMail});
-  //google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
-  console.log("É: "+numero+eMail);
-  }
-//
-//Recebe a tabela pronta
+
+function atualTabela(numero,eMail) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:eMail}); }
+                                    //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
+ 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////MONTAR TABELA A PARTIR DOS DADOS PUXADOS EM atualTabela(email)////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-function chamarenviarArray(varJson){ 
-  varJson  = varJson || { tipo: "tabela_inicio",  linha_aluno: 9 , mail:"ezequiel.melo@ifsc.edu.br"}; //here
-  enviarArray(varJson);
-}
-
 
 function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
   // tabelaEDados = tabelaEDadosEscolha || tabelaEDados;
