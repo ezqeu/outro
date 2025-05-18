@@ -1,4 +1,1299 @@
 
+<!DOCTYPE html>
+<html lang="pt-br" >
+<head>
+
+<style type="text/css">
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: top;
+  justify-content: top;
+  font-family: "Open Sans";
+  text-align: justify;
+  color: white;
+  background-color:#111;
+}
+
+#cabecalho {
+    position: relative;
+    width:100%;
+    background-image: linear-gradient(180deg, #1c2b2b,#1c2b2b,#1c2b2b,rgba(255,0,0,0));
+    align: center;
+    padding: 1px;
+}
+
+#nlista,#turma {
+    background-color:  #1c2b2b;
+    font-family: 'Permanent Marker', cursive;
+    color: white;
+    font-size: 2vw;    200% da largura da página
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.content {
+  font-family: Times New Roman;
+  font-size: 19px;
+  flex: 1;
+  overflow: auto;
+  line-height: 1.3;   /* espaçamento entre linhas */
+  
+ //Estilo de quadro negro:  
+		position: relative;
+		width: 100.0%;
+		margin: 0.0% auto; 
+		border: tan solid 12px;
+		border-top: #bda27e solid 20px;
+		border-left: #b19876 solid 20px;
+    border-right: #b19876 solid 20px;
+		border-bottom: #c9ad86 solid 20px;
+		
+		background-image: radial-gradient( circle at left 30%, rgba(0, 51, 51, 0.5) 160px, #1c2b2b), linear-gradient( 215deg, transparent, transparent 1000px, #919894 200px, #222 320px, transparent);
+		background-color: #333;
+  
+  padding-left: 0px;
+}
+
+
+
+/* Barra de rolagem */
+*::-webkit-scrollbar {
+  width: 15px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background-color: #BDBDBD;
+}
+
+/*Formatação do botão*/
+.button {display: none;padding: 1px 2px;font-size: 24px;cursor: pointer;text-align: center;text-decoration: none;outline: none;color: #efd8aa;background-color: #543414;border-color: #b08c58;border-radius: 10px;box-shadow: 0 9px #0e0f09;position: absolute;bottom: 45px;right: 100px;line-height:30%;padding-top: 9px;}
+.button:hover {background-color: #3e8e41}
+.button:active {background-color: #3e8e41; box-shadow: 0 3px #0e0f09; transform: translateY(4px);}
+
+/*#turma[value != '. . . . . . Turma . . . . . .'] ~ */ 
+#submit_button {    display: none;  }   
+
+
+.botao-submeterVD {cursor: pointer; color: #efd8aa; background-color: #543414; border-color: #b08c58; border-radius: 5px;min-width: 120px;margin-left: 5px;}
+.botao-submeterVD:hover {transform: scale(1.1) translate(0, 10%); }
+
+
+ /* #print{background:rgba(20, 20, 20, 0.8); border-width:1px; font-size:8px; color:rgba(200, 230, 200, 0.9); border-style:groove; border-radius: 5px; cursor: pointer;transform: translate(50%, 55%);position: absolute;display:none;}   */
+
+
+/*Texto <b> aparece quando resposta fora do padrão*/
+input:invalid {color: red;  background-color: #FFDDDD;}
+input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a321;} 
+
+/*Informações sobre a lista*/
+.information{position:relative;float:left;display:inline-block;font-size:18px;padding-left:1px;cursor: help;}
+.information .informationtext {visibility:hidden;width:530px;background-color:#555;color: #fff;text-align: justify;border-radius:6px;padding:5px 10px;font-size:13px;position:absolute;z-index:1;top: 27px;left:75px;margin-left:-60px;opacity:0;transition:opacity 1.0s;}
+.information:hover .informationtext{visibility:visible;opacity:1;}
+
+.inputes, .inputesVD, .inputesQEA {
+  background:rgba(255, 255, 255, 0.8);
+  font-weight: bold;
+  text-align:center;
+  /* color:rgba(255, 255, 255, 1); */
+  /* color:rgba(100, 150, 90, 1); */
+  border-radius: 5px;
+}
+
+/* .peso {
+  padding-right: 5px;
+  padding-left: 5px;
+  vertical-align: super;
+  background:rgba(200, 200, 200, 0.1);
+  font-size:10px;
+  color:rgba(200, 200, 200, 0.5);
+  border-radius: 5px;
+  } */
+
+/* /////////////////////////////////////////////// Balões ///////////////////////////////////////////////*/
+
+        .answer {
+  position: relative;
+  display: inline-block;
+  /* border-bottom: 1px dotted black; */
+}
+
+.answer .peso {
+  vertical-align: super;
+  background:rgba(200, 200, 200, 0.1);
+  font-size:10px;
+  color:rgba(200, 200, 200, 0.5);
+  border-radius: 5px;
+  /* background-color:  #fff; */  
+  visibility: hidden;
+  background-image: radial-gradient(white,gray);
+  color:#555;
+  padding-right: 5px;
+  padding-left: 5px;
+  border-width: 0px;
+  border-style: solid;
+  text-align: center;
+  position: absolute;
+  z-index: 1;
+  bottom: 115%;
+  left: 0%;
+  margin-right: -150%;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+
+.answer .peso::after {
+  content: "";
+  position: absolute;
+  top: 101%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.answer:hover .peso {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.limpar {
+  padding: 0px;
+  vertical-align: sub;
+  background:rgba(200, 200, 200, 0.1);
+  border-width:3px;
+  font-size:8px;
+  color:rgba(200, 230, 200, 0.9);
+  border-style:groove;
+  border-radius: 5px;
+}
+
+/*Notificação de respostas não salvas*/
+.rnsalvas::before {
+  font-size: 11px;
+    font-weight: bold;
+    color: red;
+    line-height:135%;
+    content: "RESPOSTAS NÃO SALVAS";
+    text-shadow: 2px 2px 4px #000000;
+    /*background-color: #FFDDDD;*/
+    animation-name: blinking;
+	  animation-duration: 0.5s;
+	  animation-iteration-count: infinite;
+	  animation-direction: alternate;
+} 
+@keyframes blinking {
+	0% {opacity: 0.2;}
+	100% {opacity: 1;}
+}
+.original {}
+/*Até aqui*/
+
+
+
+
+/* /////////////////////////////////////////////// ABAS ///////////////////////////////////////////////*/
+
+        div.abas input.abaestilo{ display:none;}
+        div.abas label.abaestilo{border:1px solid #999;background:black;color:white;font-size:25px;padding:3px;border-radius:10px;/*position:relative;*/top:3px;display: block;width:530px;text-align:center;}
+        div.abas input.abaestilo:checked + label.abaestilo{background: black; border: 10px double #c7c7c7;width:530px;}
+        div.abas div.aba{ display:none; padding:0px 10px;clear:left;/*padding-left:130px;*/}
+        div.abas input.abaestilo:nth-of-type(1):checked ~ .aba:nth-of-type(1),
+        div.abas input.abaestilo:nth-of-type(2):checked ~ .aba:nth-of-type(2),
+        div.abas input.abaestilo:nth-of-type(3):checked ~ .aba:nth-of-type(3),
+        div.abas input.abaestilo:nth-of-type(4):checked ~ .aba:nth-of-type(4){ display:block;}
+
+        .nota {background:white;color:black;padding:0px 0px;border-radius:9px;float:right;width:110px;text-align:center;}
+        .avaliacoes{border:1px solid #999;color:white;font-size:20px;padding:3px 4px;border-radius:6px;/*position:relative;*/top:1px;display:block;width:510px;text-align:center;}
+        .identificacao{border:5px double #bda27e;background:white;color:black;font-size:25px;padding:3px;border-radius:10px;/*position:relative;*/top:3px;display: block;width:530px;text-align:center;}
+        .percentnota{background-color: rgba(255,255,255, 0.5);color:black;padding:0px 12px;border-radius:6px;float:left;width:150px;text-align:center;}
+        /* .pesos{display:none;} */
+        .table-aba {width:510px;border-radius:4px;background:white;color:black;} 
+        .table-aba td {border: 1px solid black;text-align: center;vertical-align: middle;/*background:white;*/} 
+
+
+
+
+
+/* /////////////////////////////////////////////// Balões ///////////////////////////////////////////////*/
+
+        .tooltip {
+  position: relative;
+  display: inline-block;
+  /* border-bottom: 1px dotted black; */
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: auto;
+  /* background-color:  #fff; */
+  background-image: radial-gradient(white,gray);
+  color:#555;
+  border-width: 2px;
+  border-style: solid;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  min-width: 100px;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 103%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext,
+.tooltip:focus .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+/* /////////////////////////////////////////////// Barra lateral ///////////////////////////////////////////////*/
+
+.sidenav {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  text-align:center;
+}
+
+.sidenav .linkint {
+  /* padding: 8px 8px 8px 32px; */
+  font-size: 20px;
+  color: blue;
+  text-decoration:underline;
+  /* display: block; */
+  transition: 0.3s;
+  cursor:pointer;
+}
+
+.sidenav .linkint:hover{
+  color: LightSkyBlue;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  display:none;
+  color: #818181;
+  cursor:pointer;
+}
+
+.sidenav .omail {
+  position: absolute;
+  top: 10px;
+  /* margin-left: 40px; */
+  padding-right:12px;
+  width: auto;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav .linkint {font-size: 18px;}
+}
+
+
+/* ///////////////////////////// Colunas avaliações / Agendamento atendimento //////////////////////////////*/
+.row:after {content: "";display: table;clear: both;}
+
+
+
+
+
+
+
+
+/* ///////////////////////////// Estilos úteis - //////////////////////////////*/
+  .vetor {position: relative;display: inline-block;}
+  .vetor::after {content: "\2192";position: absolute;top: -0.6em;right: -3px;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Videoaulas  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->*/
+    
+#viAu {
+    position: relative;
+    height: 80%;    /* Dimensões do vídeo:    height: '360';    width: '640'; */
+    overflow: hidden;
+}
+
+
+    #videoPlayer {
+      position: absolute;
+      height: 100%;
+      
+      top: 0;
+      left: 0;           
+      width: 100%;/* modificar */
+      display: flex;
+      background-color: rgba(0, 0, 255, 0.3); 
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+        }
+/* ///////////// Esconder botões do vídeo//////////////*/					
+		#playpause {
+			position: absolute;
+      height: 100%;
+      top: 0;
+      left: 0;
+      border: 1px solid #ffffff;
+    	background-color: #1c2b2b;
+    	color: white;
+    	cursor: pointer;            
+      width: 100%;/* modificar */
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+		}	
+/* ///////////// Colunas//////////////*/		
+		.row:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+/* ///////////// Barra de progresso//////////////*/
+		    #progressBarContainer {
+            width: 100%;
+            height: 30px;
+            display: flex;
+            align-items: center;
+			text-align: center;
+        }
+        
+        #progressBar {
+            flex: 1;
+            height: 20px;
+            background-color: #e9f5e9	;
+            margin-right: 10px;
+            cursor: pointer;
+			font-size: 8px;
+			white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+			position: relative;
+      margin-inline: 5px;
+        }
+        
+        #progressBar .progress {
+            height: 60%;
+            background-color: #4CAF50;
+            width: 0%;
+			color: #07690e;
+        }
+
+        #progressBar .permitido {
+            height: 40%;
+            background-color: #16f2fa;
+            width: 0%;
+			      color: #073af2;
+        }		
+/* ///////////// tooltip ////////////// */
+		#progress {
+			width: 0;
+			height: 100%;
+			background-color: #007bff;
+			}
+			
+		/* #posicao {
+			position: relative;
+			top: -30px;
+			left: 0;
+			background-color: #333;
+			color: #fff;
+			padding: 5px;
+			border-radius: 4px;
+			display: none;
+			} */
+		
+/* ///////////// Relógio do vídeo//////////////*/		
+        #currentTime, #duration {
+            width: 70px;
+            text-align: center;
+            font-weight: bold;
+        }
+/* ///////////// Botões do vídeo //////////////*/		
+               
+         
+         
+    .botoesVD {
+          font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+          position: relative;
+          display: inline-block;
+          text-align: center;
+    }
+    
+    
+     .botaoVD {
+          display: inline-block;
+          min-width: 120px;
+          transition: all 250ms;          
+          color: #fff;
+          padding: 1px 2px;
+          background-image: radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%);
+          border-radius: 3px;
+          font-weight: bold;
+          font-size: 16px;
+          border: 0;
+          user-select: none;
+          -webkit-user-select: none;
+          touch-action: manipulation;
+}
+
+
+  	.botaoVD:not(:disabled) {
+          background-color: #4c614d;
+          box-shadow: inset -3px -3px 9px rgba(255, 255, 255, 0.25), inset 0px 3px 9px rgba(255, 255, 255, 0.3), inset 0px 1px 1px rgba(255, 255, 255, 0.6), inset 0px -8px 36px rgba(0, 0, 0, 0.3), inset 0px 1px 5px rgba(255, 255, 255, 0.6), 2px 19px 31px rgba(0, 0, 0, 0.2);
+          cursor: pointer;
+    }
+
+  	.botaoVD:disabled {
+         background-color: grey;
+    }
+  
+	.botaoVD:hover:not(:disabled){
+        box-shadow: rgb(73 185 241 / 35%) 0 -15px 8px -7px inset, rgba(44,187,99,.25) 0 1px 2px, rgba(44,187,99,.25) 0 2px 4px, rgba(44,187,99,.25) 0 4px 8px, rgba(44,187,99,.25) 0 4px 6px, rgb(44 133 187 / 25%) 0 6px 12px;
+}     
+ 
+    
+    
+
+    .balaoVD {
+        display: none;
+        position: absolute;
+        left: 0;
+        min-width: 0px;
+        padding: 0px;
+        z-index: 1;
+        bottom: 20px; /* Adicionado para mover os balões para cima */
+    }
+
+    .botoesVD:hover button:enabled + .balaoVD {
+        display: block;
+    }
+
+    .botaoVDhide {
+       text-align: center;
+       min-width: 110px;
+       text-decoration: none;
+       display: inline-block;            
+       margin-bottom: 9px;
+       transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+       background-color: rgb(170 200 183);
+       border: none;
+       font-size: 1rem;
+       border-radius: 0.4rem;
+       color: green;
+       box-shadow: 0 0.4rem rgb(237 229 229);
+       cursor: pointer;
+          }
+
+
+    
+    
+	.botaoVDhide:active:not(:disabled) {
+         color: white;
+         box-shadow: 0 0.2rem #dfd9d9;
+         transform: translateY(0.2rem);
+     }
+    
+   .botaoVDhide:hover:not(:disabled) {
+         background: lightcoral;
+         text-shadow: 0 0.1rem #bcb4b4;
+         background-color: white;
+         color: #1c2b2b;
+  }
+
+
+
+#rangeVD {
+  -webkit-appearance: none;
+  appearance: none; 
+  width: 250px;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  border-radius: 160px;
+  position: absolute;
+  bottom: 200px;
+  transform: rotate(270deg);
+}
+
+/* ///////////// Range volume do vídeo//////////////*/		
+#volumeVD {
+  -webkit-appearance: none;
+  appearance: none; 
+  width: 140px;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  border-radius: 160px;
+  position: absolute;
+  bottom: 200px;
+  transform: rotate(270deg);
+  bottom: 54px; 
+  right: -138px;
+}
+
+#volumeVD::-webkit-slider-runnable-track {
+  height: 35px;
+  background: #ccc;
+  border-radius: 16px;
+}
+
+#volumeVD::-moz-range-track {
+  height: 35px;
+  background: #ccc;
+  border-radius: 16px;
+}
+
+#volumeVD::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none; 
+  height: 35px;
+  width: 35px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 5px solid rgb(163 191 191);
+  box-shadow: -417px 0 0 400px rgb(163 191 191);
+}
+
+#volumeVD::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 1px solid #f50;
+  box-shadow: -407px 0 0 400px #f50;
+}
+
+
+
+                
+/* ///////////// Impressão//////////////*/		
+        @media print {  
+          body * { visibility: hidden;}
+          #perguntasaqui, #perguntasaqui * {  visibility: visible;   }
+          #perguntasaqui {   position: absolute;    left: 0;  top: 0; }
+        }
+
+/* ///////////// Tabela de tarefas das videoaulas//////////////*/		
+        .table-tarefaViAu { border-collapse: collapse;  text-align: center; border: 1px solid #ffffff; height: 475px;margin: 12px;margin-top:10px;}
+        .table-tarefaViAu th, .tarefaViAu-table td {padding: 5px;border-bottom: 1px solid #ffffff;height: 20px;}
+        .table-tarefaViAu th {background-color: #0e1a1a;color: #ffffff;}
+        .table-tarefaViAu tr:nth-child(even) {background-color: #1a3030;cursor:pointer;}		
+        .table-tarefaViAu tr:nth-child(odd) {background-color: #1a333300;cursor:pointer;}
+
+/* ///////////// Tabela de tarefas das videoaulas//////////////*/		
+        .barra-progresso-tarefaVD {
+            width: 100%;
+            height: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #ddd;
+            font-size: 15px;
+        }
+        
+        .progresso-tarefaVD {
+            width: 0%;
+            height: 100%;
+            background-color: green;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+
+
+
+
+
+
+
+
+  /*<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Alertas e confirmação  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->*/
+
+
+     #alerta {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+    }
+    
+    #alerta .conteudoNotif {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: black;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center; 
+      box-shadow: 10px 10px 0px 0px rgba(0,0,0,0.3);    
+      cursor: move;
+      max-width: 290px;
+    } 
+    
+    #alerta .titulo {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    
+    #alerta .mensagem {
+      margin-bottom: 20px;
+    }
+    
+    #alerta .botoes {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    #alerta .botao {
+      padding: 10px 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    #alerta .botao:hover {
+      background-color: #ccc;
+    }
+
+
+/*<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Botão de atualização QEA  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->*/
+    #updateQEA {
+      left: 20px;
+      top: 88px;
+      position: absolute;
+      cursor: pointer;
+      margin-left: 5px;
+      transition: transform 0.2s ease;
+      width: 50px;
+      }        
+    #updateQEA:hover {transform: scale(1.5);}/*Zoom ao passar o mouse */
+        
+    .rotating {animation: rotation 2s infinite linear;} /* Rotação contínua */
+    @keyframes rotation {from {transform: rotate(0deg);} to {transform: rotate(360deg);}}
+
+
+
+
+
+
+
+
+
+/*<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Destaca parentesis equivalentes  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->*/
+    .par { cursor: pointer; }
+    .highlight { background-color: yellow; }
+      
+
+
+
+
+
+
+
+</style>
+  <meta charset="UTF-8">
+  <title>Lista ezqeu</title>
+
+<script src="https://www.youtube.com/iframe_api"></script>  <!-- Chama a API do youtube   -->
+</head>
+
+<body>
+
+<div id="asnotas">
+
+<div id="mySidenav" class="sidenav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <button type="button" value='Clique para enviar JSON específico' onclick="chamarenviarArray()">Clique para enviar JSON: <div id="mensagemResposta" style="background-color: #3cb94f;"></div></button>
+
+    
+
+    <script>
+      const mensagemRespostaDiv = document.getElementById('mensagemResposta');
+      const urlDoScript = "https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec";
+
+
+
+      function enviarArray(jsonParaEnviar) {
+          mensagemRespostaDiv.innerHTML = 'Enviando dados...';
+          mensagemRespostaDiv.className = 'mensagem-info';
+
+          const formData = new FormData();
+          // É crucial converter o objeto JSON em uma string para enviá-lo corretamente via FormData.
+          formData.append('payloadJson', JSON.stringify(jsonParaEnviar));
+
+          fetch(urlDoScript, {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => {
+              if (!response.ok) {
+                  return response.text().then(text => {
+                      throw new Error(`Erro do servidor (Status: ${response.status}): ${text || 'Sem detalhes.'}`);
+                  });
+              }
+              return response.json();
+          })
+          .then(data => {
+              console.log('Resposta do GAS:', data);
+              if (data.status === "success") { // Exibe os dados retornados pelo GAS.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////////////////// Chama a função correspondente//////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                  switch (data.tipo) {
+                    case "tabela_inicio":  //Dados de início
+                      //dadosProcessados = JSON.stringify(dadosIniciais());
+                      //console.log("QEA: "+JSON.parse(data.message)[6])
+                      telaInicial(JSON.parse(data.message));     //here
+
+                      mensagemRespostaDiv.innerHTML = "VEIO";
+                    break;
+                    case "puxarLista":
+                      //dadosProcessados = "Lista puxada conforme o tipo 'puxarLista'.";
+                    break;
+                    case "dados": 
+                      //dadosProcessados = `Dados recebidos: Nome: ${varJson.nome}, Nascimento: ${varJson.nascimento ? varJson.nascimento.join(', ') : 'N/A'}.`;
+                      
+                    break;
+                    default:
+                      //dadosProcessados = `Tipo '${varJson.tipo}' não reconhecido. Dados originais: ${textoRecebidoOriginal}`;
+                    break;
+                  }
+    
+
+
+
+
+
+
+
+
+
+
+
+              } else {
+                  mensagemRespostaDiv.innerHTML = `Erro: ${data.message || 'Ocorreu um problema ao processar a resposta.'}`;
+                  console.log(`Erro: ${data.message || 'Ocorreu um problema ao processar a resposta.'}`);
+              }
+          })
+          .catch(error => {
+              console.error('Erro ao enviar os dados:', error);
+              mensagemRespostaDiv.innerHTML = `Erro na comunicação: ${error.message}`;
+          });
+      }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<div id="questaoEmAula"></div>
+
+
+
+<script>                    // [TEXTO QUESTÃO,VARIÁVEIS,1A2⟹AULA,Nº DA QUESTÃO,PRAZO,LINHA DO ALUNO]
+    // perguntaAula.innerHTML = a[0];
+    // perguntaAula.setAttribute("var", a[1]);
+  function iniciarQEA(a){//console.log("a do QEA: "+a[1])
+      if(a!=false){
+        a = a.split("𢆯")
+        document.getElementById('questaoEmAula').outerHTML = `
+        <div id="questaoEmAula" style="padding: 44px;background: #559898;border-radius: 45px 30px 104px 104px;font-size: 28px;line-height: 1.5em;text-align: center;border: 15px solid #ffffff;">  
+        <h1 style="text-align: center;">Questão ` + a[3] + `</h1>
+        <img id= "updateQEA" src="https://i.ibb.co/qpS8vNH/Update.png" alt="Atualizar" onclick="atualizarQEA();">
+      <button id="submitQEA" style="right: 20px;position: absolute;height: 59px;cursor: pointer;color: #006969;background-color: #07e7e7;border-color: #ffffff;border-radius: 14px;min-width: 209px;margin-left: 5px;font-size: 23px;top: 80px;font-family: ui-monospace;font-weight: bolder;" onclick="avaliarQEA()">ENVIAR RESPOSTA
+      <div id="prazoQEA" style="color: yellow;font-size: 15px;">(Envio até ` + a[4].replace(/(\w+) (\w+) (\w+) (\w+) (.*?) (.*?)$/, '$5') + `)<span id="faltamQEA" style="color:red;"></span></div>
+      </button>
+      <span id="notaQEA"></span>
+        <div>AULA: "` + a[2].replace(/\.pptx/,"")+ `"<br>
+          <b style="font-size: 13px;color:yellow;">⚠️ AO SAIR DA PÁGINA A QUESTÃO SERÁ ALTERADA ⚠️</b></div>
+        <div id="perguntaAula" style="padding: 16px;text-align: left;">` + a[0] + `</div>   
+      </div>
+        `;
+      document.getElementById('asnotas').setAttribute("varQEA", a[1]);   //Atualizar variáveis
+      document.getElementById('asnotas').setAttribute("nRow", a[6]); 
+      document.getElementById('asnotas').setAttribute("nQEA", a[3]); 
+      document.getElementById('asnotas').setAttribute("nCarimbosQEA", a[5]); 
+
+
+        sessionStorage.setItem("varQEA", a[1]);   //Salvando informação em atributo oculto no navegador no carregamento do site
+        console.log(sessionStorage.getItem("varQEA")); // Recuperando a informação
+
+
+
+
+        var submitQEA = document.getElementById('submitQEA'), faltamQEA = document.getElementById('faltamQEA'), isLarge = false;
+        var prazo = new Date(a[4]), prazoMenos30 = new Date(new Date().setTime(prazo.getTime() - 30 * 1000)), faltam = 29;
+
+      //Atualizar questão se sair da página por mais de 2 segundos
+        var tempo = -1, contaPlay = setInterval(function() { 
+
+          //Faz botão de envio piscar faltando 30 para o final do prazo
+          var now = new Date();        //console.log(prazo +"\n"+ now +"\n"+ prazoMenos30  +"\n\n"+ (prazo > now)+"\n"+ (prazoMenos30 > now)+"\n"+ (prazoMenos30 > prazo)+"\n\n"+ (typeof now) + "\n"+ (typeof prazoMenos30) + "\n"+ (typeof prazo) )
+          if(now < prazo && now > prazoMenos30){        
+            if (isLarge) {submitQEA.style.transform = "scale(0.9)";} 
+            else {submitQEA.style.transform = "scale(1.0)";/*prazoQEA.style.color = "yellow";*/}
+            isLarge = !isLarge; 
+            faltamQEA.innerHTML = " Faltam "+ faltam +" s"; //Mostra um contador regressivo
+            faltam--;
+          }
+          
+
+          if(tempo>0){ tempo++; }
+          if (tempo > 3) {
+            tempo = -2;
+            atualizarQEA();
+          }
+        }, 1000)
+    
+        document.addEventListener('visibilitychange', function() {
+          if (document.hidden) { tempo = 1;} 
+          else { 
+              if(tempo == -2){notificacao('aviso',['Atualização de questão!','A questão foi atualizada pois você deixou a página.',5]);}
+              tempo = -1;
+          } });
+
+
+    }
+}
+
+function atualizarQEA(){//here
+  var updateQEA = document.getElementById('updateQEA');
+  updateQEA.classList.add('rotating');
+  var turma = parseInt(document.getElementById("armazem").getAttribute("turma"));
+  var e_mail = parseInt(document.getElementById("armazem").getAttribute("e_mail"));
+  var nome = parseInt(document.getElementById("armazem").getAttribute("nome"));
+  var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
+
+
+  google.script.run.withSuccessHandler(  function(m){            //console.log((m.split('𢆯'))[0]);
+        if(m){
+          var zzz = m.split('𢆯');
+          document.getElementById('perguntaAula').innerHTML = zzz[0];  //Atualizar pergunta
+          document.getElementById("perguntaAula").setAttribute("style","padding: 16px; text-align: left; pointer-events:auto; opacity: 1.0;")
+          document.getElementById('asnotas').setAttribute("varQEA", zzz[1]);   //Atualizar variáveis
+          document.getElementById('questaoEmAula').style.display = "block";
+        }else{document.getElementById('questaoEmAula').style.display = "none"; }
+
+        updateQEA.classList.remove('rotating');
+        }).puxarQEA([turma,e_mail,nome,row_al]); 
+}
+
+//Basicamente só colado aqui (exceto primeiras linhas):
+function avaliarQEA(){  // google.script.run.withSuccessHandler(  function(m){     alert(m)      }).corrigirQEA(); 
+        var resposta = capturar("inputesQEA").join("");                         console.log(resposta);
+        var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
+     // var nRow = parseInt(document.getElementById("asnotas").getAttribute("nRow"));  //  console.log(nRow);//alert(nColVD);
+        var nPergunta = parseInt(document.getElementById("asnotas").getAttribute("nQEA"));             //    console.log(nPergunta);
+        var variaveis = document.getElementById("asnotas").getAttribute("varQEA");               // console.log(variaveis);
+        var turma = document.getElementById("avaliacaoAberta").getAttribute("turma"),             
+          mail = document.getElementById("verEMail").innerHTML;                  // console.log(turma);  console.log(mail);
+        //Exibir animação de espera
+        notificacao('animacao',['https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif',250,15]);
+        //////////////Deixar o mouse em carregamento até voltar a correção///////////////
+        //document.getElementById("questaoEmAula").style.cursor = "wait";
+
+        //////////////ENVIAR RESPOSTAS PARA CORREÇÃO///////////////
+        google.script.run.withSuccessHandler(function(feedback){         // alert("Tamanho: "+feedback[2].length);
+
+            if(feedback){
+              ////////////////////////////////////////COLORIR COM FEEDBACK//////////////////////////////////////
+            feedback[2].forEach(       
+              function(fb){    // console.log("QEA🠚id{"+fb[0]+"}")// alert("fb[1]: "+fb[1]);   
+                switch (fb[1]) { 
+                      case "✅":  
+                        document.getElementById("QEA🠚id{"+fb[0]+"}").style.background = "#dbffaf";
+                      break;
+                      case "❌": 
+                        document.getElementById("QEA🠚id{"+fb[0]+"}").style.background = "#ffcccc";
+                      break;
+                      default: 
+                        document.getElementById("QEA🠚id{"+fb[0]+"}").style.background = "rgba(255, 255, 255, 0.8)";
+                      break;
+                }
+              }
+            )
+   			
+            var nota = Math.round(100*Math.max(0,feedback[0])/feedback[1]), 
+            nCarimbosQEA = parseFloat(document.getElementById('asnotas').getAttribute("nCarimbosQEA").replace(",",".")); 
+
+            var acerto = document.getElementById("notaQEA").innerHTML = nota + "% da questão = " + Math.floor((nCarimbosQEA * nota/100) * 2) / 2 + " carimbo(s).";   //Esse 1.5 tem que vir da planilha
+
+    			
+            if (nota == 100) {  notificacao('aviso',['Mandou bem!!!','',1]);  } 
+            else {  
+                  notificacao('aviso',['Alguma coisa deu errado!!!','Você poderá reenviar a atividade, sendo que a cada novo envio a pontuação limite será reduzida em 20%.',20]);
+
+                  // notificacao('confirm',
+                  // ['Alguma coisa deu errado!!!',
+                  // 'Deseja tentar a atividade outra vez valendo 20% da pontuação anterior?'+'<br><br> (feedback: '+ feedback[2]+')',
+                  //   [
+                  //     ['Quero.','alert("sim")'],   //Volta 15s e repete a pergunta
+                  //     ['Não tô a fim!',`alert("não")`]       
+                  //   ]]);
+            }
+
+            document.getElementById("questaoEmAula").style.cursor = "pointer";
+            }
+            else{
+              notificacao('aviso',['O prazo de envio expirou','',10]);
+              document.getElementById("perguntaAula").setAttribute("style","padding: 16px; text-align: left; pointer-events: none; opacity: 0.2;")
+            }
+        }).corrigirPergQEA(row_al,resposta,variaveis);
+
+
+
+
+    
+
+
+
+
+
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="fechador" style="right: 20px;" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</div>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Animação de carregamento    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+<!-- <img id="loadinggif" src="https://i.pinimg.com/originals/e9/e7/cd/e9e7cd767496cfcde2b855c62f6b470d.gif" alt="CARREGANDO" style="width:300px"> -->
+
+<div class="omail" style="right: 50px;"><div id="verEMail" ></div><div id="listaEMail" ></div></div>
+
+<div id="mostrardados" >  <!-- style="display:none;"--> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="alerta"> </div>                  <!-- document.getElementById('alerta').style.display = 'none' -->
+
+
+<!-- 
+
+//PROVISÓRIOS:  
+  <button onclick="notificacao('animacao',['https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif',250,3])">Animação</button>
+  <button onclick="notificacao('aviso',['titulo aviso','Este é o aviso',3])">Aviso</button>
+  <button onclick="notificacao('confirm',['titulo notific','mensagem',[['Botão 0','alert(0)'],['Botão 1','alert(1)']]])">Confirmação</button>
+ -->
+
+
+
+
+
+
+
+<br><br><br>
+<div class="row">
+  <div style="width:740px;float:left;">
+
+<!-- Estilo abaixo é para centralizar todos os elementos -->
+<div class="abas" style="display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; display: flex; justify-content: right; align-items: center;">
+
+
+  <div id="identificacao" ></div>
+</div>
+  </div>
+  
+  <div style="width:205;float:right;">
+
+
+  	<div style="padding-right:5px;" onclick="showagenda()"><img style="width:200px;" src="https://i.ibb.co/c3m64mW/Hor-rio-de-atendimento.png" alt="Horário de atendimento"></div>
+
+    <div id="agendaatendimento" style="display:none;" align="center">
+    <br>
+    <iframe src="https://calendar.google.com/calendar/embed?height=300&wkst=1&bgcolor=%230B8043&ctz=America%2FSao_Paulo&  showDate=0&showNav=0&showPrint=0&showTabs=0&mode=AGENDA&showCalendars=0&showTz=0&showTitle=0&src=Y19pY212dTQyZG1nNDlsYmZ2ZXYxdG5hbGc3a0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23C0CA33" style="border-width:0"   width="350" height="300" frameborder="0" scrolling="no"></iframe>
+    
+    <div style="">
+      <a id="marcarAtend" style="font-size:25px;color:#00BFFF" href="https://api.whatsapp.com/send? phone=5548936184720&text=Professor,%20me%20ajuda.%20%20Tenho%20dúvida%20em%20..." target="_blank">Marcar atendimento  
+        <img   style="width:30px;" src="https://i.ibb.co/jWKgQGv/Whats.png" >
+      </a>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+<button style="font-size:19px;background:rgba(30,30,30,1);color: white;cursor:pointer;border-width:0" onclick="openNav()">&#9776;<br><br>N<br>O<br>T<br>A<br>S<br><br>&#9776;<br><br>N<br>O<br>T<br>A<br>S<br><br>&#9776;<br><br>N<br>O<br>T<br>A<br>S</button>
+</div>
+
+
+<!----<div id="mail3"  style="float:right;padding-right:12px;width:270px;text-align:right;">E-mail institucional</div>---> <!----E-mail substituído--->
+
+
+<div id="avaliacaoAberta" class="content"> </div>
+<!-- <div id="divexperimentos"></div> -->
+<!-- <div id="divlistas" class="content"> -->
+
+
+
+
+
+<!-- Está aqui só para guardar dados -->
+<div id="perguntasvid" onclick="player.seekTo(100);">
+  <!-- <textarea id="w3review" name="w3review" rows="40" cols="15">
+O que fazer ainda:
+- Ver se dá pra remover função eval() por segurança;
+- Corrigir questão; Liberar videos de ajuda; Registrar tarefas feitas na planilha e tempo assistido;
+</textarea> -->
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////AGENDA DE ATENDIMENTOS///////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+var ttt = 1;  //Tempo para salvamento em núvem
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////ABRE AGENDA AO CLICAR///////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+function showagenda(){
+  var a = document.getElementById('agendaatendimento').style.display;
+
+  if(a=='block'){document.getElementById('agendaatendimento').style.display = 'none'}
+  else{document.getElementById('agendaatendimento').style.display = 'block';};
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////TABELA DAS AVALIAÇÕES////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////ABRIR E FECHAR TELA DAS NOTAS/////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+function openNav() {
+  document.getElementById("mySidenav").style.width = "100%";
+  document.getElementById("fechador").style.display = "block";
+}
+        
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
+
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 
@@ -26,29 +1321,31 @@
   <script>
     // Verifica se já tem credencial salva
     const savedCredential = localStorage.getItem("google_credential");
-    if (savedCredential) {
-      handleCredentialResponse({ credential: savedCredential });
-    }
+    const email = function () { 
+      if (!savedCredential) return null;
+      return handleCredentialResponse({ credential: savedCredential });
+    };
 
-    function handleCredentialResponse(response) {
-  const data = parseJwt(response.credential);
-  const email = data.email;
 
-  if (!email.endsWith("ifsc.edu.br")) {
-    alert("Por favor, use seu e-mail institucional do IFSC.");
-    localStorage.removeItem("google_credential");
-    document.getElementById("user-info").innerHTML = "";
-    google.accounts.id.prompt(); // força novo login
-    return;
-  }
+        function handleCredentialResponse(response) {
+          const data = parseJwt(response.credential);
+          let mail = data.email;
 
-  // Salva a credencial válida
-      alert(email)
-  localStorage.setItem("google_credential", response.credential);
+          if (!mail.endsWith("ifsc.edu.br")) {
+            alert("Por favor, use seu e-mail institucional do IFSC.");
+            localStorage.removeItem("google_credential");
+            document.getElementById("user-info").innerHTML = "";
+            google.accounts.id.prompt(); // força novo login
+            return;
+          }
 
-  // Redireciona para o app web
-  //window.location.href = "https://script.google.com/macros/s/AKfycbyeUeSNsav4RUIEyOOvHxiiiuc19AQwKraP6Ur6Pq4oKjKgZ5Pm6po1aGGNe-eVzZlD/exec";
-}
+          // Salva a credencial válida
+              atualTabela(undefined,mail);
+              localStorage.setItem("google_credential", response.credential);
+
+          return mail;
+        }
+
 
 
     function parseJwt(token) {
@@ -59,5 +1356,1812 @@
       }).join(''));
       return JSON.parse(jsonPayload);
     }
-  </script>
 
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+atualTabela();
+function atualTabela(numero,eMail) {
+  chamarenviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:eMail});
+  //google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
+  console.log("É: "+numero+eMail);
+  }
+//
+//Recebe a tabela pronta
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////MONTAR TABELA A PARTIR DOS DADOS PUXADOS EM atualTabela(email)////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+function chamarenviarArray(varJson){ 
+  varJson  = varJson || { tipo: "tabela_inicio",  linha_aluno: 9 , mail:"ezequiel.melo@ifsc.edu.br"}; //here
+  enviarArray(varJson);
+}
+
+
+function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
+  // tabelaEDados = tabelaEDadosEscolha || tabelaEDados;
+  iniciarQEA(tabelaDadosQEA[7]);
+   document.getElementById('identificacao').innerHTML = tabelaDadosQEA[0];
+   /*
+///////////////////////////////////////SUMIR ANIMAÇÃO DE CARREGAMENTO//////////////////////////////////////
+    document.getElementById("loadinggif").remove();
+    document.getElementById("mostrardados").style.display = "block";*/
+
+    document.getElementById("avaliacaoAberta").setAttribute("eMail", tabelaDadosQEA[2]);
+    document.getElementById("avaliacaoAberta").setAttribute("turma", tabelaDadosQEA[1]);
+    document.getElementById("verEMail").innerHTML = tabelaDadosQEA[2];   //E-mail visível
+    document.getElementById("listaEMail").innerHTML = tabelaDadosQEA[6];   //Lista de e-mails de adm
+
+  document.getElementById("marcarAtend").href = "https://api.whatsapp.com/send?phone=5548936184720&text=Oi%20professor!%20Sou%20*"+tabelaDadosQEA[3]+"%20("+document.getElementById("avaliacaoAberta").getAttribute("eMail")+")*%20da%20turma%20*"+tabelaDadosQEA[1]+"*.%0AGostaria%20de%20marcar%20um%20horário%20de%20atendimento%20no%20*Laboratório%20de%20Física%20(sala%20C-05)*%20para%20*~dia-feira~*%20às%20*~HH:MM~*";       
+}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////EXPERIMENTAL////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////ABRIR ABA DE EXPERIMENTOS/////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+function experimental(nExp,tarefa,nota,coment,resposta,data){//alert(data);
+  // alert("\nnExp: "+nExp+"\nTurma: "+turma+"\nTarefa:"+tarefa+"\nNota: "+nota+"\nResposta: "+resposta+"\nComent: "+coment);
+ var exp = '<center style="width:100%;height:100%;">'+
+	'<embed style="border-radius:30px;height:400px;margin-top: 5px;" type="image/jpg" src="'+((tarefa=="")?"https://i.ibb.co/Rb2Qtjh/Sem-tarefa.png":tarefa)+'" >'+
+	
+	((tarefa!="")?'<div style="padding:0px; border-radius:15px;background:#1F3628;  color:white; text-align:center;width: 95%;">'+
+	'<b>Link do arquivo ou pasta compartilhada:</b>'+
+	'<input id="linkExp" style="border-radius:9px;background:white;min-width: calc(100% - 150px);height: 40px;" placeholder="https://........" ' +((resposta=="")?'':'value="'+resposta+'"')+ 
+  ((new Date(data.replace(/^(.*?) de (.*?)\/(.*?)\/(.*?)$/,"$4-$3-$2T$1"))>new Date())?'> <button style="border-radius:5px;width: 120px;background:#B19876;cursor:pointer;color: #efd8aa;background-color: #543414;border-color: #b08c58;border-radius: 10px;padding-top:-200px;transform: translate(0%, -10%);height: 40px;" id="" onclick="subirExp('+nExp+');" >' +((resposta=="")?'ENVIAR':'REENVIAR')+' <br> <div style="font-size: 8px;">até'+data+'</div></button>':' disabled > ')+
+
+    
+	'</div>'+
+	
+  '	<div style="padding:0px; border-radius:15px; background:#1F3628; width: 95%; height:60px; color:white;text-align:left;font-weight:bold;margin-top: 5px;">'+
+  '		<div style="display:inline-block;margin-right:35%;padding-left:2%;">Nota:</div>'+
+  '		<div style="display:inline-block;">Comentários:</div>'+
+  '		<div style="text-align:center;height:50%">'+
+  '			<input style="padding:0px;border-radius:9px;background:#afbfa4;width:40px;height:100%;text-align: center;font-size: 18px;" placeholder="- -" value="'+nota+'" disabled>'+
+  '			<input style="padding:0px;border-radius:9px;background:#afbfa4;min-width: calc(100% - 70px);height:100%;font-size: 18px;" value="'+coment+'" disabled>'+
+  '		</div></div>':'')+
+  '</center>';
+
+
+  // document.getElementById('divexperimentos').style.display = 'block'; //Deixar div visível
+  // document.getElementById('htmlvideoaula').style.display = 'none'; //Deixar div invisível
+  // document.getElementById('divlistas').style.display = 'none'; //Deixar div invisível
+  document.getElementById('avaliacaoAberta').innerHTML = exp;
+
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////SALVAR EXPERIMENTO DO ALUNO////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+function subirExp(nExp) { 
+  var link= document.getElementById("linkExp").value/*,turma="Pa",email = document.getElementById('mail1').innerHTML*/;
+  // alert(nExp);//+'\','+"1"+i+'
+  var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
+  notificacao('animacao',['https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif',250,15]);
+  google.script.run.withSuccessHandler(function(m){notificacao('aviso',['Realtório de envio',m,4])}).gravarExp(nExp,link,row_al);
+}
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////IMPRESSÃO/////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+function imprime() { window.print();}
+
+
+/*  Versão antiga bugada
+   function imprime() {
+       var todohtml = document.body.innerHTML; //Captura o documento original
+       document.getElementById("solicFB").style.display = "none";
+       document.getElementById("dados").style.display = "none";
+       document.getElementById("submit_button").style.display = "none";
+       document.getElementById("whats").style.display = "none";
+              
+       var perguntas = document.getElementById("form").innerHTML;
+       document.body.style.display = "block";
+       document.body.innerHTML = "<html  style='background:red;width:80%;'><head><title></title></head><body   style='position:absolute;left:20000px;'>" + perguntas + "</body></html>";
+       window.print();
+      document.body.innerHTML = todohtml;
+       document.body.style.display = "flex";
+       document.getElementById('submit_button').disabled = true;
+
+       Object.assign(document.getElementById("submit_button").style, {"display":"block"});
+       document.getElementById("submit_button").innerHTML = "<i style='font-size:10px;'>RECARREGUE <br>A PÁGINA PARA<br>REABILITAR O ENVIO</i>";
+   }
+
+*/
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////NOTIFICAÇÕES////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+
+    //Contador de tempo da notificação (fora da função para todas as chamadas por ele terem o mesmo relógio contador)
+    var contadorNotif = -2; 
+
+    function notificacao(tipo,dados) {      
+        /*tipo:   Animacao =>('animacao',[https://imagem.gif,tamanho,tempo limite]), 
+                  Aviso =>('aviso',[titulo,mensagem,tempo de exibição em segundos]) ou  
+                  Confirmação =>('confirm',[titulo,mensagem,botoesArray:[[nome,ação],...]])  
+                  Ocultar notificação => ('cancelar')       */ 
+
+      const alerta = document.getElementById('alerta');
+      alerta.style.display = 'block';
+
+      //Contador de tempo da notificação
+       clearInterval(contadorNotif);
+          
+      //Fechar ao clicar fora
+      alerta.addEventListener('click', (e) => { if (e.target === alerta) { alerta.style.display = 'none';}   });      
+      
+
+
+
+
+      switch (tipo) { 
+          case "animacao": 
+            alerta.innerHTML = 
+              `<img id="animac" src="` + dados[0] + `" alt="CARREGANDO">`;
+             document.getElementById('animac').style.cssText = `position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);width:`+ ((dados[1]!=undefined)?dados[1]:300) +`px;`;
+          
+            //Não fechar ao clicar fora da animação
+            alerta.addEventListener('click', (e) => {
+              if (e.target === alerta) { alerta.style.display = 'block'; }
+            });      
+
+
+            // Sumir notificação após um "tempo limite"
+            contadorNotif = setInterval(function() {
+              dados[2]--;
+              //Sumir caixa na quantidade de segundos definida
+              if (dados[2] < 0 && alerta.style.display == 'block') {
+                clearInterval(contadorNotif); // Parar o contador
+                notificacao('aviso',['Tempo excedido!','O tempo de espera muito longo excedeu o limite.<br>Salve os dados e recarregue a página.',60]);
+                // alerta.style.display = 'none';
+              }
+            }, 1000);
+
+
+          break;
+
+          case "aviso": 
+            alerta.innerHTML = 
+            `<div class="conteudoNotif" onmousedown="moverNotif(event)">
+              <div id="fillNotif">
+                <h2 class="titulo">` + dados[0] + `</h2>
+                <p class="mensagem">` + dados[1] + `</p>
+                <button id="okNotif">Ok! (<span id="contador">` + dados[2] + `</span> s)</button>
+                
+              </div>
+            </div>`; 
+
+                  //Fechar ao clicar fora
+            const okNotif = document.getElementById('okNotif');
+            okNotif.addEventListener('click', (e) => { if (e.target === okNotif) { alerta.style.display = 'none'; }   }); 
+
+            //Fechar ao clicar 'ENTER'
+            document.onkeypress = function(e) {
+              // e = e || window.event;
+              if (e.key === 'Enter') {
+                  document.getElementById('okNotif').click();
+              }
+            };
+
+
+            // Atualizar o contador a cada segundo
+            contadorNotif = setInterval(function() {
+              dados[2]--;
+              document.getElementById('contador').textContent = dados[2];
+            //Sumir caixa na quantidade de segundos definida
+              if (dados[2] < 0) {
+                clearInterval(contadorNotif); // Parar o contador
+                alerta.style.display = 'none';
+              }
+            }, 1000);
+          break; 
+
+          case "confirm":  
+            var botoesNotif = ""; 
+              
+            for(var i=0; i < dados[2].length;i++){
+              botoesNotif += `<button onclick=` + dados[2][i][1] + `>` + dados[2][i][0] + `</button>`;      
+            }
+          
+            alerta.innerHTML = 
+            `<div class="conteudoNotif" onmousedown="moverNotif(event)">
+              <h2 class="titulo">` + dados[0] + `</h2>
+              <p class="mensagem">` + dados[1] + `</p>
+              <div class="botoes">` + 
+              botoesNotif 
+              + `
+                <span onclick=""></span>
+              </div>
+            </div>`;       
+          break;  
+
+          case "cancelar":  
+              document.getElementById('alerta').style.display='none';
+          break; 
+          
+          default: 
+          break; 
+        }
+  
+    }
+
+
+
+
+
+
+
+
+
+
+
+  var isDragging = false, offsetX, offsetY;
+
+  function moverNotif(e) {
+    isDragging = true;
+    var conteudoNotif = document.querySelector('.conteudoNotif');
+    offsetX = e.clientX - conteudoNotif.getBoundingClientRect().left;
+    offsetY = e.clientY - conteudoNotif.getBoundingClientRect().top;
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
+  function onMouseMove(e) {
+    if (isDragging) {
+      var conteudoNotif = document.querySelector('.conteudoNotif');
+      conteudoNotif.style.left = e.clientX - offsetX + 'px';
+      conteudoNotif.style.top = e.clientY - offsetY + 'px';
+      conteudoNotif.style.transform = 'none'; // Remove a transformação para permitir o movimento
+    }
+  }
+
+  function onMouseUp() {
+    isDragging = false;
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////LISTAS///////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////CHAMA A LISTA (function Questões) AO CLICAR NO LINK ESPECÍFICO////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+function chamarlista(nlista,turma) {
+document.getElementById("avaliacaoAberta").innerHTML = `<!----Informações sobre a lista--->
+<div class="information">❔<span class="informationtext">
+➱ Após o envio será permitida a edição das respostas durante o prazo.<hr>➱ A correção será automática, então atentem à unidade solicitada e realizem os cálculos de forma a obterem valores com boa precisão e possíveis arredondamentos apenas para o valor final.<hr>➱ Quando não especificado um formato para as respostas elas devem ser estritamente numéricas e digitadas "sem a unidade", utilizando "vírgula" como separador decimal (Ex.: 2,99).<hr>➱ Valores em notação científica deverão ser expressos no formato eletrônico. (Ex.: 2,99E+8 em lugar de: 2,99x10⁸).<hr>➱ Quaisquer problemas de submissão devem ser informados em tempo hábil antes do fim do prazo.<hr>➱ Um relatório de submissão de respostas e um feedback de acertos (caso solicitado) serão encaminhados ao seu e-mail institucional.  
+</span></div>
+<sup onclick="imprime()" id="print"><img src="https://i.ibb.co/Wv09HN6/Imprimir.webp" alt="imprimir" style="cursor: pointer;transform: translate(45%, -5%);position: relative;display: inline;width:30px;padding:10;"></sup>
+
+
+
+
+<div id="form" class="innerContent" oninput="document.getElementById(\'respnaosalva\').setAttribute(\'class\', \'rnsalvas\');">          
+<div id="titulo" style="margin: 10px auto;width: 100%;text-align:center;font-weight: bold;">       <!-- --Título substituído-    -->
+</div>
+
+
+
+<p id="perguntasaqui" style="padding: 12px;margin-top: -20px;"><img src="https://i.ibb.co/QHNn03s/Carregando.gif" alt="CARREGANDO..." style="width:280px; position: absolute; top: 50%; left: 50%; transform: translate(-60%, -50%);"></p>
+
+<!-- <form id="cabecalho"><div id='htmlvideoaula' style="display:none">Está aqui só para guardar dados</div></form> -->
+</div>
+<!----- Espaço para javascript substituir pelas perguntas ---> 
+<!-- <div id="perguntas">
+      <p id="perguntasaqui" style="padding: 12px;"> <br><br>Para iniciar selecione a <b style="font-size:130%;color:#b19876;"> turma </b> e o <b style="font-size:130%;color:#b19876;"> número da lista </b>acima ☝🏼 ☝🏼 ☝🏼 ☝🏼 ☝🏼 ☝🏼</p>         
+</div>         -->
+<span id='dados'></span>
+
+
+
+    <!----- Solicitar feedback no e-mail ---> 
+    <div id='solicFB'></div>
+    
+ <!----- Botão chama função salvarRespostas(submeter ao formulário) --->               <!----Notificação de respostas não salvas--->
+  <button type="submit" id="submit_button" class="button"  onclick="if((this.value<new Date())&&(document.getElementById('mailselected')==null)){alert('Já terminou o prazo de envio!');this.style.display = 'none';}else{salvarRespostas();}" ><div id='respnaosalva'></div>"</button>   
+  <div id="whats" style="position: absolute;bottom:25px;right: 30px;float: right;padding-right:5px;"><a href="https://api.whatsapp.com/send?phone=5548936184720&text=Professor,%20me%20ajuda.%20%20Tenho%20dúvida%20em%20..." target="_blank"><img style="width:30px;" src="https://i.ibb.co/jWKgQGv/Whats.png" ></a></div>    <!----- Exibir whats para ajuda ---> `;
+  // var nlista = 1;
+  // var turma = 'Pa';        
+  // var nlista = document.getElementById("nlista").value;
+  // var turma = document.getElementById("turma").value;
+  // var mail1 = document.getElementById("avaliacaoAberta").getAttribute("eMail");
+  // alert()
+  var e_mail = document.getElementById("avaliacaoAberta").getAttribute("eMail");
+
+  google.script.run.withSuccessHandler(questions).puxardados(nlista,turma,e_mail);
+  document.getElementById("respnaosalva").setAttribute("class", "original"); //tira notificação "ñ salvas"
+
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById('titulo').style.display = 'none';
+  // document.getElementById('htmlvideoaula').style.display = 'none'; //Deixar div invisível
+  // document.getElementById('divexperimentos').style.display = 'none'; //Deixar div visível
+  document.getElementById('avaliacaoAberta').style.display = 'block'; //Deixar div invisível
+  document.getElementById('avaliacaoAberta').value = turma+"⁻"+nlista; //Deixar div invisível   
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////IMPORTAR QUESTÕES DA LISTA/////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+function questions(htmldosheet) {
+  //htmldosheet = [Título + HTML substituído,variáveis,[data último fb,intervalo p/ solicitar],[data validade lista],respostas,dados]
+  // document.getElementById("avaliacaoAberta").innerHTML = `<p id="perguntasaqui" style="padding: 12px;"></p>`; //Testando
+  var sub = document.getElementById("submit_button"),perguntas = document.getElementById('perguntasaqui'),fb = document.getElementById("solicFB"),htmldosheet0 = htmldosheet[0]+"",respostas = htmldosheet[4]; 
+  respostas = respostas.match(/(?<=⦅).*?(?=⦆)/g); 
+
+  perguntas.style.display = 'block'; //Deixar div visível
+
+  (respostas==null)?respostas="ausente":respostas=respostas.map(function(s) {return s.split("🠖")}); 
+
+  if(respostas != "ausente"){ 
+    var docElement = new DOMParser().parseFromString(htmldosheet0, "text/html").documentElement; 
+    var input = docElement.getElementsByClassName("inputes"), entradas = []; 
+
+    for(var i = 0; i < input.length; i++){ 
+      var id = input[i].id; 
+      var respAtual = respostas.filter(function(a) { return a[0] == id;}); 
+
+      //////////ADICIONA RESPOSTAS PRÉVIAS////////////
+      if(respAtual[0]!=undefined){ 
+        switch (input[i].type) { 
+          case "radio": 
+            input[i].setAttribute('checked',''); 
+          break; 
+          case "checkbox": 
+            if(respAtual[0][1]!='"☐"'){input[i].setAttribute('checked','');}; 
+          break; 
+          case "select-one": 
+            for (var t = 0; t < input[i].length; t++){
+              // alert(respAtual[0][1]=="\""+input[i].options[t].value+"\"");
+              if((respAtual[0][1]) == ("\""+input[i].options[t].value+"\"")){
+                input[i].options[t].setAttribute('selected', 'selected');
+              }
+            }; 
+          break; 
+          default: 
+            input[i].setAttribute('value', respAtual[0][1]); 
+        }
+      } 
+    }; 
+    perguntas.innerHTML = docElement.outerHTML;
+  }
+  else{ perguntas.innerHTML = htmldosheet0; } 
+
+  perguntas.value = htmldosheet[1]; //Variaveis
+  sub.style.display = "block";  //Mostrar botão SUBMIT
+ 
+  //Validade da lista (contador regressivo)  ==> Se a validade estiver expirada e se encontra o "mailselected" (aí é o chefe)
+  if((htmldosheet[3][0]<new Date())&&(document.getElementById("mailselected")==null)){
+    // var viewButton = {"display":"none"},noEditPerg = {"pointer-events":"none","opacity":"0.2"};
+    Object.assign(sub.style, {"display":"none"});
+    Object.assign(perguntas.style, {"pointer-events":"none","opacity":"0.2"});
+    sub.disabled = true;
+    fb.innerHTML = "<i style='font-size:25px;'>Fechada às " + htmldosheet[3][1] + "</i>";
+  }
+  else{
+    Object.assign(sub.style, {"display":"block"});
+    Object.assign(perguntas.style, {"pointer-events":"auto","opacity":"1"});
+
+    sub.disabled = false;
+    sub.innerHTML = "SUBMETER<i style='font-size:10px;'><br>Até "+ htmldosheet[3][1] + "</i> <div id='respnaosalva'></div>";
+    sub.value=htmldosheet[3][0];
+    fb.style.display = "block";
+
+    // document.getElementById('print').style.display = 'inline'; 
+
+    document.getElementById("submit_button").alt = htmldosheet[2][1];
+    feedback(htmldosheet[2][0],htmldosheet[2][1]); //LastFB e Prazo
+
+    if(htmldosheet[5] != ""){
+      document.getElementById('dados').innerHTML = htmldosheet[5];
+      document.getElementById('dados').style="padding:5px;border: 1px outset white;background-color: rgba(200, 200, 200, 0.2);border-radius: 6px;"}else{document.getElementById('dados').style.display = 'none';}
+
+
+    ////////////////////////////////////////COLOCAR SOLUÇÕES APÓS PERGUNTAS//////////////////////////////////////////
+      var elementosDestino =  document.getElementById("perguntasaqui").querySelectorAll('p');   
+      for(var i = 0;i < elementosDestino.length;i++){ 
+           var a = (elementosDestino[i].textContent).match(/⟪(\d\d)⟫/); 
+          if (a){           //console.log(a[1]);
+            var elementoMovido = document.getElementById("r-" + a[1]);
+            elementoMovido.parentNode.removeChild(elementoMovido);
+            elementosDestino[i].parentNode.insertBefore(elementoMovido, elementosDestino[i].nextElementSibling); 
+      }}
+  }
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////AJUSTAR CAMPO FEEDBACK/////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+function feedback(lastFB,prazo){
+  var fb = document.getElementById("solicFB");
+  //fb.innerHTML = "<br><label id='textoFB' style='color:grey'>. . . . . .</label>";
+
+  var hora = Math.floor(prazo), minuto = Math.floor(3600*prazo%3600/60), segundo = Math.floor(3600*prazo%3600%60);
+  var fbFree = "<br><input type='checkbox' id='FB'><label id='textoFB' for='FB' style='color: #efd8aa'>Solicitar feedback de acertos junto ao e-mail de confirmação (o próximo poderá ser solicitado após "+ ((hora>0)?hora+"h":"") + ((minuto>0)?minuto+"min":"") + ((segundo>0)?segundo+"s":"") + ").</label>";
+
+  if(lastFB == "submetido"){timeNextFB = prazo*3600000;}
+  else{if(lastFB == ""){timeNextFB = -100;}else{timeNextFB = (Date.parse(lastFB)+prazo*3600000)-Date.now();}}
+  // alert(lastFB + " : " + prazo + " : " + timeNextFB);
+    if(timeNextFB > 0){
+      var duration = timeNextFB/1000;  
+      var timer = duration, horas, minutos, segundos;
+    
+	    var contador = setInterval(function () {
+		    horas = parseInt((timer / 60) / 60, 10);
+        minutos = parseInt((timer / 60) % 60, 10);
+        segundos = parseInt(timer % 60, 10);
+
+        minutos = minutos < 10 ? "0" + minutos : minutos;
+        segundos = segundos < 10 ? "0" + segundos : segundos;
+        //Se o tempo esgotar ou sendo o chefe
+        if(--timer < 0||document.getElementById("mailselected")) { 
+          clearInterval(contador);
+		      fb.innerHTML = fbFree;}
+        else{
+		      fb.innerHTML = "<br><input type='checkbox' id='FB' disabled><label id='textoFB' style='color:grey'>Um novo feedback de acertos poderá ser solicitados em " + horas + "h" + minutos + "min" + segundos + "s.</label>"	
+        }
+
+      }, 1000);
+
+
+    }
+    else{fb.innerHTML = fbFree;};	 
+}  
+
+document.getElementsByClassName("linkint").addEventListener("click", function (){clearInterval(contador)} );
+
+
+
+/*////////////////////////////////ATIVAR NOTIFICAÇÃO DE RESPOSTA NÃO SALVA///////////////////////////////////
+document.getElementById("perguntasaqui").addEventListener("input", function () {document.getElementById("respnaosalva").setAttribute("class", "rnsalvas");});
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////COLETAR RESPOSTAS PARA A LISTA E AS VIDEOAULAS//////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+function capturar(classe) {   
+   var input = document.getElementsByClassName(classe);
+  //var input = document.getElementsByName("Pergunta");alert("document.getElementsByClassName('inputes')");
+
+  var entradas = [];
+
+  for(var i = 0; i < input.length; i++){               
+    switch (input[i].type) {
+      case "radio":
+        if(input[i].disabled == false){
+          if(input[i].checked){
+            input[i].setAttribute('checked','');
+            entradas.push("⦅" + input[i].id +"🠖\""+ input[i].value + "\"⦆");}
+        else{
+          input[i].removeAttribute('checked');}
+        }
+      break;
+      case "checkbox": 
+        if(input[i].disabled == false){
+          if(input[i].checked){
+            input[i].setAttribute('checked','');
+            entradas.push("⦅" + input[i].id +"🠖\""+ input[i].value + "\"⦆");}
+          else{     
+            input[i].removeAttribute('checked');
+            entradas.push("⦅" + input[i].id +"🠖\"☐\"⦆")}
+        };
+      break;
+      case "select-one":
+        if(input[i].value != ""){entradas.push("⦅" + input[i].id +"🠖\""+ input[i].value + "\"⦆")};
+        for (var t = 0; t < input[i].length; t++) {
+          if(input[i].value == input[i].options[t].value){
+            input[i].options[t].setAttribute('selected', 'selected');
+          }
+          else{
+            input[i].options[t].removeAttribute('selected');
+          }
+        };
+      break;
+      default:
+        input[i].setAttribute('value',input[i].value);
+        if(input[i].value != ""){//alert(input[i].value);
+         input[i].value = (/^(".*")$|^\(.*\)$|^[+-]?\d+(,\d+)?((e|E)[+-]?\d+)?$/.test(input[i].value))?input[i].value:"\""+input[i].value+"\"";
+         entradas.push("⦅" + input[i].id +"🠖"+ input[i].value + "⦆");}
+    } // alert(i+ "\n"+ input[i].outerHTML);
+  };
+
+  return entradas;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////GUARDAR RESPOSTAS EM ARRAY E EXIBIR ALERTA////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+function salvarRespostas() {  
+  /////////////CHAMA A VARREDURA PARA CAPTURAR RESPOSTAS DE ENTRADAS NA CLASSE "inputies"////////////////////
+  var entradas = capturar("inputes");
+
+
+// notificacao('confirm',['titulo notific','Você receberá um e-mail de confirmação do envio e o formulário permanecerá disponível para edicão na sequência.<br><br>(Aguarde a notificação de submissão concluida. Caso esta não seja exibida, salve os dados e atualize a página)<br><br>Confirma o envio?',[['Enviar','salvarRespostas()'],['Cancelar','alert(1)']]]);
+
+
+  // if (confirm("Você receberá um e-mail de confirmação do envio e o formulário permanecerárá disponível para edicão na sequência.\n\n(Aguarde a notificação de submissão. Caso esta não seja exibida, salve os dados e atualize a página)\n\nConfirma o envio?")) { 
+    notificacao('animacao',['https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif',250,15]);
+    document.getElementById('avaliacaoAberta').style.cursor = "wait";
+    ////////////////CAPTURA NOME DA TURMA E N° DA LISTA/////////////////////
+    var turmaEn = document.getElementById('avaliacaoAberta').value;
+    ////////////////CAPTURA O E-MAIL(dependendo se o adm logou)/////////////////////
+    var e_mail = document.getElementById('verEMail').innerHTML;
+    ////////////////HTML PARA ENVIO DO E-MAIL DE FEEDBACK/////////////////////
+    var htmlPergResp = document.getElementById('perguntasaqui').outerHTML;//alert(htmlPergResp);
+    var variaveis = document.getElementById('perguntasaqui').value;//alert(variaveis);
+    var fb = document.getElementById('FB').checked;
+    if(fb){feedback('submetido',document.getElementById("submit_button").alt);};
+                // google.script.run.gravarRespostas(turma,entradas,variaveis,nlista,htmlPergResp,fb);
+    // alert("t: "+turmaEn.split("⁻")[0]+"\ne:"+entradas+"\nv:"+variaveis+"\nn:"+turmaEn.split("⁻")[1]+"\nh:"+htmlPergResp+"\nf:"+fb);
+    google.script.run.withSuccessHandler(function(m){
+        notificacao('aviso',[m[0],m[1],5]);
+        // alert(m);
+        document.getElementById('avaliacaoAberta').style.cursor = "auto";
+      }).gravarRespostas(turmaEn.split("⁻")[0],entradas,variaveis,turmaEn.split("⁻")[1],htmlPergResp,fb,e_mail);
+    document.getElementById("respnaosalva").setAttribute("class", "original");
+  // } //tira notificação "ñ salvas"
+
+  return entradas;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////VIDEOAULAS/////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+
+var videoSelecionado = "",videoDuration = 1;; //Para funções modificarem, acho que dá pra colocar como atributo
+    // google.script.run.withSuccessHandler(opcoesVideo).dadosIniciais();
+
+
+    
+      ///////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////CARREGA OS DADOS DO VÍDEO/////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////////
+      function videoaula(numero,nColVD){  //videoaula(1,2,338)
+      videoSelecionado = numero;//variável global   //alert(videoSelecionado)
+      document.getElementById("perguntasvid").setAttribute("nColVD", nColVD)
+      //<!-- outra animação: https://www.matierevolution.fr/IMG/gif/oscillateur-vecteurs.gif -->
+      //<!-- https://qph.cf2.quoracdn.net/main-qimg-d81e2dd45951fe6e0640223edef1157e-->
+      
+      ///////////////////////////////////////SOBE O CÓDIGO HTML///////////////////////////////////////
+      document.getElementById("avaliacaoAberta").innerHTML = `
+      <img id="loadingAval" src="https://i.ibb.co/56541vb/Carregando-lua.gif" alt="CARREGANDO"  alt="CARREGANDO" style="width:100px; position: absolute; top: 50%; left: 50%; transform: translate(-60%, -50%);">
+      <!--EXIBIÇÃO EM COLUNAS-->    
+	    <div id="espacoViAu" class='row' style='display:none;justify-content: center;align-items: center;'>
+      
+        <div class="information"  style="position: absolute; top: 25px; left: 55px; float: right;">❔<span class="informationtext">
+        ➱ Em caso de PULAR a questão esta poderá ser refeita clicando em sua indicação na tabela de tarefas valendo 10% a menos a cada tentativa.<hr>➱ A correção será automática, então atentem à unidade solicitada e realizem os cálculos de forma a obterem valores com boa precisão e possíveis arredondamentos apenas para o valor final.<hr>➱ Quando não especificado um formato para as respostas elas devem ser estritamente numéricas e digitadas "sem a unidade", utilizando "vírgula" como separador decimal (Ex.: 2,99).<hr>➱ Valores em notação científica deverão ser expressos no formato eletrônico. (Ex.: 2,99E+8 em lugar de: 2,99x10⁸).<hr>➱ Quaisquer problemas de submissão devem ser informados em tempo hábil antes do fim do prazo.</span></div>
+
+        <div class="information" style="position: absolute;top: 25px;left: 86px;float: right;" ><img id="emNuvem" style="width: 32px;margin-bottom: -4px;" src="https://i.ibb.co/kJW3TZH/Update3.gif"><span class="informationtext" style="width: 81px;text-align: center;">Salvamento automático em nuvem.</span></div>
+
+        <div id="viAuEControles" style="width: 640px; height: 595px;">
+
+          <h2 id='titulo' style="/* display: block; */text-align: center;"></h2>
+          <div id="viAu">
+            <div id='videoPlayer'></div>
+	            <div id='playpause' onclick='playpauseVideo(this.getAttribute(\"estadovideo\"))' estadovideo='Iniciar' style='padding: 15px;background-color:transparent;display:none;'><img  width='100' alt='Reproduzir Vídeo' src='https://i.ibb.co/ZKkB61b/Play-video.png'>
+              </div>
+          </div>
+  
+          <div id='progressBarContainer' class="tooltip">
+            <div id='currentTime'>00:00:00</div>
+	        	<div id='progressBar' onmousemove='balaoTempoBarra(event.clientX,this.getBoundingClientRect().left);' onclick='adjustVideoTime(event)'>
+  
+	        	  <div class='permitido'>TEMPO ASSISTIDO</div><hr style='margin:0;'>
+	        	  <div class='progress' onmousemove='balaoTempoBarra(event.clientX,this.getBoundingClientRect().left);'>TEMPO ATUAL</div>
+	          </div>	<span class="tooltiptext" id='posicao'>aa</span>
+  
+	          <div id='duration'>00:00:00</div>
+          </div>
+          <div id="controlesViAu" style="text-align: center;margin: -9px;">
+<!-- 	          <select id='playbackRate' onchange='changePlaybackRate()'  class='btvd' style='background:white;color:rgba(222, 152, 56, 255);'>
+                  <option value='0.5'       >🏃 × 0.50</option>
+                  <option value='0.75'      >🏃 × 0.75</option>
+                  <option value='1' selected>🏃 × 1.00</option>
+                  <option value='1.25'      >🏃 × 1.25</option>
+                  <option value='1.5'       >🏃 × 1.50</option>
+                  <option value='1.75'      >🏃 × 1.75</option>
+                  <option value='2'         >🏃 × 2.00</option>
+            </select>
+
+            <button class='btvd' onclick='seekTo(-30,\"+\")'>- 30 s</button>
+            <button class='btvd' onclick='seekTo(-10,\"+\")'>- 10 s</button>
+            <button class='btvd' onclick='seekTo(-5,\"+\")'>- 5 s</button>
+            <button class='btvd' onclick='seekTo(5,\"+\")'>+ 5 s</button>
+            <button class='btvd' onclick='seekTo(10,\"+\")'>+ 10 s</button>
+            <button class='btvd' onclick='seekTo(30,\"+\")'>+ 30 s</button> -->
+      
+<div class="botoesVD">
+    <button class="botaoVD" style="">VELOCIDADE</button>
+    <div class="balaoVD">
+        <button class="botaoVDhide"  onclick='changePlaybackRate(2.00)'>🏃 × 2.00</button>
+        <button class="botaoVDhide"  onclick='changePlaybackRate(1.75)'>🏃 × 1.75</button>
+        <button class="botaoVDhide"  onclick='changePlaybackRate(1.50)'>🏃 × 1.50</button>
+        <button class="botaoVDhide"  onclick='changePlaybackRate(1.25)'>🏃 × 1.25</button>
+        <button class="botaoVDhide"  onclick='changePlaybackRate(1.00)'>🏃 × 1.00</button>
+        <button class="botaoVDhide"  onclick='changePlaybackRate(0.75)'>🏃 × 0.75</button>
+        <button class="botaoVDhide"  onclick='changePlaybackRate(0.50)'>🏃 × 0.50</button>
+    </div>
+</div>
+
+<div class="botoesVD">
+    <button class="botaoVD" style="">VOLTAR</button>
+    <div class="balaoVD">
+            <button class='botaoVDhide' onclick='seekTo(-1800,\"+\")'>- 30 min</button>
+            <button class='botaoVDhide' onclick='seekTo(-300,\"+\")'>- 5 min</button>
+            <button class='botaoVDhide' onclick='seekTo(-60,\"+\")'>- 1 min</button>
+            <button class='botaoVDhide' onclick='seekTo(-30,\"+\")'>- 30 s</button>
+            <button class='botaoVDhide' onclick='seekTo(-10,\"+\")'>- 10 s</button>
+            <button class='botaoVDhide' onclick='seekTo(-5,\"+\")'>- 5 s</button>
+            <button class='botaoVDhide' onclick='seekTo(-2,\"+\")'>- 2 s</button>
+    </div>
+</div>
+
+<div class="botoesVD">
+    <button class="botaoVD">ADIANTAR</button>
+    <div class="balaoVD">
+            <button class='botaoVDhide' onclick='seekTo(1800,\"+\")'>+ 30 min</button>
+            <button class='botaoVDhide' onclick='seekTo(300,\"+\")'>+ 5 min</button>
+            <button class='botaoVDhide' onclick='seekTo(60,\"+\")'>+ 1 min</button>
+            <button class='botaoVDhide' onclick='seekTo(30,\"+\")'>+ 30 s</button>
+            <button class='botaoVDhide' onclick='seekTo(10,\"+\")'>+ 10 s</button>
+            <button class='botaoVDhide' onclick='seekTo(5,\"+\")'>+ 5 s</button>
+            <button class='botaoVDhide' onclick='seekTo(2,\"+\")'>+ 2 s</button>
+    </div>
+</div>
+
+<div class="botoesVD">
+    <button class="botaoVD">VOLUME</button>
+    <div class="balaoVD">
+            <input type='range' id='volumeVD' min='0' max='100' step='1' value='100' onchange='changeVolume()'>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><!-- Chama síbolo fullscreen -->
+            <i class="material-icons" onclick="telaCheia()" style="font-size:48px;color:white;cursor:pointer;vertical-align: -19px;">fullscreen</i>
+            
+          
+          </div>
+        </div>
+        <div class='row'>
+	        <div id='tabelaTarefas' style='text-align: center; margin-top: -15px;pointer-events: none;'></div>
+        </div>
+
+        <!--<div> tmáx: <i id="tempos">00:00</i></div>-->
+      </div>`
+      
+
+
+
+
+
+        
+        //document.getElementById('htmlvideoaula').style.display = 'block'; //Deixar div visível
+       
+
+
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById('titulo').style.display = 'block';
+        // document.getElementById('divexperimentos').style.display = 'none';//Deixar div invisível
+        // document.getElementById('divlistas').style.display = 'none'; //Deixar div invisível
+        // document.getElementById('divlistas').value = turma+"⁻"+nlista;  
+       
+      ///////////////////////////////////////CHAMAR API DO YOUTUBE///////////////////////////////////////
+      var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
+      var row_DT = parseInt(document.getElementById("armazem").getAttribute("row_DT"));
+
+
+      carregarVideo(numero,nColVD,row_al,row_DT);      //      não é obsoleto, era pro onYouTubeIframeAPIReady(): chamava só pra garantir, já que o script acima já faz isso
+  /*    var scriptElement = document.createElement("script");
+      scriptElement.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(scriptElement);*/
+
+      }
+
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////FUNÇÕES API DO YOUTUBE///////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+        var player;
+        var interval;
+        var accumulatedTime = 0;
+
+///////////////////////////////////////INSERE VIDEO (FUNÇÃO CHAMADA PELA API)///////////////////////////////////////
+      function carregarVideo(numero,nColVD,row_al,row_DT) {  //Antiga função "onYouTubeIframeAPIReady()", que carregava automaticamente pela API
+        var mail = document.getElementById("verEMail").innerHTML;
+          ///////////////////////////////////////PUXA DADOS DA FUNÇÃO DO GOOGLE///////////////////////////////////////
+          google.script.run.withSuccessHandler(function(dados) {
+            if(dados){
+            player = new YT.Player('videoPlayer', {
+              height: '360',
+              width: '640',
+              videoId: dados[1][0],
+              playerVars: {  start: dados[0][0] /* (Segundo do início)*/, controls: 0  },
+              events: {    'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange   },
+            });
+//alert(videoSelecionado);// alert(dados[4])       
+            
+          // player.pauseVideo();
+          // player.seekTo(100);
+
+            entradas(dados);
+            }else{
+              document.getElementById("avaliacaoAberta").innerHTML = `<h1>Erro na diponibilização do vídeo. Informe o professor ao erro.<\h1>`;
+            }
+          }).dadosVideo(nColVD,row_al,row_DT,mail);
+          
+///////////////////////////////////////COMANDO DE TECLAS///////////////////////////////////////
+document.addEventListener('keydown', function(event) {
+  if (event.keyCode === 39) {//Seta pra frente (adiantar 10s no vídeo)
+    seekTo(10, "+");
+  }
+  if (event.keyCode === 37) {//Seta pra trás (voltar 10s no vídeo)
+    seekTo(-10, "+");
+  }
+  if (event.keyCode === 38) {//Seta pra cima (aumentar volume)
+    changeVolume(10);
+  }
+  if (event.keyCode === 40) {//Seta pra baixo (reduzir volume)
+    changeVolume(-10);
+  }
+});
+        }
+
+///////////////////////////////////////CAPTURA DURAÇÃO DO VÍDEO NO COMEÇO///////////////////////////////////////
+        function onPlayerReady(event) {
+          videoDuration = player.getDuration();  //NÃO FUNCIONA DENTRO DE FORMATTIME()
+
+          //Ajusta tempos iniciais nas barras
+          var maxtimeprogress = parseInt(document.getElementById("perguntasvid").getAttribute("maxtimeprogress")),
+              progressBar = document.getElementById("progressBar"),
+              tempoinicial = (maxtimeprogress / videoDuration) * 100 + "%";
+			    progressBar.querySelector(".permitido").style.width = tempoinicial;          
+          progressBar.querySelector(".progress").style.width = tempoinicial;
+
+          document.getElementById("duration").textContent = formatTime(videoDuration);
+        }
+///////////////////////////////////////ATUALIZA DADOS PELO TEMPO DO VÍDEO///////////////////////////////////////
+        function onPlayerStateChange(event) {
+          if(document.getElementById("playpause").getAttribute('estadovideo') == "Iniciar"){
+            playpauseVideo('Iniciar');}
+            if (event.data == YT.PlayerState.PLAYING) {interval = setInterval(temporaisViAu, 1000); // A cada segundo
+            } else {clearInterval(interval);   }
+        }
+
+
+///////////////////////////////////////VELOCIDADE DO VÍDEO///////////////////////////////////////
+        function changePlaybackRate(playbackRate) {
+            // var playbackRate = parseFloat(document.getElementById("playbackRate").value);
+            player.setPlaybackRate(playbackRate);
+        }
+        
+///////////////////////////////////////VOLUME DO VÍDEO///////////////////////////////////////
+        function changeVolume(acressimo) {
+          var volumeVD = (acressimo==undefined)?document.getElementById("volumeVD").value:player.getVolume()+acressimo;
+          document.getElementById("volumeVD").value = volumeVD;
+          player.setVolume(volumeVD);
+        }
+
+
+///////////////////////////////////////TELA CHEIA PRA VÍDEO E CONTROLES///////////////////////////////////////
+        function telaCheia() {//document.getElementById("playpause").style.fontSize = "3vw";
+          const elementoTelaCheia = document.getElementById('viAuEControles');
+          if (elementoTelaCheia.requestFullscreen) {
+              elementoTelaCheia.requestFullscreen();
+          } else if (elementoTelaCheia.mozRequestFullScreen) { // Firefox
+              elementoTelaCheia.mozRequestFullScreen();
+          } else if (elementoTelaCheia.webkitRequestFullscreen) { // Chrome, Safari e Opera
+              elementoTelaCheia.webkitRequestFullscreen();
+          } else if (elementoTelaCheia.msRequestFullscreen) { // IE/Edge
+              elementoTelaCheia.msRequestFullscreen();
+          }
+
+
+
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+        };
+///////////////////////////////////////DETERMINA O TEMPO NO VÍDEO///////////////////////////////////////
+        function seekTo(time,soma) {//tempo vem em segundos adicionais dos botões e valor inteiro da barra;
+          var maxtimeprogress = parseInt(document.getElementById("perguntasvid").getAttribute("maxtimeprogress"));
+          var currentTime = player.getCurrentTime();
+
+			    if(soma == "+"){
+            if(time + currentTime > maxtimeprogress){
+              player.seekTo(maxtimeprogress, true);
+              //alert("Assista todo o vídeo.")
+            }
+            else{
+              player.seekTo(currentTime + time, true);
+            }
+          } else{
+            if(time > maxtimeprogress){
+              player.seekTo(maxtimeprogress, true);
+              //Se tá clicando pra avançar além do tempo assistido
+              if(Math.abs(currentTime - maxtimeprogress) < 4){notificacao('aviso',['Assista todo o vídeo','',1]);}
+            }
+            else{
+              player.seekTo(time, true);
+            }
+          }
+
+          if(document.getElementById("playpause").getAttribute('estadovideo') == "Desabilitado"){
+				    document.getElementById("playpause").setAttribute('estadovideo', 'Reproduzir');
+            var nPergunta = parseInt(document.getElementById("perguntasvid").getAttribute("nPerg"));   //Nº da pergunta vigente
+            document.getElementById("perguntasvid").setAttribute("nPerg", nPergunta - 1);
+
+            playpauseVideo("Reproduzir");
+          }
+        }
+        
+
+
+
+
+
+		///////////////////////////////////////// DADOS VINDOS DE carregarVideo() ///////////////////////////////////////////
+      function entradas(dados){//alert(dados[2][1][3]+"  "+dados[0].length+"  "+dados[2][0][0]+"  "+dados[2][1][0]+"  "+dados[2][3][0])
+
+      
+        document.getElementById("titulo").innerHTML = dados[1][1];   //Tema da aula
+	    	//document.getElementById("perguntasvid").innerHTML = dados[2]; //alert(dados.slice(2))
+        document.getElementById("perguntasvid").setAttribute("data-array", JSON.stringify(dados[2]));
+        document.getElementById("perguntasvid").setAttribute("nPerg", "0");
+        document.getElementById("perguntasvid").setAttribute("data-sheet", JSON.stringify(dados[0])); //[31,[53,1],[76,2],...]   
+        document.getElementById("perguntasvid").setAttribute("maxtimeprogress", dados[0][0]);
+        //alert(player.getDuration());
+//			document.getElementById("progressBar").querySelector(".permitido").style.width = (maxtimeprogress / player.getDuration()) * 100 + "%";
+
+
+        // alert(parseInt(document.getElementById("perguntasvid").getAttribute("maxtimeprogress"))+1)
+
+
+
+///////////////////////////////////////////Tabela de tarefas////////////////////////////////////////////////
+        //var tarefas = dados[0].slice(1);     //[Tseg,n1º%,n2º%,...]
+
+        var nTarefas = dados[2].length;
+        //document.getElementById("perguntasvid").setAttribute("tarefasVD", dados[0]);
+        var tabela = `<table class="table-tarefaViAu"><tbody><tr><th>Tarefa</th><th style="width: 200px;">% Executado</th><th>hh:mm:ss</th></tr>`; 
+        if(nTarefas == 0){tabela = tabela + "<tr><td colspan='3'>SEM TAREFAS</td></tr>";}
+        else{
+          for(var i=0 ; i < nTarefas ; i++){ 
+            tabela = tabela + `<tr onclick='horaDaPergunta(`+i+`,undefined,`+dados[2][i][0]+`+1);' ><td>(`+(i+1)+`ª)</td>`
+//Fazer a pergunta n aparecer de novo ao clicar na tarefa (mudar o N da pergunta vigente)
+            +`<td>`
+              +`<div class='barra-progresso-tarefaVD'><div id='trfvd`+(i+1)+`' class='progresso-tarefaVD'  var='` + dados[2][i][3].join("") + `' style='width: `+dados[0][i+1][0]+`%;'>`+dados[0][i+1][0]+`%</div></div>`
+            +`</td>`
+            +`<td id='tmpvd`+(i+1)+`'>`+formatTime(dados[2][i][0])+`</td></tr>`;  }
+        }
+	    	// document.getElementById("nTarefa").outerHTML = nTarefa + "</tr>"; 
+
+      var slides = (dados[3] != "")?`<a style="color:#00BFFF" href="`+ dados[3] + `" target="_blank">Arquivo da aula <img style="vertical-align:middle;width:30px;" src="https://i.ibb.co/mvTzJDg/powerpoint-logo.png"></a>`:"";
+
+      
+
+      document.getElementById("tabelaTarefas").innerHTML = tabela+ `</tbody></table>` + slides;
+
+
+
+	    	//document.getElementById("tarefa").outerHTML = "<td>"+(dados[0].slice(1)).join("</td> <td>")+"</td>";
+        
+    
+
+
+
+        ///////////////////Remover animação e exibir espaço da videoaula////////////////////////
+        document.getElementById("loadingAval").remove();
+        document.getElementById('espacoViAu').style.display = 'flex';
+
+        // document.getElementById('htmlvideoaula').style.display = 'block'; 
+        
+        //Apenas visualização
+	    	//document.getElementById("tarefas").innerHTML = dados[0].slice(1);
+      }
+
+
+
+
+
+
+
+
+
+		/////////////////////DADOS DE SAÍDA CONSTANTES//////////////////////////
+		var timeMax = "tempo máximo assistido";
+		
+
+
+		
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////BARRA DE POSIÇÃO DO VÍDEO//////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		// var maxtimeprogress = 0;  
+		
+		//var progressBar = document.getElementById("progressBar"); //Seleciona a barra
+    //var tamanhoDaBarra = progressBar.offsetWidth; 
+		// var tooltip = document.getElementById('posicao');
+
+
+		/////////////Balão do tempo do vídeo na barra///////////	
+		function balaoTempoBarra(posicaoPage,inicioPage) {
+      var tamanhoDaBarra = document.getElementById("progressBar").offsetWidth; 
+      var posicaoDoClick = posicaoPage - inicioPage;
+      var newTime = (posicaoDoClick / tamanhoDaBarra) * player.getDuration();
+			document.getElementById('posicao').innerHTML = formatTime(newTime+1);
+    }
+		
+		/////////////Atualiza tempo do vídeo com a barra///////////		
+		function adjustVideoTime(event) {
+            var progressBar = document.getElementById("progressBar");
+            var tamanhoDaBarra = progressBar.offsetWidth;
+            var posicaoDoClick = event.clientX - progressBar.getBoundingClientRect().left;
+            var newTime = (posicaoDoClick / tamanhoDaBarra) * videoDuration;
+            seekTo(newTime);
+            
+			
+			//alert("progressBar: " + progressBar + "\ntamanhoDaBarra: " + tamanhoDaBarra + "\nposicaoDoClick: " + posicaoDoClick + "\nnewTime: " + newTime)
+        }
+		
+			 
+
+
+      //perguntasvd = JSON.parse(document.getElementById("perguntasvid").getAttribute("data-array"));
+
+		  
+      //var perguntasvd = [];      
+        function temporaisViAu() {
+            var nPergunta = parseInt(document.getElementById("perguntasvid").getAttribute("nPerg")); //console.log(nPergunta)//Nº da pergunta vigente
+            var currentTime = player.getCurrentTime(); //console.log(currentTime)
+            var currentTimeInSeconds = Math.floor(currentTime);
+			
+            /////////////Atualizar barra de progresso/////////////////
+            var progressBar = document.getElementById("progressBar");
+            //var progressBarWidth = progressBar.offsetWidth;
+            var progress = (currentTime / videoDuration) * 100;
+            progressBar.querySelector(".progress").style.width = progress + "%";
+			
+			
+            /////////////Atualizar barra de tempo máximo permitido/////////////////
+            var maxtimeprogress = parseInt(document.getElementById("perguntasvid").getAttribute("maxtimeprogress"));
+
+            if (currentTime > maxtimeprogress + 10) {seekTo(maxtimeprogress)}else{ 
+              if (currentTime > maxtimeprogress) {
+            
+              document.getElementById("perguntasvid").setAttribute("maxtimeprogress", currentTime);
+
+              // document.getElementById("tempos").innerHTML = formatTime(maxtimeprogress);
+              progressBar.querySelector(".permitido").style.width = (maxtimeprogress / videoDuration) * 100 + "%";
+				      }
+            }
+
+           
+			
+			
+            document.getElementById("currentTime").textContent = formatTime(currentTime);
+			      // alert(JSON.parse(document.getElementById("perguntasvid").getAttribute("data-array"))[nPergunta][0])
+
+
+
+
+
+
+/////////////Hora da pergunta/////////////////			
+            var perguntasTodas = JSON.parse(document.getElementById("perguntasvid").getAttribute("data-array"));
+            var quantidPerg = perguntasTodas.length;
+            var timePergAtual = ((nPergunta >= quantidPerg)?-10:perguntasTodas[nPergunta][0]);//console.log("timePergAtual: "+timePergAtual);
+            if (Math.abs(currentTimeInSeconds - timePergAtual)<= 1) { horaDaPergunta(nPergunta,perguntasTodas); }
+
+      
+////////////////////////SALVA OS DADOS ATUAIS DE TAREFAS E TEMPO ASSISTIDO AUTOMATICAMENTE A CADA 12s///////////////////////
+            ttt++;            if (ttt % 12 == 0) {  salvarEstado(maxtimeprogress,quantidPerg)  };
+
+        }
+
+
+
+    function horaDaPergunta(nPergunta,perguntasTodas,time) {
+      var continua = true;
+      if(time != undefined){
+        var maxtimeprogress = parseInt(document.getElementById("perguntasvid").getAttribute("maxtimeprogress"));
+        if(maxtimeprogress < time){notificacao('aviso',['Assista o vídeo anterior à pergunta','',1]);var continua = false;}
+        else{seekTo(time);}
+      };
+
+      if(continua){
+        perguntasTodas = ((perguntasTodas == undefined)?JSON.parse(document.getElementById("perguntasvid").getAttribute("data-array")):perguntasTodas);
+        
+        playpauseVideo("Perguntar");
+        document.getElementById("playpause").setAttribute('estadovideo', 'Desabilitado');
+
+        /////////////Cria textos do vídeo de ajuda/////////////////			
+        var videosAjudaVD = perguntasTodas[nPergunta][2].split('|'), htmlAjudaVD = "";
+        if(videosAjudaVD != ""){
+          for(var j = 0; j<videosAjudaVD.length;j++){
+            htmlAjudaVD += `
+            <button class="botaoVDhide"><div class="tooltip">AJUDA ` + (j+1) + `💬<span class="tooltiptext" style="bottom: -40%;left: 168%;"><iframe width="560" height="315" src="https://www.youtube.com/embed/` + videosAjudaVD[j] + `\"  frameborder="0" allow="accelerometer;  clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></span></div></button>
+            `
+            
+            
+            ;
+          }
+        };
+
+        /////////////Monta texto da pergunta com botões e vídeos/////////////////			
+        document.getElementById("playpause").innerHTML = `
+        <span style="display:inline-block;user-select: none;">` //Desabilitar "user-select: none;" para o chefe
+          + perguntasTodas[nPergunta][1] + ` 
+          <div style="position: absolute; bottom:1%;width:99%;margin-left:-12px;">            
+            <div id="controlesVD">
+
+                <div class="botoesVD">
+                  <button class="botao-submeterVD">NÃO SEI FAZER</button>
+                    <div class="balaoVD">
+                      <button id="pularVD" class="botaoVD" onclick="avaliarVD('pular')" style="margin-bottom:3%;">PULAR</button>` 
+            + htmlAjudaVD + `    
+                    </div>
+                </div>
+                <button id="submitVD" style="left:76%;position:absolute;bottom:6%;background:#0d8c0d;" class="botao-submeterVD" onclick="avaliarVD()" >ENVIAR RESPOSTA</button>
+              </div>
+          </div>
+        </span>`;
+        document.getElementById("perguntasvid").setAttribute("nPerg", nPergunta + 1);
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////SALVA ESTADO DO VÍDEO//////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////    
+    function salvarEstado(maxtimeprogress,quantidPerg) {
+      var emNuvem = document.getElementById("emNuvem");
+      var cloneNuvem = emNuvem.cloneNode(true);
+      var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
+      
+      document.getElementById("emNuvem").src = "https:/"+"/i.ibb.co/c3BDv3R/Update2.gif";
+
+      var turma = document.getElementById("avaliacaoAberta").getAttribute("turma");
+      var mail = document.getElementById("verEMail").innerHTML;
+      var nColVD = parseInt(document.getElementById("perguntasvid").getAttribute("nColVD"));          
+      
+      var tarefas = document.getElementById("perguntasvid").getAttribute("data-sheet").replace(/^(\[)\d*(.*)$/,"$1"+maxtimeprogress+"$2");
+
+
+
+
+
+      google.script.run.withSuccessHandler(function(m){   // document.getElementById("provis2").innerHTML = m;
+        emNuvem.parentNode.replaceChild(cloneNuvem, emNuvem);
+      }).salvandoViAu(row_al,nColVD,tarefas);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////PERGUNTAS NO VÍDEO//////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////    
+				
+		////////////////////////////////////////CONTROLE DE PAUSA//////////////////////////////////////
+		function playpauseVideo(estado) {
+      var playpause = document.getElementById("playpause");
+        // alert(player.getCurrentTime());
+
+
+      switch (estado) { 
+				case "Desabilitado": 
+        break; 
+
+        case "Iniciar": 
+          // player.playVideo(); /////Para o youtube não iniciar automaticamente onde parou da última vez/////
+          var jd = parseInt(document.getElementById("perguntasvid").getAttribute("maxtimeprogress"));
+          setTimeout(function() {player.seekTo(jd);playpause.style.transition = 'background-color 5.5s';playpause.style.display ="flex";}, 1000);
+          // playpause.style.backgroundColor ="transparent";
+          playpause.setAttribute('estadovideo', 'Pausar');
+          playpause.innerHTML = "";
+
+         
+          // setTimeout(function() {player.seekTo(jd);}, 1000);
+          document.getElementById("tabelaTarefas").style.pointerEvents = "auto";
+
+        break;
+
+				case "Reproduzir":	 
+          player.playVideo();
+			    playpause.style.transition = 'background-color 1.5s';
+			    playpause.style.backgroundColor ="transparent";
+			    playpause.setAttribute('estadovideo', 'Pausar');
+			    playpause.innerHTML = "";
+          break;
+
+        case "Pausar": 
+          player.pauseVideo();
+			    playpause.style.transition = 'background-color 0s';
+			    playpause.style.backgroundColor ="#172618";
+          //Object.assign(playpause.style, {"background-color": "blue"});
+			    playpause.setAttribute('estadovideo', 'Reproduzir');
+          playpause.innerHTML = "<img width='100' alt='Reproduzir Vídeo' src='https://i.ibb.co/ZKkB61b/Play-video.png'>";
+          // playpause.innerHTML = "Reproduzir vídeo";
+          break;
+
+        case "Perguntar":
+          player.pauseVideo();//alert("nada");
+          playpause.style.cursor = "auto";
+			    playpause.style.transition = 'background-color 0s';
+			    playpause.style.backgroundColor ="#172618";
+			    playpause.setAttribute('estadovideo', 'Reproduzir');
+        break;
+
+
+        default: 
+        break;
+        }
+
+      //Transforma de volta um texto HTML (perguntas importadas do GS) em array 
+      //perguntasvd = JSON.parse(document.getElementById("perguntasvid").getAttribute("data-array"));
+      }	
+
+		////////////////////////////////////////VERIFICAÇÃO DA RESPOSTA//////////////////////////////////////
+
+		function avaliarVD(pular) {
+      
+      if(pular=="pular"){
+        document.getElementById("controlesVD").style.display = 'none';
+
+        var tempo = 10;
+        notificacao('aviso',['Tarefa pendente!','Para fazer esta atividade em outro momento clique na<br>atividade específica na tabela de execução ao lado ⟹',tempo]);
+        
+        //Reproduzir vídeo automaticamente após contagem da caixa de notificação do pulo
+        var contaPlay = setInterval(function() {
+              tempo--;              
+              if (tempo < 0) {
+                playpauseVideo("Reproduzir");
+                clearInterval(contaPlay); // Parar o contador
+              }
+            }, 1000);
+
+        //Reproduzir vídeo ao clicar no botão
+        const okNotif = document.getElementById('okNotif');
+            okNotif.addEventListener('click', (e) => { if (e.target === okNotif) { playpauseVideo("Reproduzir");clearInterval(contaPlay);
+            //Clona o botão sem os comandos "addEventListener" e substitui o original (dava problema ao clicar ENTER pois o vídeo reproduzia)
+            var clone = okNotif.cloneNode(true);
+            okNotif.parentNode.replaceChild(clone, okNotif);
+            }   });
+
+        // var elemento = document.getElementById('seuElemento');
+        
+
+        //Reproduzir vídeo ao clicar fora do balão
+        const alertal = document.getElementById('alerta');
+            alertal.addEventListener('click', (e) => { if (e.target === alertal) { playpauseVideo("Reproduzir");clearInterval(contaPlay);}   });
+            
+        
+        // alert(document.getElementById("perguntasvid").getAttribute("data-array"))
+      }
+      else{
+        var resposta = capturar("inputesVD").join("");//alert(resposta);//console.log(entradas);
+        var playpause = document.getElementById("playpause");
+        var nColVD = parseInt(document.getElementById("perguntasvid").getAttribute("nColVD"));//alert(nColVD);
+        var nPergunta = parseInt(document.getElementById("perguntasvid").getAttribute("nPerg"));   //Nº da pergunta vigente
+        var variaveis = document.getElementById("trfvd"+nPergunta).getAttribute("var");
+        var row_DT = parseInt(document.getElementById("armazem").getAttribute("row_DT"));
+        //var resposta = document.getElementById("respViAu").value;//alert(resposta);
+        // var turma = "MQ1", mail = "aaa@bbb.com", data = "23/03/2024";  
+        // var turma = document.getElementById("avaliacaoAberta").getAttribute("turma"),
+        //   mail = document.getElementById("verEMail").innerHTML;
+          // data = "23/03/2024";        
+        // alert("nPergunta: " + nPergunta + "\nturma: " + turma + "\nmail: " + mail);  
+        //Exibir animação de espera
+        notificacao('animacao',['https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif',250,15]);
+        //////////////Deixar o mouse em carregamento até voltar a correção///////////////
+        playpause.style.cursor = "wait";
+        //////////////ENVIAR RESPOSTAS PARA CORREÇÃO///////////////
+        google.script.run.withSuccessHandler(function(feedback){         // alert("Tamanho: "+feedback[2].length);
+
+
+            ////////////////////////////////////////COLORIR COM FEEDBACK//////////////////////////////////////
+            feedback[2].forEach(        
+              function(fb){    // alert("fb[1]: "+fb[1]);   
+                switch (fb[1]) { 
+                      case "✅":  
+                        document.getElementById("VD🠚id{"+fb[0]+"}").style.background = "#dbffaf";
+                      break;
+                      case "❌": 
+                        document.getElementById("VD🠚id{"+fb[0]+"}").style.background = "#ffcccc";
+                      break;
+                      default: 
+                      break;
+                }
+              }
+            )
+   			
+            document.getElementById("controlesVD").style.display = 'none';
+
+            
+   			
+         
+
+            var nota = Math.round(100*Math.max(0,feedback[0])/feedback[1]);
+
+            //////////////////Arruma a barra de percentual de acertos na tabela de tarefas//////////////////////////
+            document.getElementById("trfvd"+nPergunta).style.width = nota + "%";
+            document.getElementById("trfvd"+nPergunta).innerHTML = nota + "%";  
+            
+            
+            var dataSheet = JSON.parse(document.getElementById("perguntasvid").getAttribute("data-sheet")); 
+            dataSheet[nPergunta][0] = nota;           
+            ////////////////////////////SALVA A QUANTIDADE DE TENTATIVAS FEITAS (nTentativa)//////////////////////////////////
+            dataSheet[nPergunta][1] = dataSheet[nPergunta][1]+1;
+            document.getElementById("perguntasvid").setAttribute("data-sheet", JSON.stringify(dataSheet));
+
+
+
+
+
+
+    			
+            if (nota == 100) {
+              notificacao('aviso',['Mandou bem!!!','',1]);
+              // alert("Mandou bem!!!");       
+              playpause.setAttribute('estadovideo', 'Reproduzir');
+              //document.getElementById("perguntaaqui").style.display = 'none';
+              //playpause.disabled = false;
+              playpauseVideo("Reproduzir");
+            } 
+            else {  
+              // setTimeout(function() { 
+                  notificacao('confirm',
+                  ['Alguma coisa deu errado!!!',
+                  ''/*'Deseja tentar a atividade outra vez?'+'<br><br> (feedback: '+ feedback[2]+')'*/,
+                    [
+                      ['Voltar 15s e refazer','refazerQestaoViAu()'],   //Volta 15s e repete a pergunta
+                      ['Fazer depois',`avaliarVD('pular');`]       
+                    ]]);
+
+            }
+
+            playpause.style.cursor = "pointer";
+
+        }).corrigirPergViAu(nPergunta,nColVD,resposta,variaveis,row_DT);
+
+
+
+
+        /////////Salva tarefas e tempo assistido após 4s de solicitar correção pra dar tempo de voltar resultado////////
+        setTimeout(function() {
+          salvarEstado(parseInt(document.getElementById("perguntasvid").getAttribute("maxtimeprogress")),JSON.parse(document.getElementById("perguntasvid").getAttribute("data-array")).length)
+        }, 4000);
+
+
+      
+      }
+
+// alert(nPergunta)
+        updateQuestao();  /////////////////////////////Atualiza questão já enviada//////////////////////////////////
+
+    }
+
+
+
+    function refazerQestaoViAu() {   
+      seekTo(-15,`+`);
+      document.getElementById(`alerta`).style.display=`none`;
+      // updateQuestao();
+    };	
+
+
+
+    function updateQuestao() {   
+      var nColVD = parseInt(document.getElementById("perguntasvid").getAttribute("nColVD"));
+      var row_DT = parseInt(document.getElementById("armazem").getAttribute("row_DT"));
+      var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
+      var mail = document.getElementById("verEMail").innerHTML;
+      var nPergunta = parseInt(document.getElementById("perguntasvid").getAttribute("nPerg"))-1;//Pergunta vigente começa em 0
+      var perguntasTodas = JSON.parse(document.getElementById("perguntasvid").getAttribute("data-array"));	
+
+       //Capturar aqui os "nTentativa" de algum registro no HTML
+      var nTentativa = (JSON.parse(document.getElementById("perguntasvid").getAttribute("data-sheet")))[nPergunta+1][1]+2;
+      // console.log("nTentativa: "+nTentativa+", e nPergunta: "+nPergunta)
+
+      //////////////////////////////////////GERA DE NOVO A PERGUNTA ALTERADA///////////////////////////////////////
+      google.script.run.withSuccessHandler(function(dados) {  
+        perguntasTodas[nPergunta] =  dados[2][nPergunta];
+
+       //console.log([perguntasTodas,nColVD,mail,nTentativa,dados[2][nPergunta][3]]);
+        // var='` + dados[2][i][3].join("") + `'
+        document.getElementById("trfvd"+(nPergunta+1)).setAttribute("var",dados[2][nPergunta][3].join(""));
+
+        document.getElementById("perguntasvid").setAttribute("data-array", JSON.stringify(perguntasTodas));   
+      }).dadosVideo(nColVD,row_al,row_DT,mail,nTentativa);
+    };	
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////FERRAMENTAS/////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		////////////////////////////////////////////FORMATO DA HORA/////////////////////////////////////////
+		function formatTime(time) {
+            var hours = Math.floor(time / 3600);
+            var minutes = Math.floor((time % 3600) / 60);
+            var seconds = Math.floor(time % 60);
+            
+            return pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2);
+    }
+				
+		////////////////////////////////////////////FORMATO MANTER 2 DÍGITOS/////////////////////////////////////////
+		function pad(value, width) {
+            var paddedValue = String(value);
+            while (paddedValue.length < width) {paddedValue = "0" + paddedValue;}
+            
+            return paddedValue;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Escapa texto para uso seguro em regex
+  function escapeRegex(str) {
+  console.log("escapeRegex");
+    return str.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  // Inicialização ao focar em qualquer <meugabtxt>
+  function sinalizarParenteses(container) {
+  console.log("sinalizarParenteses");
+    // Extrai definições de variáveis [key=val] do texto original
+    if (!container._vars) {
+      container._vars = {};
+      const text = container.textContent;
+      // regex reDef: captura tudo entre '[' e ']', antes e depois do '='
+      const reDef = /\[([^=\]]+)=([^\]]+)\]/gu;
+      let m;
+      while ((m = reDef.exec(text))) {
+        // m[1]: chave (variável), m[2]: valor (com vírgula decimal)
+        container._vars[m[1].trim()] = m[2].replace(',', '.');
+      }
+    }
+
+    // Envolve parênteses em spans somente uma vez
+    if (!container.querySelector('.par')) {
+      container.innerHTML = container.innerHTML.replace(/([()])/g,
+        '<span class="par">$1</span>');
+      const spans = Array.from(container.querySelectorAll('.par'));
+      const pairs = {}, stack = [];
+      spans.forEach((el, i) => {
+        if (el.textContent === '(') stack.push(i);
+        else {
+          const open = stack.pop();
+          if (open !== undefined) {
+            pairs[open] = i;
+            pairs[i] = open;
+          }
+        }
+      });
+      spans.forEach((el, i) => {
+        el.addEventListener('mouseover', () => {
+          el.classList.add('highlight');
+          const mate = pairs[i];
+          if (mate !== undefined) spans[mate].classList.add('highlight');
+        });
+        el.addEventListener('mouseout', () => {
+          el.classList.remove('highlight');
+          const mate = pairs[i];
+          if (mate !== undefined) spans[mate].classList.remove('highlight');
+        });
+      });
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  // Corrige seleção e cria balão de resultado
+  function corrigirPorSelecao(elemento) {
+  console.log("corrigirPorSelecao");
+    let selecao = window.getSelection().toString().trim();
+    if (!selecao) return;
+
+    // Substitui variáveis definidas em container._vars
+    const vars = elemento._vars || {};
+    Object.keys(vars).forEach(key => {
+      const val = vars[key];
+      /* regex de variáveis:
+         (?<![\p{L}\d_])   -> não precedido por letra, dígito ou '_'
+         ${escapeRegex(key)} -> nome da variável (escapado)
+         (?![\p{L}\d_])    -> não seguido por letra, dígito ou '_'
+         Isso garante que até variáveis com 'θ' sejam capturadas exatamente. */
+      const re = new RegExp(`(?<![\\p{L}\\d_])${escapeRegex(key)}(?![\\p{L}\\d_])`, 'gu');
+      selecao = selecao.replace(re, val);
+    });
+
+    // Converte vírgulas decimais para pontos
+    selecao = selecao.replace(/,(?=\d)/g, '.');
+
+    // Converte função de planilha para JS e avalia
+    const expr = funcaoSheetToJS(selecao);
+    
+    
+    
+      ///////////////////////////////////////////////FUNÇÕES DE PLANILHA EM JS////////////////////////////////////////////////
+      //Declaração como variáveis das FUNÇÕES DE PLANILHA EM JS chamada pelo js_funções a serem calculado com eval()
+        //    js_NOME       = (recebe) =>  texto da função usando o que 'recebe'
+        const js_PI         = ()       =>  Math.PI, 
+              js_EXP        = (v)      =>  Math.exp(v), 
+              js_ABS        = (v)      =>  Math.abs(v), 
+              js_SIN        = (v)      =>  Math.sin(v), 
+              js_COS        = (v)      =>  Math.cos(v), 
+              js_TAN        = (v)      =>  Math.tan(v), 
+              js_ASIN       = (v)      =>  Math.asin(v), 
+              js_ACOS       = (v)      =>  Math.acos(v), 
+              js_ATAN       = (v)      =>  Math.atan(v), 
+              js_SEC        = (v)      =>  1 / Math.cos(v), 
+              js_CSC        = (v)      =>  1 / Math.sin(v), 
+              js_COT        = (v)      =>  1 / Math.tan(v), 
+              js_SQRT       = (v)      =>  Math.sqrt(v), 
+              js_LN         = (v)      =>  Math.log(v), 
+              js_LOG10      = (v)      =>  Math.log10(v), 
+              js_VALUE      = (v)      =>  parseFloat(v),      
+              js_LOG        = (v,b)    =>  Math.log(v) / Math.log(b),
+              js_ROUND      = (v,c=0)  => {const m = Math.pow(10,c);return Math.round(v*m)/m;},  //"c=0" se não declarado  
+              js_ROUNDUP    = (v,c=0)  => {const m = Math.pow(10,c);return Math.ceil(v*m)/m;}, 
+              js_ROUNDDOWN  = (v,c=0)  => {const m = Math.pow(10,c);return Math.floor(v*m)/m;};
+          //  const js_COT = (v1)       => { return 1 / Math.tan(v1);};        //Declarar função de forma alternativa
+          // const js_VALUE = (v1)     => {if (isNaN(parseFloat(v1))) {console.log(`Erro: Não foi possível converter  para um número.`);}return parseFloat(v1);};      //Value
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
+    
+    
+    try { valor = eval(expr); } catch (e) { return; }
+
+    // Formata número em pt-BR
+    if (typeof valor === 'number' && valor % 1 !== 0) {
+      const dec = valor.toString().split('.')[1].length;
+      valor = valor.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+    }
+
+    criarBalaoNaSelecao(valor);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Cria balão próximo à seleção
+  function criarBalaoNaSelecao(valor) {
+  console.log("criarBalaoNaSelecao");
+    const sel = window.getSelection(); if (!sel.rangeCount) return;
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    const balao = document.createElement('div');
+    balao.textContent = valor;
+    balao.style.cssText = `position:absolute; top:${rect.top+window.pageYOffset-30}px; left:${rect.left+window.pageXOffset}px; background:lightblue; padding:5px; border:1px solid #000; border-radius:5px; z-index:9999; cursor:pointer;`;
+    balao.addEventListener('click', () => balao.remove());
+    document.body.appendChild(balao);
+  }
+
+  // Placeholder: converte funções de planilha para JS
+function funcaoSheetToJS(eqSheet   /*,indice*/){ 
+console.log("funcaoSheetToJS");
+
+    //Transforma em texto a equação e substitui "," por "." || ";" por "," ||"=" por "==" ||"&" por "+" || "<>" por "!="
+    var eqSheetSemParen = String(eqSheet).replaceAll(/(\d),(\d)|(\w*)%|;|TRUE|FALSE|=|\^|&|<>/g, (match, p1, p2, p3) => {
+        if (p1 !== undefined && p2 !== undefined) {
+            return `${p1}.${p2}`;
+        } else if (match === ';') {
+            return ',';
+        } else if (match === 'TRUE') {
+            return 'true';
+        } else if (match === 'FALSE') {
+            return 'false';
+        } else if (match === '=') {
+            return '==';
+        } else if (match == '&') {
+            return '+'; 
+        } else if (match === '<>') {
+            return '!='; 
+        } else if (match === '^') {
+            return '**'; 
+        } else if (p3 !== undefined) {
+            return `(${p3}/100)`;
+        }
+    });           
+
+
+
+      //Substitui parêntesis entre "" por "⦏⦑" ou "⦒⦐", isso para não serem reconhecidos como função
+      var aspas = eqSheetSemParen.match(/"[^"]*?"/g);
+      if(aspas != null){                        //console.log(aspas);
+      aspas.forEach(function(item,index){if(item.match(/\(|\)/g)!=null){eqSheetSemParen = eqSheetSemParen.replaceAll(item,(item.replaceAll("(","⦏⦑")).replaceAll(")","⦒⦐"))}}); 
+      }
+
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////Desmontar equação em funções////////////////////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      //Número de parêntesis encontrados é o número de ciclos de extração de funções, e array de funções extraídas que serão transformadas em JS
+      var numParentesis = ((eqSheetSemParen.match(/[A-Za-z]*\(/g)||0).length || 0), arrayFuncaoSimples = [];  
+      //console.log("numParentesis: "+numParentesis);                   //aaaaa = aaaaa +indice+" "+numParentesis+" ";  
+      // Extração de funções e substituição por "ᶠᵘⁿNᶜᵃᵒ"
+      for(var t = 0; t < numParentesis ; t++){                          //console.log("Eq."+(indice+1)+": "+eqSheetSemParen);
+
+        var funcaoSimples = eqSheetSemParen.match(/[A-Za-z]*\([^()]*\)/g)[0];  // console.log("funcaoSimples: "+funcaoSimples);
+
+
+        eqSheetSemParen = eqSheetSemParen.replace(funcaoSimples,"ᶠᵘⁿ"+t+"ᶜᵃᵒ");  //console.log(eqSheetSemParen);
+
+
+        // funcaoSimples = funcaoSimples.toUpperCase();
+        var nomeFuncao = (funcaoSimples.match(/^(.*?)\(/)[1]).toUpperCase();    //console.log("nomeFuncao: "+nomeFuncao);
+
+        //Configurar para demais funções
+        switch (nomeFuncao) { 
+          case  "OR":                  
+            funcaoSimples=(funcaoSimples.replace(/^(OR|or)\(/g,"((")).replaceAll(",",")||(")+")";
+          break; 
+          case  "AND":                  
+            funcaoSimples=(funcaoSimples.replace(/^(AND|and)\(/g,"((")).replaceAll(",",")&&(")+")";
+          break; 
+          case  "IF":       
+            funcaoSimples = funcaoSimples.replace(/(IF|if)\((.*?),(.*?),(.*?)\)/g,"(($2)?($3):($4))");
+            funcaoSimples = funcaoSimples.replace(/(IF|if)\((.*?),(.*?)\)/g,"(($2)?($3):(false))");
+          break; 
+          case  "TEXT":                  
+            console.log("Não tem nada feito para a função TEXT()");
+          break; 
+          case  "IFS":            
+            funcaoSimples = '(' + funcaoSimples.replaceAll(/(^(IFS|ifs)\(|)(.*?),(.*?)(,|\))/g,"($3)?($4):" ) + '"")';
+          break; 
+          case  "":                  
+          //Manter essa oção vazia
+          break; 
+          default:                        
+            funcaoSimples = "js_" + funcaoSimples;     //console.log(eqSheetSemParen) 
+          break;        };
+
+        
+
+        //Recoloca os parêntesis entre aspas
+        if(aspas != null){  funcaoSimples = (funcaoSimples.replaceAll("⦏⦑","(")).replaceAll("⦒⦐",")"); };
+
+        //Cria um array com cada função retirada e o espaço para substituí-la de volta: "ᶠᵘⁿ1ᶜᵃᵒ"
+        arrayFuncaoSimples.push(funcaoSimples);                                     
+      }
+      //Coloca por no array último a função completa com os "ᶠᵘⁿ1ᶜᵃᵒ"
+        arrayFuncaoSimples.push(eqSheetSemParen);
+    
+
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      /////////////////////////////////////////Remontar funções de volta na equação com _js//////////////////////////////////
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+      //Último termo do array de funções que será substituido pelos termos anteriores
+      var ultimo = arrayFuncaoSimples.length-1;
+      var equacaoFinal = arrayFuncaoSimples[ultimo];
+
+      for(var i = ultimo; i >= 0; i--){equacaoFinal = equacaoFinal.replaceAll("ᶠᵘⁿ"+i+"ᶜᵃᵒ",arrayFuncaoSimples[i]); }
+
+    //console.log([indice + 26 , eqSheet, equacaoFinal , arrayFuncaoSimples])       //  [provisório, equação original pra vizualizar, equação de saída, passos da substituição pra visualizar]  
+
+        return   equacaoFinal;             
+    }
+
+
+        </script>   
+      
+     
+      
+
+  </body>
+</html>
