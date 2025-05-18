@@ -833,64 +833,55 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 //     };
 // console.log("E-mail login: "+email());
 
+<script>
+// todo o seu código fica dentro de uma IIFE que retorna apenas o que precisa ser público
+const EmailModule = (() => {
+  // variável “privada”
+  let _email = null;
 
-
-        const email = (() => {
-          const savedCredential = localStorage.getItem("google_credential");
-          if (!savedCredential) return null;
-
-          const data = parseJwt(savedCredential);
-          const mail = data.email;
-
-          // 2) valida domínio
-          if (!mail.endsWith("ifsc.edu.br")) {
-            // opcional: trata falha de validação
-            alert("Use seu e-mail institucional do IFSC.");
-            localStorage.removeItem("google_credential");
-            google.accounts.id.prompt();  // força novo login
-            return null;
-          }
-
-          return mail;  // 3) devolve o e-mail válido
-        })();
-
-        // agora `email` está disponível como uma const global:
-        console.log("E-mail do usuário:", email);
-
-
-
-
-
-
-        function handleCredentialResponse(response) {
-          const data = parseJwt(response.credential);
-          let mail = data.email;
-
-          if (!mail.endsWith("ifsc.edu.br")) {
-            alert("Por favor, use seu e-mail institucional do IFSC.");
-            localStorage.removeItem("google_credential");
-            document.getElementById("user-info").innerHTML = "";
-            google.accounts.id.prompt(); // força novo login
-            return;
-          }
-
-          // Salva a credencial válida
-              atualTabela(undefined,mail);
-              localStorage.setItem("google_credential", response.credential);
-
-          return mail;
-        }
-
-
-
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
+  // inicializa (tenta ler do localStorage)
+  const init = () => {
+    const token = localStorage.getItem("google_credential");
+    if (!token) return;
+    const data = parseJwt(token);
+    if (data.email.endsWith("ifsc.edu.br")) {
+      _email = data.email;
+      atualTabela(undefined, _email);
+    } else {
+      localStorage.removeItem("google_credential");
     }
+  };
+
+  // callback do Google
+  const handleCredentialResponse = (response) => {
+    const data = parseJwt(response.credential);
+    if (!data.email.endsWith("ifsc.edu.br")) {
+      alert("Use seu e-mail institucional do IFSC.");
+      localStorage.removeItem("google_credential");
+      google.accounts.id.prompt();
+      return;
+    }
+    _email = data.email;                                  // só aqui você altera
+    localStorage.setItem("google_credential", response.credential);
+    atualTabela(undefined, _email);
+  };
+
+  // getter público (só leitura!)
+  const getEmail = () => _email;
+
+  // expõe somente o necessário
+  return { init, handleCredentialResponse, getEmail };
+})();
+
+// carrega o estado inicial
+EmailModule.init();
+
+// registra o callback global que o <div id="g_id_onload"> vai chamar
+window.handleCredentialResponse = EmailModule.handleCredentialResponse;
+
+// em qualquer parte do seu código, para ler o e-mail:
+console.log("E-mail do usuário:", EmailModule.getEmail());
+
 
 
 
@@ -899,7 +890,7 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
 
-function atualTabela(numero) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:email}); }
+function atualTabela(numero) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:EmailModule.getEmail()}); }
                                     //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
  
 
