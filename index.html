@@ -43,7 +43,7 @@
   const email = data.email;
 
   if (!email.endsWith("ifsc.edu.br")) {
-    alert("Por favor, use um e-mail institucional do IFSC.");
+    alert("Por favor, use seu e-mail institucional do IFSC.");
     localStorage.removeItem("google_credential");
     document.getElementById("user-info").innerHTML = "";
     google.accounts.id.prompt(); // força novo login
@@ -54,7 +54,7 @@
   localStorage.setItem("google_credential", response.credential);
 
   // Redireciona para o app web
-  window.location.href = "https://script.google.com/macros/s/AKfycbyeUeSNsav4RUIEyOOvHxiiiuc19AQwKraP6Ur6Pq4oKjKgZ5Pm6po1aGGNe-eVzZlD/exec";
+  //window.location.href = "https://script.google.com/macros/s/AKfycbyeUeSNsav4RUIEyOOvHxiiiuc19AQwKraP6Ur6Pq4oKjKgZ5Pm6po1aGGNe-eVzZlD/exec";
 }
 
 
