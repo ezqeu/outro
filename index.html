@@ -832,6 +832,7 @@ Object.defineProperty(window, 'email', {
 
     const data = parseJwt(savedCredential);
     const mail = data.email;
+    
 
     if (!mail.endsWith('ifsc.edu.br')) {
       // Falha de validação: força novo login e retorna null
@@ -840,6 +841,7 @@ Object.defineProperty(window, 'email', {
       google.accounts.id.prompt();
       return null;
     }
+atualTabela(undefined, mail); 
 
     return mail;  // só devolve se tudo ok
   },
@@ -863,7 +865,7 @@ function handleCredentialResponse(response) {
     return;
   }
 
-  atualTabela(undefined, mail);
+atualTabela(undefined, mail);
   localStorage.setItem("google_credential", response.credential);
   return mail;
 }
