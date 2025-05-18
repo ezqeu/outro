@@ -820,7 +820,6 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
     
 
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 
 
@@ -1259,24 +1258,30 @@ function avaliarQEA(){  // google.script.run.withSuccessHandler(  function(m){  
 
 <!-- //here -->
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 
-<div class="g_id_signin"
-     data-type="standard"
-     data-size="large"
-     data-theme="outline"
-     data-text="signin_with"
-     data-shape="rectangular"
-     data-logo_alignment="left"
-     data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
-     data-login_hint="@aluno.ifsc.edu.br"
-     data-hosted_domain="aluno.ifsc.edu.br"
-     data-callback="handleCredentialResponse">
-</div>
-
-
-
-  <div id="user-info"></div>
+  <div id="g_id_onload"
+         data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-login_hint="@aluno.ifsc.edu.br"
+         data-hosted_domain="aluno.ifsc.edu.br"
+         data-auto_select="true"
+         data-itp_support="true">
+    </div>
+    
+    <!-- Botão de login -->
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="signin_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+    
+    <!-- Onde você exibe info do usuário -->
+    <div id="user-info"></div>
 </div>
 
 <div id="mostrardados" >  <!-- style="display:none;"--> 
