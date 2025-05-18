@@ -825,14 +825,43 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
 
   <script>
-    // Verifica se já tem credencial salva
-    const savedCredential = localStorage.getItem("google_credential");
-    const email = function () { 
-      if (!savedCredential) return null;
-      let mail = handleCredentialResponse({ credential: savedCredential }); console.log("mail login: "+mail);
-      return mail;
-    };
-console.log("E-mail login: "+email);
+//     // Verifica se já tem credencial salva
+//     const savedCredential = localStorage.getItem("google_credential");
+//     const email = function () { 
+//       if (!savedCredential) return null;
+//       let mail = handleCredentialResponse({ credential: savedCredential }); console.log("mail login: "+mail);
+//       return mail;
+//     };
+// console.log("E-mail login: "+email());
+
+
+
+        const email = (() => {
+          const savedCredential = localStorage.getItem("google_credential");
+          if (!savedCredential) return null;
+
+          const data = parseJwt(savedCredential);
+          const mail = data.email;
+
+          // 2) valida domínio
+          if (!mail.endsWith("ifsc.edu.br")) {
+            // opcional: trata falha de validação
+            alert("Use seu e-mail institucional do IFSC.");
+            localStorage.removeItem("google_credential");
+            google.accounts.id.prompt();  // força novo login
+            return null;
+          }
+
+          return mail;  // 3) devolve o e-mail válido
+        })();
+
+        // agora `email` está disponível como uma const global:
+        console.log("E-mail do usuário:", email);
+
+
+
+
+
 
         function handleCredentialResponse(response) {
           const data = parseJwt(response.credential);
