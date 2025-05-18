@@ -824,65 +824,58 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
 
   <script>
-//     // Verifica se já tem credencial salva
-//     const savedCredential = localStorage.getItem("google_credential");
-//     const email = function () { 
-//       if (!savedCredential) return null;
-//       let mail = handleCredentialResponse({ credential: savedCredential }); console.log("mail login: "+mail);
-//       return mail;
-//     };
-// console.log("E-mail login: "+email());
+// 1) Definimos um “email” somente-leitura, via defineProperty:
+Object.defineProperty(window, 'email', {
+  get() {
+    const savedCredential = localStorage.getItem('google_credential');
+    if (!savedCredential) return null;
 
-<script>
-// todo o seu código fica dentro de uma IIFE que retorna apenas o que precisa ser público
-const EmailModule = (() => {
-  // variável “privada”
-  let _email = null;
+    const data = parseJwt(savedCredential);
+    const mail = data.email;
 
-  // inicializa (tenta ler do localStorage)
-  const init = () => {
-    const token = localStorage.getItem("google_credential");
-    if (!token) return;
-    const data = parseJwt(token);
-    if (data.email.endsWith("ifsc.edu.br")) {
-      _email = data.email;
-      atualTabela(undefined, _email);
-    } else {
-      localStorage.removeItem("google_credential");
-    }
-  };
-
-  // callback do Google
-  const handleCredentialResponse = (response) => {
-    const data = parseJwt(response.credential);
-    if (!data.email.endsWith("ifsc.edu.br")) {
-      alert("Use seu e-mail institucional do IFSC.");
-      localStorage.removeItem("google_credential");
+    if (!mail.endsWith('ifsc.edu.br')) {
+      // Falha de validação: força novo login e retorna null
+      alert('Use seu e-mail institucional do IFSC.');
+      localStorage.removeItem('google_credential');
       google.accounts.id.prompt();
-      return;
+      return null;
     }
-    _email = data.email;                                  // só aqui você altera
-    localStorage.setItem("google_credential", response.credential);
-    atualTabela(undefined, _email);
-  };
 
-  // getter público (só leitura!)
-  const getEmail = () => _email;
+    return mail;  // só devolve se tudo ok
+  },
+  configurable: false  // não permite redefine/remover
+});
 
-  // expõe somente o necessário
-  return { init, handleCredentialResponse, getEmail };
-})();
+// 2) Exemplo de uso em qualquer função, antes ou depois:
+console.log('E-mail do usuário:', email);
 
-// carrega o estado inicial
-EmailModule.init();
+// =================================================================
+// Mantém suas funções intactas:
+function handleCredentialResponse(response) {
+  const data = parseJwt(response.credential);
+  let mail = data.email;
 
-// registra o callback global que o <div id="g_id_onload"> vai chamar
-window.handleCredentialResponse = EmailModule.handleCredentialResponse;
+  if (!mail.endsWith('ifsc.edu.br')) {
+    alert("Por favor, use seu e-mail institucional do IFSC.");
+    localStorage.removeItem("google_credential");
+    document.getElementById("user-info").innerHTML = "";
+    google.accounts.id.prompt();
+    return;
+  }
 
-// em qualquer parte do seu código, para ler o e-mail:
-console.log("E-mail do usuário:", EmailModule.getEmail());
+  atualTabela(undefined, mail);
+  localStorage.setItem("google_credential", response.credential);
+  return mail;
+}
 
-
+function parseJwt(token) {
+  const base64Url = token.split('.')[1];
+  const base64   = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const json     = decodeURIComponent(atob(base64).split('').map(c =>
+    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  ).join(''));
+  return JSON.parse(json);
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -890,7 +883,7 @@ console.log("E-mail do usuário:", EmailModule.getEmail());
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
 
-function atualTabela(numero) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:EmailModule.getEmail()}); }
+function atualTabela(numero) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:email}); }
                                     //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
  
 
