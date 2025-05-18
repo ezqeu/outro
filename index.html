@@ -829,9 +829,10 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
     const savedCredential = localStorage.getItem("google_credential");
     const email = function () { 
       if (!savedCredential) return null;
-      return handleCredentialResponse({ credential: savedCredential });
+      let mail = handleCredentialResponse({ credential: savedCredential }); console.log("mail login: "+mail);
+      return mail;
     };
-
+console.log("E-mail login: "+email);
 
         function handleCredentialResponse(response) {
           const data = parseJwt(response.credential);
