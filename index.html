@@ -820,13 +820,103 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
     
 
-    <script>
-      const mensagemRespostaDiv = document.getElementById('mensagemResposta');
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
+
+  <script>
+    // Verifica se já tem credencial salva
+    const savedCredential = localStorage.getItem("google_credential");
+    const email = function () { 
+      if (!savedCredential) return null;
+      return handleCredentialResponse({ credential: savedCredential });
+    };
+
+
+        function handleCredentialResponse(response) {
+          const data = parseJwt(response.credential);
+          let mail = data.email;
+
+          if (!mail.endsWith("ifsc.edu.br")) {
+            alert("Por favor, use seu e-mail institucional do IFSC.");
+            localStorage.removeItem("google_credential");
+            document.getElementById("user-info").innerHTML = "";
+            google.accounts.id.prompt(); // força novo login
+            return;
+          }
+
+          // Salva a credencial válida
+              atualTabela(undefined,mail);
+              localStorage.setItem("google_credential", response.credential);
+
+          return mail;
+        }
+
+
+
+    function parseJwt(token) {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      return JSON.parse(jsonPayload);
+    }
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+
+function atualTabela(numero,eMail) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:eMail}); }
+                                    //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
+ 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////MONTAR TABELA A PARTIR DOS DADOS PUXADOS EM atualTabela(email)////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+
+function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
+  // tabelaEDados = tabelaEDadosEscolha || tabelaEDados;
+  iniciarQEA(tabelaDadosQEA[7]);
+   document.getElementById('identificacao').innerHTML = tabelaDadosQEA[0];
+   /*
+///////////////////////////////////////SUMIR ANIMAÇÃO DE CARREGAMENTO//////////////////////////////////////
+    document.getElementById("loadinggif").remove();
+    document.getElementById("mostrardados").style.display = "block";*/
+
+    document.getElementById("avaliacaoAberta").setAttribute("eMail", tabelaDadosQEA[2]);
+    document.getElementById("avaliacaoAberta").setAttribute("turma", tabelaDadosQEA[1]);
+    document.getElementById("verEMail").innerHTML = tabelaDadosQEA[2];   //E-mail visível
+    document.getElementById("listaEMail").innerHTML = tabelaDadosQEA[6];   //Lista de e-mails de adm
+
+  document.getElementById("marcarAtend").href = "https://api.whatsapp.com/send?phone=5548936184720&text=Oi%20professor!%20Sou%20*"+tabelaDadosQEA[3]+"%20("+document.getElementById("avaliacaoAberta").getAttribute("eMail")+")*%20da%20turma%20*"+tabelaDadosQEA[1]+"*.%0AGostaria%20de%20marcar%20um%20horário%20de%20atendimento%20no%20*Laboratório%20de%20Física%20(sala%20C-05)*%20para%20*~dia-feira~*%20às%20*~HH:MM~*";       
+}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////COMUNICAÇÃO COM GAS//////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       const urlDoScript = "https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec";
 
-
-
       function enviarArray(jsonParaEnviar) {
+          const mensagemRespostaDiv = document.getElementById('mensagemResposta');
+
           mensagemRespostaDiv.innerHTML = 'Enviando dados...';
           mensagemRespostaDiv.className = 'mensagem-info';
 
@@ -1135,7 +1225,29 @@ function avaliarQEA(){  // google.script.run.withSuccessHandler(  function(m){  
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
 <!-- <img id="loadinggif" src="https://i.pinimg.com/originals/e9/e7/cd/e9e7cd767496cfcde2b855c62f6b470d.gif" alt="CARREGANDO" style="width:300px"> -->
 
-<div class="omail" style="right: 50px;"><div id="verEMail" ></div><div id="listaEMail" ></div></div>
+<div class="omail" style="right: 50px;"><div id="verEMail" ></div><div id="listaEMail" ></div>
+
+
+  <div id="g_id_onload"
+       data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
+       data-callback="handleCredentialResponse"
+       data-auto_select="true"
+       data-itp_support="true">
+  </div>
+
+  <div id="login-container">
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="sign_in_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+  </div>
+
+  <div id="user-info"></div>
+</div>
 
 <div id="mostrardados" >  <!-- style="display:none;"--> 
 
@@ -1291,137 +1403,6 @@ function openNav() {
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
-</script>
-
-
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-
-
-
-  <div id="g_id_onload"
-       data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
-       data-callback="handleCredentialResponse"
-       data-auto_select="true"
-       data-itp_support="true">
-  </div>
-
-  <div id="login-container">
-    <div class="g_id_signin"
-         data-type="standard"
-         data-size="large"
-         data-theme="outline"
-         data-text="sign_in_with"
-         data-shape="rectangular"
-         data-logo_alignment="left">
-    </div>
-  </div>
-
-  <div id="user-info"></div>
-
-  <script>
-    // Verifica se já tem credencial salva
-    const savedCredential = localStorage.getItem("google_credential");
-    const email = function () { 
-      if (!savedCredential) return null;
-      return handleCredentialResponse({ credential: savedCredential });
-    };
-
-
-        function handleCredentialResponse(response) {
-          const data = parseJwt(response.credential);
-          let mail = data.email;
-
-          if (!mail.endsWith("ifsc.edu.br")) {
-            alert("Por favor, use seu e-mail institucional do IFSC.");
-            localStorage.removeItem("google_credential");
-            document.getElementById("user-info").innerHTML = "";
-            google.accounts.id.prompt(); // força novo login
-            return;
-          }
-
-          // Salva a credencial válida
-              atualTabela(undefined,mail);
-              localStorage.setItem("google_credential", response.credential);
-
-          return mail;
-        }
-
-
-
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
-    }
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-
-
-function atualTabela(numero,eMail) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:eMail}); }
-                                    //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
- 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////MONTAR TABELA A PARTIR DOS DADOS PUXADOS EM atualTabela(email)////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-
-function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
-  // tabelaEDados = tabelaEDadosEscolha || tabelaEDados;
-  iniciarQEA(tabelaDadosQEA[7]);
-   document.getElementById('identificacao').innerHTML = tabelaDadosQEA[0];
-   /*
-///////////////////////////////////////SUMIR ANIMAÇÃO DE CARREGAMENTO//////////////////////////////////////
-    document.getElementById("loadinggif").remove();
-    document.getElementById("mostrardados").style.display = "block";*/
-
-    document.getElementById("avaliacaoAberta").setAttribute("eMail", tabelaDadosQEA[2]);
-    document.getElementById("avaliacaoAberta").setAttribute("turma", tabelaDadosQEA[1]);
-    document.getElementById("verEMail").innerHTML = tabelaDadosQEA[2];   //E-mail visível
-    document.getElementById("listaEMail").innerHTML = tabelaDadosQEA[6];   //Lista de e-mails de adm
-
-  document.getElementById("marcarAtend").href = "https://api.whatsapp.com/send?phone=5548936184720&text=Oi%20professor!%20Sou%20*"+tabelaDadosQEA[3]+"%20("+document.getElementById("avaliacaoAberta").getAttribute("eMail")+")*%20da%20turma%20*"+tabelaDadosQEA[1]+"*.%0AGostaria%20de%20marcar%20um%20horário%20de%20atendimento%20no%20*Laboratório%20de%20Física%20(sala%20C-05)*%20para%20*~dia-feira~*%20às%20*~HH:MM~*";       
-}
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
      
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
