@@ -1258,24 +1258,23 @@ function avaliarQEA(){  // google.script.run.withSuccessHandler(  function(m){  
 <div class="omail" style="right: 50px;"><div id="verEMail" ></div><div id="listaEMail" ></div>
 
 <!-- //here -->
-  <div id="g_id_onload"
-       data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
-       data-callback="handleCredentialResponse"
-       data-auto_select="true"
-       data-itp_support="true"
-       data-login_hint="@aluno.ifsc.edu.br">       <!--   // sugere esse domínio -->
-  </div>
 
-  <div id="login-container">
-    <div class="g_id_signin"
-         data-type="standard"
-         data-size="large"
-         data-theme="outline"
-         data-text="sign_in_with"
-         data-shape="rectangular"
-         data-logo_alignment="left">
-    </div>
-  </div>
+
+
+<div class="g_id_signin"
+     data-type="standard"
+     data-size="large"
+     data-theme="outline"
+     data-text="signin_with"
+     data-shape="rectangular"
+     data-logo_alignment="left"
+     data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
+     data-login_hint="@aluno.ifsc.edu.br"
+     data-hosted_domain="aluno.ifsc.edu.br"
+     data-callback="handleCredentialResponse">
+</div>
+
+
 
   <div id="user-info"></div>
 </div>
