@@ -849,7 +849,7 @@ Object.defineProperty(window, 'email', {
 
 // 2) Exemplo de uso em qualquer função, antes ou depois:
 console.log('E-mail do usuário:', email);
-atualTabela(undefined);
+if(email.endsWith('ifsc.edu.br')){atualTabela();}
 
 // =================================================================
 // Mantém suas funções intactas:
@@ -865,8 +865,8 @@ function handleCredentialResponse(response) {
     return;
   }
 
-  atualTabela(undefined);
   localStorage.setItem("google_credential", response.credential);
+  atualTabela();
   return mail;
 }
 
