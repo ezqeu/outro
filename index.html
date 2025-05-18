@@ -825,6 +825,7 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
   <script>
 // 1) Definimos um “email” somente-leitura, via defineProperty:
+//Função que define a variável 'email' e sempre que 'email' é chamada atualiza a variável em 'window'
 Object.defineProperty(window, 'email', {
   get() {
     const savedCredential = localStorage.getItem('google_credential');
@@ -841,8 +842,6 @@ Object.defineProperty(window, 'email', {
       google.accounts.id.prompt();
       return null;
     }
-atualTabela(undefined, mail); 
-
     return mail;  // só devolve se tudo ok
   },
   configurable: false  // não permite redefine/remover
@@ -850,6 +849,7 @@ atualTabela(undefined, mail);
 
 // 2) Exemplo de uso em qualquer função, antes ou depois:
 console.log('E-mail do usuário:', email);
+atualTabela(undefined);
 
 // =================================================================
 // Mantém suas funções intactas:
@@ -865,7 +865,7 @@ function handleCredentialResponse(response) {
     return;
   }
 
-atualTabela(undefined, mail);
+  atualTabela(undefined);
   localStorage.setItem("google_credential", response.credential);
   return mail;
 }
