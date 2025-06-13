@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="pt-br" >
 <head>
-
+<link rel="icon" href="https://findicons.com/files/icons/2028/fire_toolbar/256/notes.png" type="image/png">
 <style type="text/css">
 * {
   box-sizing: border-box;
@@ -815,15 +815,95 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
 
 
-
-    <button type="button" value='Clique para enviar JSON específico' onclick='enviarArray({ tipo: "tabela_inicio",  linha_aluno: 9 , mail:"ezequiel.melo@ifsc.edu.br"})'>Clique para enviar JSON: <div id="mensagemResposta" style="background-color: #3cb94f;"></div></button>
+<br><br><br><br>
+    <button type="button" value='Clique para enviar JSON específico' onclick='atualizarTabela(9)'>Clique para enviar JSON: 
+    <div id="mensagemResposta" style="background-color: #3cb94f;"></div>
+    <div id="mensagemTeste" style="background-color: red;"></div>
+    </button>
 
     
 
 
 
 
+
+
+<div id="questaoEmAula"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div id="fechador" style="right: 20px;" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</div>
+
+<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Animação de carregamento    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
+<!-- <img id="loadinggif" src="https://i.pinimg.com/originals/e9/e7/cd/e9e7cd767496cfcde2b855c62f6b470d.gif" alt="CARREGANDO" style="width:300px"> -->
+
+<div class="omail" style="right: 50px;"><div id="verEMail" ></div><div id="listaEMail" ></div>
+
+<!-- //here -->
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
+  <div id="g_id_onload"
+         data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"
+         data-login_hint="@aluno.ifsc.edu.br"
+         data-hosted_domain="aluno.ifsc.edu.br"
+         data-auto_select="true"
+         data-itp_support="true">
+    </div>
+    
+    <!-- Botão de login -->
+    <div class="g_id_signin"
+         data-type="standard"
+         data-size="large"
+         data-theme="outline"
+         data-text="signin_with"
+         data-shape="rectangular"
+         data-logo_alignment="left">
+    </div>
+    
+    <!-- Onde você exibe info do usuário -->
+    <div id="user-info"></div>
+</div>
+
+<div id="mostrardados" >  <!-- style="display:none;"--> 
+
+
+
+
+
+
   <script>
+atualizarTabela(9);
+
+                                    //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
+ 
+//function telaInicial(tabelaDadosQEA) {}
+
+// enviarArray(telaInicial).atualizarTabela(numero);
+
+/*  ///////////////////////CHAMADA PADRÃO DE FUNÇÃO DO GAS//////////////////////////
+enviarArray(funcaoQueRecebeDeVoltaNoHTML).dadosTeste(9)
+function dadosTeste(a) {  return [a,"ezequiel.melo@ifsc.edu.br"]; }
+function funcaoQueRecebeDeVoltaNoHTML(retorno) { document.getElementById('mensagemTeste').innerText = JSON.stringify(retorno); }
+*/
+
+
+
+
 // 1) Definimos um “email” somente-leitura, via defineProperty:
 //Função que define a variável 'email' e sempre que 'email' é chamada atualiza a variável em 'window'
 Object.defineProperty(window, 'email', {
@@ -849,12 +929,12 @@ Object.defineProperty(window, 'email', {
 
 // 2) Exemplo de uso em qualquer função, antes ou depois:
 console.log('E-mail do usuário:', email);
-if(email.endsWith('ifsc.edu.br')){atualTabela();}
+if(email.endsWith('ifsc.edu.br')){atualizarTabela();}
 
 // =================================================================
 // Mantém suas funções intactas:
 function handleCredentialResponse(response) {
-  const data = parseJwt(response.credential);
+  const data = parseJwt(response.credential);           console.log("ID Token recebido:", response.credential);
   let mail = data.email;
 
   if (!mail.endsWith('ifsc.edu.br')) {
@@ -866,7 +946,7 @@ function handleCredentialResponse(response) {
   }
 
   localStorage.setItem("google_credential", response.credential);
-  atualTabela();
+  atualizarTabela();
   return mail;
 }
 
@@ -885,31 +965,44 @@ function parseJwt(token) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
 
-function atualTabela(numero) {enviarArray({ tipo: "tabela_inicio",  linha_aluno: numero , mail:email}); }
-                                    //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
- 
+// function atualizarTabela(numero) {enviarArray({ tipo: "atualizarTabela",  dados: [numero,email]}); }
+
+                                    
+function atualizarTabela(numero) {
+      //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
+      enviarArray(telaInicial).dadosIniciais(numero,"ezequiel.melo@ifsc.edu.br")
+    };
+      // function dadosIniciais(numero) {return [numero,"ezequiel.melo@ifsc.edu.br"/*email*/]; }//      
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////MONTAR TABELA A PARTIR DOS DADOS PUXADOS EM atualTabela(email)////////////////////////
+//////////////////////MONTAR TABELA A PARTIR DOS DADOS PUXADOS EM atualizarTabela(email)////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
-function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
-  // tabelaEDados = tabelaEDadosEscolha || tabelaEDados;
-  iniciarQEA(tabelaDadosQEA[7]);
-   document.getElementById('identificacao').innerHTML = tabelaDadosQEA[0];
-   /*
-///////////////////////////////////////SUMIR ANIMAÇÃO DE CARREGAMENTO//////////////////////////////////////
-    document.getElementById("loadinggif").remove();
-    document.getElementById("mostrardados").style.display = "block";*/
+function telaInicial(tabelaDadosQEA) {//
+  // tabelaEDados = tabelaEDadosEscolha || tabelaEDados;    //
+  console.log("tabelaDadosQEA: "+JSON.stringify(tabelaDadosQEA));
 
-    document.getElementById("avaliacaoAberta").setAttribute("eMail", tabelaDadosQEA[2]);
-    document.getElementById("avaliacaoAberta").setAttribute("turma", tabelaDadosQEA[1]);
-    document.getElementById("verEMail").innerHTML = tabelaDadosQEA[2];   //E-mail visível
-    document.getElementById("listaEMail").innerHTML = tabelaDadosQEA[6];   //Lista de e-mails de adm
+  if (tabelaDadosQEA.length == 1){ document.getElementById('identificacao').innerHTML = tabelaDadosQEA   }
+  else{
 
-  document.getElementById("marcarAtend").href = "https://api.whatsapp.com/send?phone=5548936184720&text=Oi%20professor!%20Sou%20*"+tabelaDadosQEA[3]+"%20("+document.getElementById("avaliacaoAberta").getAttribute("eMail")+")*%20da%20turma%20*"+tabelaDadosQEA[1]+"*.%0AGostaria%20de%20marcar%20um%20horário%20de%20atendimento%20no%20*Laboratório%20de%20Física%20(sala%20C-05)*%20para%20*~dia-feira~*%20às%20*~HH:MM~*";       
+    if (tabelaDadosQEA[7]){    iniciarQEA(tabelaDadosQEA[7]);  }
+
+    /*
+    ///////////////////////////////////////SUMIR ANIMAÇÃO DE CARREGAMENTO//////////////////////////////////////
+      document.getElementById("loadinggif").remove();
+      document.getElementById("mostrardados").style.display = "block";*/
+
+      document.getElementById("avaliacaoAberta").setAttribute("eMail", tabelaDadosQEA[2]);
+      document.getElementById("avaliacaoAberta").setAttribute("turma", tabelaDadosQEA[1]);
+
+
+
+      document.getElementById("verEMail").innerHTML = tabelaDadosQEA[2];   //E-mail visível
+    document.getElementById('identificacao').innerHTML = tabelaDadosQEA[0];
+      document.getElementById("listaEMail").innerHTML = tabelaDadosQEA[6];   //Lista de e-mails de adm
+    document.getElementById("marcarAtend").href = "https://api.whatsapp.com/send?phone=5548936184720&text=Oi%20professor!%20Sou%20*"+tabelaDadosQEA[3]+"%20("+document.getElementById("avaliacaoAberta").getAttribute("eMail")+")*%20da%20turma%20*"+tabelaDadosQEA[1]+"*.%0AGostaria%20de%20marcar%20um%20horário%20de%20atendimento%20no%20*Laboratório%20de%20Física%20(sala%20C-05)*%20para%20*~dia-feira~*%20às%20*~HH:MM~*";       
+  }
 }
- 
 
 
 
@@ -929,9 +1022,36 @@ function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       // const urlDoScript = "https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec";
 
-      function enviarArray(jsonParaEnviar) { console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
-          const mensagemRespostaDiv = document.getElementById('mensagemResposta');
 
+
+
+
+
+
+
+
+
+function enviarArray(funcaoQueRecebeDeVolta) {//here
+	let saida;
+  return new Proxy({}, {
+    get(target, funcao) {
+      return function(...args) {
+        let dadosDoHTML = args;
+        //(typeof window[funcao] === 'function') ? window[funcao](...args) : undefined;
+console.log("dadosDoHTML: "+dadosDoHTML)
+		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML  };
+console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
+		//document.getElementById('output').innerText = JSON.stringify(jsonParaEnviar);
+		
+		
+		
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+          const mensagemRespostaDiv = document.getElementById('mensagemResposta');
+          let saida;
           mensagemRespostaDiv.innerHTML = 'Enviando dados...';
           mensagemRespostaDiv.className = 'mensagem-info';
 
@@ -955,16 +1075,20 @@ function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
               console.log('Resposta do GAS:', data);
               if (data.status === "success") { // Exibe os dados retornados pelo GAS.
 
+saida = JSON.parse(data.message || ["ok"]);  //console.log("saida: "+saida);
+// document.getElementById('mensagemTeste').innerText = "Pelo meio: "+saida;
+        funcaoQueRecebeDeVolta(saida);//Chama funcaoQueRecebeDeVoltaNoHTML(retorno) {}
+        mensagemRespostaDiv.innerHTML = "VEIO"/*. O que foi: "+ data.dadosEnviados*/;
+   /*
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  ////////////////////////////////////////// Chama a função correspondente//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                   switch (data.tipo) {
-                    case "tabela_inicio":  //Dados de início
+                    case "atualizarTabela":  //Dados de início
                       //dadosProcessados = JSON.stringify(dadosIniciais());
                       //console.log("QEA: "+JSON.parse(data.message)[6])
                       telaInicial(JSON.parse(data.message));     //here
 
-                      mensagemRespostaDiv.innerHTML = "VEIO";
                     break;
                     case "puxarLista":
                       //dadosProcessados = "Lista puxada conforme o tipo 'puxarLista'.";
@@ -977,7 +1101,7 @@ function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
                       //dadosProcessados = `Tipo '${varJson.tipo}' não reconhecido. Dados originais: ${textoRecebidoOriginal}`;
                     break;
                   }
-    
+*/    
 
 
 
@@ -998,7 +1122,22 @@ function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
               console.error('Erro ao enviar os dados:', error);
               mensagemRespostaDiv.innerHTML = `Erro na comunicação: ${error.message}`;
           });
-      }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		
+		
+      };
+    }
+  });
+}
+
+      
     </script>
 
 
@@ -1049,9 +1188,6 @@ function telaInicial(tabelaDadosQEA) {//alert(tabelaEDados,tabelaEDados[1]);
 
 
 
-
-
-<div id="questaoEmAula"></div>
 
 
 
@@ -1130,7 +1266,8 @@ function atualizarQEA(){//here
   var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
 
 
-  google.script.run.withSuccessHandler(  function(m){            //console.log((m.split('𢆯'))[0]);
+//Antes: google.script.run.withSuccessHandler
+  enviarArray(  function(m){          //console.log((m.split('𢆯'))[0]);
         if(m){
           var zzz = m.split('𢆯');
           document.getElementById('perguntaAula').innerHTML = zzz[0];  //Atualizar pergunta
@@ -1158,7 +1295,8 @@ function avaliarQEA(){  // google.script.run.withSuccessHandler(  function(m){  
         //document.getElementById("questaoEmAula").style.cursor = "wait";
 
         //////////////ENVIAR RESPOSTAS PARA CORREÇÃO///////////////
-        google.script.run.withSuccessHandler(function(feedback){         // alert("Tamanho: "+feedback[2].length);
+        //google.script.run.withSuccessHandler
+        enviarArray(function(feedback){         // alert("Tamanho: "+feedback[2].length);
 
             if(feedback){
               ////////////////////////////////////////COLORIR COM FEEDBACK//////////////////////////////////////
@@ -1217,63 +1355,6 @@ function avaliarQEA(){  // google.script.run.withSuccessHandler(  function(m){  
 }
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div id="fechador" style="right: 20px;" href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</div>
-
-<!-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>    Animação de carregamento    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
-<!-- <img id="loadinggif" src="https://i.pinimg.com/originals/e9/e7/cd/e9e7cd767496cfcde2b855c62f6b470d.gif" alt="CARREGANDO" style="width:300px"> -->
-
-<div class="omail" style="right: 50px;"><div id="verEMail" ></div><div id="listaEMail" ></div>
-
-<!-- //here -->
-
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-
-
-  <div id="g_id_onload"
-         data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse"
-         data-login_hint="@aluno.ifsc.edu.br"
-         data-hosted_domain="aluno.ifsc.edu.br"
-         data-auto_select="true"
-         data-itp_support="true">
-    </div>
-    
-    <!-- Botão de login -->
-    <div class="g_id_signin"
-         data-type="standard"
-         data-size="large"
-         data-theme="outline"
-         data-text="signin_with"
-         data-shape="rectangular"
-         data-logo_alignment="left">
-    </div>
-    
-    <!-- Onde você exibe info do usuário -->
-    <div id="user-info"></div>
-</div>
-
-<div id="mostrardados" >  <!-- style="display:none;"--> 
-
-
-
 
 
 
@@ -1477,7 +1558,8 @@ function subirExp(nExp) {
   // alert(nExp);//+'\','+"1"+i+'
   var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
   notificacao('animacao',['https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif',250,15]);
-  google.script.run.withSuccessHandler(function(m){notificacao('aviso',['Realtório de envio',m,4])}).gravarExp(nExp,link,row_al);
+  // google.script.run.withSuccessHandler
+  enviarArray(function(m){notificacao('aviso',['Realtório de envio',m,4])}).gravarExp(nExp,link,row_al);
 }
 
 
@@ -1751,7 +1833,8 @@ document.getElementById("avaliacaoAberta").innerHTML = `<!----Informações sobr
   // alert()
   var e_mail = document.getElementById("avaliacaoAberta").getAttribute("eMail");
 
-  google.script.run.withSuccessHandler(questions).puxardados(nlista,turma,e_mail);
+  // google.script.run.withSuccessHandler
+  enviarArray(questions).puxardados(nlista,turma,e_mail);
   document.getElementById("respnaosalva").setAttribute("class", "original"); //tira notificação "ñ salvas"
 
   document.getElementById("mySidenav").style.width = "0";
@@ -1980,7 +2063,8 @@ function salvarRespostas() {
     if(fb){feedback('submetido',document.getElementById("submit_button").alt);};
                 // google.script.run.gravarRespostas(turma,entradas,variaveis,nlista,htmlPergResp,fb);
     // alert("t: "+turmaEn.split("⁻")[0]+"\ne:"+entradas+"\nv:"+variaveis+"\nn:"+turmaEn.split("⁻")[1]+"\nh:"+htmlPergResp+"\nf:"+fb);
-    google.script.run.withSuccessHandler(function(m){
+    // google.script.run.withSuccessHandler
+    enviarArray(function(m){
         notificacao('aviso',[m[0],m[1],5]);
         // alert(m);
         document.getElementById('avaliacaoAberta').style.cursor = "auto";
@@ -2206,7 +2290,8 @@ var videoSelecionado = "",videoDuration = 1;; //Para funções modificarem, acho
       function carregarVideo(numero,nColVD,row_al,row_DT) {  //Antiga função "onYouTubeIframeAPIReady()", que carregava automaticamente pela API
         var mail = document.getElementById("verEMail").innerHTML;
           ///////////////////////////////////////PUXA DADOS DA FUNÇÃO DO GOOGLE///////////////////////////////////////
-          google.script.run.withSuccessHandler(function(dados) {
+          // google.script.run.withSuccessHandler
+          enviarArray(function(dados) {
             if(dados){
             player = new YT.Player('videoPlayer', {
               height: '360',
@@ -2568,13 +2653,15 @@ document.addEventListener('keydown', function(event) {
       var mail = document.getElementById("verEMail").innerHTML;
       var nColVD = parseInt(document.getElementById("perguntasvid").getAttribute("nColVD"));          
       
-      var tarefas = document.getElementById("perguntasvid").getAttribute("data-sheet").replace(/^(\[)\d*(.*)$/,"$1"+maxtimeprogress+"$2");
+      var tarefas = document.getElementById("perguntasvid").getAttribute("data-sheet").replace(/^(\[)\d*(.*)$/,"$1"+maxtimeprogress+"$2"); //here
 
 
 
 
 
-      google.script.run.withSuccessHandler(function(m){   // document.getElementById("provis2").innerHTML = m;
+      // google.script.run.withSuccessHandler
+      enviarArray(function(m){   // document.getElementById("provis2").innerHTML = m;
+      console.log("Ver: "+m +" | "+ turma +" | "+ mail +" | "+ nColVD +" | "+ row_al +" | "+ tarefas);
         emNuvem.parentNode.replaceChild(cloneNuvem, emNuvem);
       }).salvandoViAu(row_al,nColVD,tarefas);
     }
@@ -2698,7 +2785,8 @@ document.addEventListener('keydown', function(event) {
         //////////////Deixar o mouse em carregamento até voltar a correção///////////////
         playpause.style.cursor = "wait";
         //////////////ENVIAR RESPOSTAS PARA CORREÇÃO///////////////
-        google.script.run.withSuccessHandler(function(feedback){         // alert("Tamanho: "+feedback[2].length);
+        // google.script.run.withSuccessHandler
+        enviarArray(function(feedback){         // alert("Tamanho: "+feedback[2].length);
 
 
             ////////////////////////////////////////COLORIR COM FEEDBACK//////////////////////////////////////
@@ -2806,7 +2894,8 @@ document.addEventListener('keydown', function(event) {
       // console.log("nTentativa: "+nTentativa+", e nPergunta: "+nPergunta)
 
       //////////////////////////////////////GERA DE NOVO A PERGUNTA ALTERADA///////////////////////////////////////
-      google.script.run.withSuccessHandler(function(dados) {  
+      // google.script.run.withSuccessHandler
+      enviarArray(function(dados) {  
         perguntasTodas[nPergunta] =  dados[2][nPergunta];
 
        //console.log([perguntasTodas,nColVD,mail,nTentativa,dados[2][nPergunta][3]]);
@@ -3125,7 +3214,7 @@ console.log("funcaoSheetToJS");
 
         
 
-        //Recoloca os parêntesis entre aspas
+        //Recoloca os parêntesis entre aspas 
         if(aspas != null){  funcaoSimples = (funcaoSimples.replaceAll("⦏⦑","(")).replaceAll("⦒⦐",")"); };
 
         //Cria um array com cada função retirada e o espaço para substituí-la de volta: "ᶠᵘⁿ1ᶜᵃᵒ"
