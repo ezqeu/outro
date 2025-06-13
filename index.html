@@ -936,28 +936,18 @@ if(email.endsWith('ifsc.edu.br')){atualizarTabela();}
 function handleCredentialResponse(response) {
   const data = parseJwt(response.credential);            
   
-  
-  
-  
-    
-  
-  
-  //const id_token = response.credential;  console.log("ID Token recebido:", id_token);
+
+	////////////////////////////////////////////////////ID Token recebido do login (não modificável e verificável)/////////////////////////////////////////////////////////	
       Object.defineProperty(window, "id_token", {
       value: response.credential,
       writable: false,      // não permite reatribuir
       configurable: false,  // não permite redefinir a propriedade
       enumerable: true
     });
-    console.log("ID Token recebido não modificável:", window.id_token);
+    //console.log("ID Token recebido não modificável:", window.id_token);
 	
 	
-	
-	
-	
-	
-  
-  
+
   
   let mail = data.email;
 
@@ -1064,7 +1054,7 @@ function enviarArray(funcaoQueRecebeDeVolta) {console.log("ID Token recebido nã
         let dadosDoHTML = args;
         //(typeof window[funcao] === 'function') ? window[funcao](...args) : undefined;
 console.log("dadosDoHTML: "+dadosDoHTML)
-		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML  };
+		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML, id: window.id_token  };
 console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
 		//document.getElementById('output').innerText = JSON.stringify(jsonParaEnviar);
 		
