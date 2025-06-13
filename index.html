@@ -934,7 +934,31 @@ if(email.endsWith('ifsc.edu.br')){atualizarTabela();}
 // =================================================================
 // Mantém suas funções intactas:
 function handleCredentialResponse(response) {
-  const data = parseJwt(response.credential);           console.log("ID Token recebido:", response.credential);
+  const data = parseJwt(response.credential);            
+  
+  
+  
+  
+    
+  
+  
+  //const id_token = response.credential;  console.log("ID Token recebido:", id_token);
+      Object.defineProperty(window, "id_token", {
+      value: response.credential,
+      writable: false,      // não permite reatribuir
+      configurable: false,  // não permite redefinir a propriedade
+      enumerable: true
+    });
+    console.log("ID Token recebido não modificável:", window.id_token);
+	
+	
+	
+	
+	
+	
+  
+  
+  
   let mail = data.email;
 
   if (!mail.endsWith('ifsc.edu.br')) {
@@ -1031,7 +1055,8 @@ function telaInicial(tabelaDadosQEA) {//
 
 
 
-function enviarArray(funcaoQueRecebeDeVolta) {//here
+    
+function enviarArray(funcaoQueRecebeDeVolta) {console.log("ID Token recebido não modificável chamada de fora:", window.id_token); //here
 	let saida;
   return new Proxy({}, {
     get(target, funcao) {
