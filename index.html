@@ -915,13 +915,8 @@ Object.defineProperty(window, 'email', {
     const mail = data.email;
     
 
-    if (!mail.endsWith('ifsc.edu.br')) {
-      // Falha de validação: força novo login e retorna null
-      alert('Use seu e-mail institucional do IFSC.');
-      localStorage.removeItem('google_credential');
-      google.accounts.id.prompt();
-      return null;
-    }
+    /*if (!mail.endsWith('ifsc.edu.br')) {// Falha de validação: força novo login e retorna null
+      alert('Use seu e-mail institucional do IFSC.'); localStorage.removeItem('google_credential');google.accounts.id.prompt();   return null;}*/
     return mail;  // só devolve se tudo ok
   },
   configurable: false  // não permite redefine/remover
@@ -929,7 +924,9 @@ Object.defineProperty(window, 'email', {
 
 // 2) Exemplo de uso em qualquer função, antes ou depois:
 console.log('E-mail do usuário:', email);
-if(email.endsWith('ifsc.edu.br')){atualizarTabela();}
+// if(email.endsWith('ifsc.edu.br')){
+  atualizarTabela();
+  // }
 
 // =================================================================
 // Mantém suas funções intactas:
@@ -951,13 +948,8 @@ function handleCredentialResponse(response) {
   
   let mail = data.email;
 
-  if (!mail.endsWith('ifsc.edu.br')) {
-    alert("Por favor, use seu e-mail institucional do IFSC.");
-    localStorage.removeItem("google_credential");
-    document.getElementById("user-info").innerHTML = "";
-    google.accounts.id.prompt();
-    return;
-  }
+  /*if (!mail.endsWith('ifsc.edu.br')) {alert("Por favor, use seu e-mail institucional do IFSC.");
+    localStorage.removeItem("google_credential");document.getElementById("user-info").innerHTML = ""; google.accounts.id.prompt(); return;  }*/
 
   localStorage.setItem("google_credential", response.credential);
   atualizarTabela();
