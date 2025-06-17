@@ -863,18 +863,35 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
     <!-- Botão de login -->
     <div class="g_id_signin"
          data-type="standard"
-         data-size="large"
+         data-size="small"
          data-theme="outline"
-         data-text="signin_with"
+         data-text="signin"
          data-shape="rectangular"
-         data-logo_alignment="left">
+         data-logo_alignment="center">
     </div>
     
     <!-- Onde você exibe info do usuário -->
     <div id="user-info"></div>
-        <button type="button" value='Clique para enviar JSON específico' onclick='atualizarTabela(9)'>Clique para enviar JSON: 
-    <div id="mensagemResposta" style="background-color: #3cb94f;"></div>
-    <div id="mensagemTeste" style="background-color: red;"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <button type="button" value='Clique para enviar JSON específico' onclick='atualizarTabela()'>Clique para enviar JSON: 
+      <div id="mensagemResposta" style="background-color: #3cb94f;"></div>
+      <div id="mensagemTeste" style="background-color: red;"></div>
     </button>
 </div>
 
@@ -886,7 +903,7 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
 
   <script>
-atualizarTabela(9);
+//atualizarTabela(9);
 
                                     //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
  
@@ -912,6 +929,7 @@ Object.defineProperty(window, 'email', {
 
     const data = parseJwt(savedCredential);
     const mail = data.email;
+    document.getElementById("user-info").innerHTML = mail;
     
 
     /*if (!mail.endsWith('ifsc.edu.br')) {// Falha de validação: força novo login e retorna null
@@ -924,7 +942,7 @@ Object.defineProperty(window, 'email', {
 // 2) Exemplo de uso em qualquer função, antes ou depois:
 console.log('E-mail do usuário:', email);
 // if(email.endsWith('ifsc.edu.br')){
-  atualizarTabela();
+ // atualizarTabela();
   // }
 
 // =================================================================
@@ -946,7 +964,7 @@ function handleCredentialResponse(response) {
 
   
   let mail = data.email;
-
+  document.getElementById("user-info").innerHTML = mail;
   /*if (!mail.endsWith('ifsc.edu.br')) {alert("Por favor, use seu e-mail institucional do IFSC.");
     localStorage.removeItem("google_credential");document.getElementById("user-info").innerHTML = ""; google.accounts.id.prompt(); return;  }*/
 
@@ -972,15 +990,16 @@ function parseJwt(token) {
 
 // function atualizarTabela(numero) {enviarArray({ tipo: "atualizarTabela",  dados: [numero,email]}); }
 
-                                    
+  atualizarTabela();
+                                  
 function atualizarTabela(numero) {
       //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
-      enviarArray(telaInicial).dadosIniciais(numero,"ezequiel.melo@ifsc.edu.br")
+      enviarArray(telaInicial).dadosIniciais(numero)
     };
       // function dadosIniciais(numero) {return [numero,"ezequiel.melo@ifsc.edu.br"/*email*/]; }//      
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////MONTAR TABELA A PARTIR DOS DADOS PUXADOS EM atualizarTabela(email)////////////////////////
+//////////////////////MONTAR TABELA A PARTIR DOS DADOS PUXADOS EM atualizarTabela(n)////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
 function telaInicial(tabelaDadosQEA) {//
@@ -1045,7 +1064,8 @@ function enviarArray(funcaoQueRecebeDeVolta) {console.log("ID Token recebido nã
         let dadosDoHTML = args;
         //(typeof window[funcao] === 'function') ? window[funcao](...args) : undefined;
 console.log("dadosDoHTML: "+dadosDoHTML)
-		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML, id: window.id_token  };
+//////////id: se não tiver "id_token" do Google envia do link "https://www.......?padrao" o texto: "padrao".
+		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML, id: window.id_token || location.search.slice(1)  };
 console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
 		//document.getElementById('output').innerText = JSON.stringify(jsonParaEnviar);
 		
@@ -1077,67 +1097,27 @@ console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
               }
               return response.json();
           })
-          .then(data => {
+          .then(data => {  ////////////Volta de dados//////////
               console.log('Resposta do GAS:', data);
-              if (data.status === "success") { // Exibe os dados retornados pelo GAS.
+              if (data.status === "success") { ////////////////// Exibe os dados retornados pelo GAS se der certo./////////
+                document.getElementById("user-info").innerHTML = data.email;
 
-saida = JSON.parse(data.message || ["ok"]);  //console.log("saida: "+saida);
-// document.getElementById('mensagemTeste').innerText = "Pelo meio: "+saida;
-        funcaoQueRecebeDeVolta(saida);//Chama funcaoQueRecebeDeVoltaNoHTML(retorno) {}
-        mensagemRespostaDiv.innerHTML = "VEIO"/*. O que foi: "+ data.dadosEnviados*/;
-   /*
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- ////////////////////////////////////////// Chama a função correspondente//////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                  switch (data.tipo) {
-                    case "atualizarTabela":  //Dados de início
-                      //dadosProcessados = JSON.stringify(dadosIniciais());
-                      //console.log("QEA: "+JSON.parse(data.message)[6])
-                      telaInicial(JSON.parse(data.message));     //here
-
-                    break;
-                    case "puxarLista":
-                      //dadosProcessados = "Lista puxada conforme o tipo 'puxarLista'.";
-                    break;
-                    case "dados": 
-                      //dadosProcessados = `Dados recebidos: Nome: ${varJson.nome}, Nascimento: ${varJson.nascimento ? varJson.nascimento.join(', ') : 'N/A'}.`;
-                      
-                    break;
-                    default:
-                      //dadosProcessados = `Tipo '${varJson.tipo}' não reconhecido. Dados originais: ${textoRecebidoOriginal}`;
-                    break;
-                  }
-*/    
-
-
-
-
-
-
-
-
-
-
-
-              } else {
+                saida = JSON.parse(data.message || ["ok"]);  //console.log("saida: "+saida);
+                // document.getElementById('mensagemTeste').innerText = "Pelo meio: "+saida;
+                funcaoQueRecebeDeVolta(saida);//Chama funcaoQueRecebeDeVoltaNoHTML(retorno) {}
+                mensagemRespostaDiv.innerHTML = "VEIO"/*. O que foi: "+ data.dadosEnviados*/;
+              } 
+              else { ///////////// Exibe os dados retornados pelo GAS se der errado./////////
                   mensagemRespostaDiv.innerHTML = `Erro: ${data.message || 'Ocorreu um problema ao processar a resposta.'}`;
                   console.log(`Erro: ${data.message || 'Ocorreu um problema ao processar a resposta.'}`);
               }
           })
-          .catch(error => {
+          .catch(error => {  /////////////Exibe erros se caso nem envie/////////////
               console.error('Erro ao enviar os dados:', error);
               mensagemRespostaDiv.innerHTML = `Erro na comunicação: ${error.message}`;
           });
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-		
-		
       };
     }
   });
