@@ -995,7 +995,7 @@ function parseJwt(token) {
 
 // Verifica se há uma credencial salva ao carregar a página
 const savedCredential = localStorage.getItem('google_credential');
-if (savedCredential) {alert("tem")
+if (savedCredential) {console.log("Já logado!")
   // Se encontrou, define a variável global 'id_token' que o resto do script usa
   Object.defineProperty(window, "id_token", {
     value: savedCredential,
