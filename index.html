@@ -859,6 +859,14 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
          data-auto_select="true"
          data-itp_support="true">
     </div>
+
+    <script>
+      // Verifica se o usuário já está logado através do localStorage
+      if (localStorage.getItem('google_credential')) {
+        // Se estiver, encontra a div do Google e desativa o pop-up automático
+        document.getElementById('g_id_onload').setAttribute('data-auto_select', 'false');
+      }
+    </script>
     
     <!-- Botão de login -->
     <div class="g_id_signin"
@@ -1007,7 +1015,7 @@ if (savedCredential) {alert("tem")
 
 // function atualizarTabela(numero) {google.script.run.withSuccessHandler({ tipo: "atualizarTabela",  dados: [numero,email]}); }
 
-  atualizarTabela();
+  // atualizarTabela();
                                   
 function atualizarTabela(numero) {
       //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
