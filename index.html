@@ -1007,6 +1007,7 @@ if (savedCredential) {console.log("Já logado!")
   // Também atualiza a interface do usuário com as informações salvas
   const data = parseJwt(savedCredential);
   document.getElementById("user-info").innerHTML = data.email;
+  atualizarTabela();
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
