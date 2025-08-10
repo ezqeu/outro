@@ -940,7 +940,7 @@ Object.defineProperty(window, 'email', {
 });
 
 // 2) Exemplo de uso em qualquer função, antes ou depois:
-console.log('E-mail do usuário:', email);
+
 // if(email.endsWith('ifsc.edu.br')){
  // atualizarTabela();
   // }
@@ -988,7 +988,7 @@ function parseJwt(token) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
 
-// function atualizarTabela(numero) {enviarArray({ tipo: "atualizarTabela",  dados: [numero,email]}); }
+// function atualizarTabela(numero) {google.script.run.withSuccessHandler({ tipo: "atualizarTabela",  dados: [numero,email]}); }
 
   atualizarTabela();
                                   
@@ -1004,7 +1004,7 @@ function atualizarTabela(numero) {
 
 function telaInicial(tabelaDadosQEA) {//
   // tabelaEDados = tabelaEDadosEscolha || tabelaEDados;    //
-  console.log("tabelaDadosQEA: "+JSON.stringify(tabelaDadosQEA));
+  //console.log("tabelaDadosQEA: "+JSON.stringify(tabelaDadosQEA));
 
   if (tabelaDadosQEA.length == 1){ document.getElementById('identificacao').innerHTML = tabelaDadosQEA   }
   else{
@@ -1046,17 +1046,55 @@ function telaInicial(tabelaDadosQEA) {//
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
       // const urlDoScript = "https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec";
 
-
-
-
-
-
-
-
-
-
     
-function enviarArray(funcaoQueRecebeDeVolta) {console.log("ID Token recebido não modificável chamada de fora:", window.id_token); //here
+function enviarArray(funcaoQueRecebeDeVolta) {//alert(funcaoQueRecebeDeVolta)
+
+  //Diz para o HTML se ele pertence ao GAS ou se é um HTML externo (aí loga pela API do Google)
+  let externoOuGAS =  "<?!= treco ?>";
+  if(externoOuGAS == "true"){console.log("HTML do GAS");
+
+
+
+
+
+
+    // Retorna um objeto Proxy. O Proxy é um objeto especial que "escuta"
+    // quando tentamos acessar uma propriedade dele (como ".funcaoDoGAS").
+    return new Proxy({}, {  /** @returns {Proxy} Um objeto que intercepta a chamada à função do GAS. */
+      get: function(target, nomeFuncaoGAS) {
+        // 1. O 'get' é acionado. A variável 'nomeFuncaoGAS' agora contém a string "funcaoDoGAS".
+        // 2. Ele então retorna uma nova função que aguarda os argumentos (a, b).
+        return function(...argumentos) {
+          // 3. Quando você chama a função com (a, b), 'argumentos' se torna [a, b].
+          //    Agora temos tudo o que precisamos para fazer a chamada real.
+          google.script.run
+            .withSuccessHandler(funcaoQueRecebeDeVolta)
+            [nomeFuncaoGAS](...argumentos); // Usamos a notação de colchetes para chamar a função pelo nome da string.
+        };
+      }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  }else{console.log("HTML externo");
+    console.log("ID Token recebido não modificável chamada de fora:", window.id_token); //here
+
+
+
+
+
+
 	let saida;
   return new Proxy({}, {
     get(target, funcao) {
@@ -1064,8 +1102,10 @@ function enviarArray(funcaoQueRecebeDeVolta) {console.log("ID Token recebido nã
         let dadosDoHTML = args;
         //(typeof window[funcao] === 'function') ? window[funcao](...args) : undefined;
 console.log("dadosDoHTML: "+dadosDoHTML)
+console.log("location.search.slice(1): "+location.search.slice(1))
 //////////id: se não tiver "id_token" do Google envia do link "https://www.......?padrao" o texto: "padrao".
-		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML, id: window.id_token || location.search.slice(1)  };
+let usuario = window.id_token || location.search.slice(1)
+		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML, id:  usuario  };
 console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
 		//document.getElementById('output').innerText = JSON.stringify(jsonParaEnviar);
 		
@@ -1084,8 +1124,8 @@ console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
           const formData = new FormData();
           // É crucial converter o objeto JSON em uma string para enviá-lo corretamente via FormData.
           formData.append('payloadJson', JSON.stringify(jsonParaEnviar));
-
-          fetch("https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec", {
+          //CORRIGIR (antigo: "https://script.google.com/macros/s/AKfycbwXoNqeebjQiEdjBjVKjfd9qd2_5OkXy3SgUXZ0EfngU-tP54Y_VItDtlrGzYJMqqUe/exec")
+          fetch("https://script.google.com/macros/s/AKfycbxDThRMVCzfJ3OfCsclwMryNiQ5YGHAwxXy5eXYFKOjC4Sk10cKZtFEuLS6ws_xGsctBA/exec", {
               method: 'POST',
               body: formData
           })
@@ -1121,6 +1161,26 @@ console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
       };
     }
   });
+    
+  
+  };
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
 
       
@@ -1203,7 +1263,7 @@ console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
 
 
         sessionStorage.setItem("varQEA", a[1]);   //Salvando informação em atributo oculto no navegador no carregamento do site
-        console.log(sessionStorage.getItem("varQEA")); // Recuperando a informação
+       // console.log(sessionStorage.getItem("varQEA")); // Recuperando a informação
 
 
 
@@ -1268,7 +1328,7 @@ function atualizarQEA(){//here
 
 //Basicamente só colado aqui (exceto primeiras linhas):
 function avaliarQEA(){  // google.script.run.withSuccessHandler(  function(m){     alert(m)      }).corrigirQEA(); 
-        var resposta = capturar("inputesQEA").join("");                         console.log(resposta);
+        var resposta = capturar("inputesQEA").join("");                      //   console.log(resposta);
         var row_al = parseInt(document.getElementById("armazem").getAttribute("row_al"));
      // var nRow = parseInt(document.getElementById("asnotas").getAttribute("nRow"));  //  console.log(nRow);//alert(nColVD);
         var nPergunta = parseInt(document.getElementById("asnotas").getAttribute("nQEA"));             //    console.log(nPergunta);
@@ -1630,10 +1690,11 @@ function imprime() { window.print();}
 
       switch (tipo) { 
           case "animacao": 
+            document.body.style.cursor = "wait";
             alerta.innerHTML = 
               `<img id="animac" src="` + dados[0] + `" alt="CARREGANDO">`;
              document.getElementById('animac').style.cssText = `position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);width:`+ ((dados[1]!=undefined)?dados[1]:300) +`px;`;
-          
+
             //Não fechar ao clicar fora da animação
             alerta.addEventListener('click', (e) => {
               if (e.target === alerta) { alerta.style.display = 'block'; }
@@ -1648,10 +1709,12 @@ function imprime() { window.print();}
                 clearInterval(contadorNotif); // Parar o contador
                 notificacao('aviso',['Tempo excedido!','O tempo de espera muito longo excedeu o limite.<br>Salve os dados e recarregue a página.',60]);
                 // alerta.style.display = 'none';
+                
               }
             }, 1000);
 
 
+              
           break;
 
           case "aviso": 
@@ -1667,13 +1730,13 @@ function imprime() { window.print();}
 
                   //Fechar ao clicar fora
             const okNotif = document.getElementById('okNotif');
-            okNotif.addEventListener('click', (e) => { if (e.target === okNotif) { alerta.style.display = 'none'; }   }); 
+            okNotif.addEventListener('click', (e) => { if (e.target === okNotif) { alerta.style.display = 'none'; document.body.style.cursor = "auto";}   }); 
 
             //Fechar ao clicar 'ENTER'
             document.onkeypress = function(e) {
               // e = e || window.event;
               if (e.key === 'Enter') {
-                  document.getElementById('okNotif').click();
+                  document.getElementById('okNotif').click();document.body.style.cursor = "auto";
               }
             };
 
@@ -1686,11 +1749,13 @@ function imprime() { window.print();}
               if (dados[2] < 0) {
                 clearInterval(contadorNotif); // Parar o contador
                 alerta.style.display = 'none';
+                document.body.style.cursor = "auto";
               }
             }, 1000);
           break; 
 
           case "confirm":  
+            document.body.style.cursor = "wait";
             var botoesNotif = ""; 
               
             for(var i=0; i < dados[2].length;i++){
@@ -1777,7 +1842,7 @@ function imprime() { window.print();}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////CHAMA A LISTA (function Questões) AO CLICAR NO LINK ESPECÍFICO////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-function chamarlista(nlista,turma) {
+function chamarlista(nlista,turma) { 
 document.getElementById("avaliacaoAberta").innerHTML = `<!----Informações sobre a lista--->
 <div class="information">❔<span class="informationtext">
 ➱ Após o envio será permitida a edição das respostas durante o prazo.<hr>➱ A correção será automática, então atentem à unidade solicitada e realizem os cálculos de forma a obterem valores com boa precisão e possíveis arredondamentos apenas para o valor final.<hr>➱ Quando não especificado um formato para as respostas elas devem ser estritamente numéricas e digitadas "sem a unidade", utilizando "vírgula" como separador decimal (Ex.: 2,99).<hr>➱ Valores em notação científica deverão ser expressos no formato eletrônico. (Ex.: 2,99E+8 em lugar de: 2,99x10⁸).<hr>➱ Quaisquer problemas de submissão devem ser informados em tempo hábil antes do fim do prazo.<hr>➱ Um relatório de submissão de respostas e um feedback de acertos (caso solicitado) serão encaminhados ao seu e-mail institucional.  
@@ -1820,7 +1885,8 @@ document.getElementById("avaliacaoAberta").innerHTML = `<!----Informações sobr
   var e_mail = document.getElementById("avaliacaoAberta").getAttribute("eMail");
 
   // google.script.run.withSuccessHandler
-  enviarArray(questions).puxardados(nlista,turma,e_mail);
+  nVinculo = document.getElementById("mailselected")?.value || 0;
+  enviarArray(questions).puxarLista(nlista/*,turma */ ,nVinculo,e_mail);
   document.getElementById("respnaosalva").setAttribute("class", "original"); //tira notificação "ñ salvas"
 
   document.getElementById("mySidenav").style.width = "0";
@@ -1829,6 +1895,7 @@ document.getElementById("avaliacaoAberta").innerHTML = `<!----Informações sobr
   // document.getElementById('divexperimentos').style.display = 'none'; //Deixar div visível
   document.getElementById('avaliacaoAberta').style.display = 'block'; //Deixar div invisível
   document.getElementById('avaliacaoAberta').value = turma+"⁻"+nlista; //Deixar div invisível   
+ 
 }
 
 
@@ -1909,7 +1976,7 @@ function questions(htmldosheet) {
       document.getElementById('dados').style="padding:5px;border: 1px outset white;background-color: rgba(200, 200, 200, 0.2);border-radius: 6px;"}else{document.getElementById('dados').style.display = 'none';}
 
 
-    ////////////////////////////////////////COLOCAR SOLUÇÕES APÓS PERGUNTAS//////////////////////////////////////////
+    /*///////////////////////////////////////COLOCAR SOLUÇÕES APÓS PERGUNTAS//////////////////////////////////////////
       var elementosDestino =  document.getElementById("perguntasaqui").querySelectorAll('p');   
       for(var i = 0;i < elementosDestino.length;i++){ 
            var a = (elementosDestino[i].textContent).match(/⟪(\d\d)⟫/); 
@@ -1917,7 +1984,7 @@ function questions(htmldosheet) {
             var elementoMovido = document.getElementById("r-" + a[1]);
             elementoMovido.parentNode.removeChild(elementoMovido);
             elementosDestino[i].parentNode.insertBefore(elementoMovido, elementosDestino[i].nextElementSibling); 
-      }}
+      }}*/
   }
 }
 
@@ -1927,16 +1994,24 @@ function questions(htmldosheet) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////AJUSTAR CAMPO FEEDBACK/////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////// 
-function feedback(lastFB,prazo){
+function feedback(lastFB,prazo){  //Fri Aug 08 2025 13:31:28 GMT-0300 (Horário Padrão de Brasília) 0.5
+  //console.log((Date.parse(lastFB)+prazo*3600000),Date.now())
   var fb = document.getElementById("solicFB");
   //fb.innerHTML = "<br><label id='textoFB' style='color:grey'>. . . . . .</label>";
 
   var hora = Math.floor(prazo), minuto = Math.floor(3600*prazo%3600/60), segundo = Math.floor(3600*prazo%3600%60);
+
+  /////////////////  ELEMENTO DE TEXTO PARA FB LIVRE  ///////////////////
   var fbFree = "<br><input type='checkbox' id='FB'><label id='textoFB' for='FB' style='color: #efd8aa'>Solicitar feedback de acertos junto ao e-mail de confirmação (o próximo poderá ser solicitado após "+ ((hora>0)?hora+"h":"") + ((minuto>0)?minuto+"min":"") + ((segundo>0)?segundo+"s":"") + ").</label>";
 
+  /////////////////  ZERA TEMPO OPÓS ENVIO  ///////////////////
   if(lastFB == "submetido"){timeNextFB = prazo*3600000;}
+
+  /////////////////  NO CARREGAMENTO CONFIGURA O AJUSTA O PRAZO DO FB  ///////////////////
   else{if(lastFB == ""){timeNextFB = -100;}else{timeNextFB = (Date.parse(lastFB)+prazo*3600000)-Date.now();}}
-  // alert(lastFB + " : " + prazo + " : " + timeNextFB);
+  //console.log(lastFB + " : " + prazo + " : " + timeNextFB);
+
+    /////////////////  ACIONA O CONTADOR DE TEMPO ATÉ O PRAZO ZERAR  ///////////////////
     if(timeNextFB > 0){
       var duration = timeNextFB/1000;  
       var timer = duration, horas, minutos, segundos;
@@ -1949,10 +2024,12 @@ function feedback(lastFB,prazo){
         minutos = minutos < 10 ? "0" + minutos : minutos;
         segundos = segundos < 10 ? "0" + segundos : segundos;
         //Se o tempo esgotar ou sendo o chefe
-        if(--timer < 0||document.getElementById("mailselected")) { 
+        if(--timer < 0||document.getElementById("opcoes_mail")) { 
           clearInterval(contador);
-		      fb.innerHTML = fbFree;}
+          /////////////////  COLOCA O TEXTO DE LIVRE PARA SOLICITAR FB  ///////////////////
+		      fb.innerHTML = fbFree;       }
         else{
+          /////////////////  COLOCA O TEXTO DE FB BLOQUEADO  ///////////////////
 		      fb.innerHTML = "<br><input type='checkbox' id='FB' disabled><label id='textoFB' style='color:grey'>Um novo feedback de acertos poderá ser solicitados em " + horas + "h" + minutos + "min" + segundos + "s.</label>"	
         }
 
@@ -1960,7 +2037,8 @@ function feedback(lastFB,prazo){
 
 
     }
-    else{fb.innerHTML = fbFree;};	 
+    /////////////////  COLOCA O TEXTO DE LIVRE PARA SOLICITAR FB  ///////////////////
+    else{fb.innerHTML = fbFree;              };	 
 }  
 
 document.getElementsByClassName("linkint").addEventListener("click", function (){clearInterval(contador)} );
@@ -2037,7 +2115,7 @@ function salvarRespostas() {
 
   // if (confirm("Você receberá um e-mail de confirmação do envio e o formulário permanecerárá disponível para edicão na sequência.\n\n(Aguarde a notificação de submissão. Caso esta não seja exibida, salve os dados e atualize a página)\n\nConfirma o envio?")) { 
     notificacao('animacao',['https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif',250,15]);
-    document.getElementById('avaliacaoAberta').style.cursor = "wait";
+    // document.getElementById('avaliacaoAberta').style.cursor = "wait";
     ////////////////CAPTURA NOME DA TURMA E N° DA LISTA/////////////////////
     var turmaEn = document.getElementById('avaliacaoAberta').value;
     ////////////////CAPTURA O E-MAIL(dependendo se o adm logou)/////////////////////
@@ -2047,14 +2125,15 @@ function salvarRespostas() {
     var variaveis = document.getElementById('perguntasaqui').value;//alert(variaveis);
     var fb = document.getElementById('FB').checked;
     if(fb){feedback('submetido',document.getElementById("submit_button").alt);};
-                // google.script.run.gravarRespostas(turma,entradas,variaveis,nlista,htmlPergResp,fb);
+                // google.script.run.gravarRespLista(turma,entradas,variaveis,nlista,htmlPergResp,fb);
     // alert("t: "+turmaEn.split("⁻")[0]+"\ne:"+entradas+"\nv:"+variaveis+"\nn:"+turmaEn.split("⁻")[1]+"\nh:"+htmlPergResp+"\nf:"+fb);
     // google.script.run.withSuccessHandler
     enviarArray(function(m){
         notificacao('aviso',[m[0],m[1],5]);
         // alert(m);
+  nVinculo = document.getElementById("mailselected").value || 0;
         document.getElementById('avaliacaoAberta').style.cursor = "auto";
-      }).gravarRespostas(turmaEn.split("⁻")[0],entradas,variaveis,turmaEn.split("⁻")[1],htmlPergResp,fb,e_mail);
+      }).gravarRespLista(turmaEn.split("⁻")[0],entradas,variaveis,turmaEn.split("⁻")[1],htmlPergResp,fb,e_mail,nVinculo);
     document.getElementById("respnaosalva").setAttribute("class", "original");
   // } //tira notificação "ñ salvas"
 
@@ -2297,7 +2376,7 @@ var videoSelecionado = "",videoDuration = 1;; //Para funções modificarem, acho
             }
           }).dadosVideo(nColVD,row_al,row_DT,mail);
           
-///////////////////////////////////////COMANDO DE TECLAS///////////////////////////////////////
+///////////////////////////////////////COMANDO DE TECLAS (atalhos no teclado)///////////////////////////////////////
 document.addEventListener('keydown', function(event) {
   if (event.keyCode === 39) {//Seta pra frente (adiantar 10s no vídeo)
     seekTo(10, "+");
@@ -2378,15 +2457,20 @@ document.addEventListener('keydown', function(event) {
 ///////////////////////////////////////DETERMINA O TEMPO NO VÍDEO///////////////////////////////////////
         function seekTo(time,soma) {//tempo vem em segundos adicionais dos botões e valor inteiro da barra;
           var maxtimeprogress = parseInt(document.getElementById("perguntasvid").getAttribute("maxtimeprogress"));
-          var currentTime = player.getCurrentTime();
+          var currentTime = player.getCurrentTime(),
+          estado_video = document.getElementById("playpause").getAttribute('estadovideo');
 
-			    if(soma == "+"){
-            if(time + currentTime > maxtimeprogress){
-              player.seekTo(maxtimeprogress, true);
-              //alert("Assista todo o vídeo.")
-            }
-            else{
-              player.seekTo(currentTime + time, true);
+			    if(soma == "+"){        
+            //Desabilitar setas do teclado de adiantar ou atrasar vídeo, funciona quando é para refazer a questão(15s)
+            if((estado_video === "Desabilitado")&&(Math.abs(time)==10)){return}
+            else{  
+              if(time + currentTime > maxtimeprogress){
+                player.seekTo(maxtimeprogress, true);
+                //alert("Assista todo o vídeo.")
+              }
+              else{
+                player.seekTo(currentTime + time, true);
+              }
             }
           } else{
             if(time > maxtimeprogress){
@@ -2399,7 +2483,7 @@ document.addEventListener('keydown', function(event) {
             }
           }
 
-          if(document.getElementById("playpause").getAttribute('estadovideo') == "Desabilitado"){
+          if(estado_video == "Desabilitado"){
 				    document.getElementById("playpause").setAttribute('estadovideo', 'Reproduzir');
             var nPergunta = parseInt(document.getElementById("perguntasvid").getAttribute("nPerg"));   //Nº da pergunta vigente
             document.getElementById("perguntasvid").setAttribute("nPerg", nPergunta - 1);
@@ -2647,7 +2731,7 @@ document.addEventListener('keydown', function(event) {
 
       // google.script.run.withSuccessHandler
       enviarArray(function(m){   // document.getElementById("provis2").innerHTML = m;
-      console.log("Ver: "+m +" | "+ turma +" | "+ mail +" | "+ nColVD +" | "+ row_al +" | "+ tarefas);
+      //console.log("Ver: "+m +" | "+ turma +" | "+ mail +" | "+ nColVD +" | "+ row_al +" | "+ tarefas);
         emNuvem.parentNode.replaceChild(cloneNuvem, emNuvem);
       }).salvandoViAu(row_al,nColVD,tarefas);
     }
@@ -2769,7 +2853,7 @@ document.addEventListener('keydown', function(event) {
         //Exibir animação de espera
         notificacao('animacao',['https://cdn.pixabay.com/animation/2023/08/15/07/22/07-22-02-443_512.gif',250,15]);
         //////////////Deixar o mouse em carregamento até voltar a correção///////////////
-        playpause.style.cursor = "wait";
+        document.body.style.cursor = "wait";
         //////////////ENVIAR RESPOSTAS PARA CORREÇÃO///////////////
         // google.script.run.withSuccessHandler
         enviarArray(function(feedback){         // alert("Tamanho: "+feedback[2].length);
@@ -2836,7 +2920,8 @@ document.addEventListener('keydown', function(event) {
 
             }
 
-            playpause.style.cursor = "pointer";
+            //playpause.style.cursor = "pointer";
+            document.body.style.cursor = "auto";
 
         }).corrigirPergViAu(nPergunta,nColVD,resposta,variaveis,row_DT);
 
@@ -2930,8 +3015,7 @@ document.addEventListener('keydown', function(event) {
 
 
   // Escapa texto para uso seguro em regex
-  function escapeRegex(str) {
-  console.log("escapeRegex");
+  function escapeRegex(str) {                 //console.log("escapeRegex");
     return str.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
   }
   
@@ -2948,8 +3032,7 @@ document.addEventListener('keydown', function(event) {
   
 
   // Inicialização ao focar em qualquer <meugabtxt>
-  function sinalizarParenteses(container) {
-  console.log("sinalizarParenteses");
+  function sinalizarParenteses(container) {               //  console.log("sinalizarParenteses");
     // Extrai definições de variáveis [key=val] do texto original
     if (!container._vars) {
       container._vars = {};
@@ -3022,8 +3105,23 @@ document.addEventListener('keydown', function(event) {
   
 
   // Corrige seleção e cria balão de resultado
-  function corrigirPorSelecao(elemento) {
-  console.log("corrigirPorSelecao");
+  function corrigirPorSelecao(elemento) { // console.log("corrigirPorSelecao");
+
+
+   // Extrai definições de variáveis [key=val] do texto original
+    //if (!elemento._vars) {
+      elemento._vars = {};
+      const text = elemento.textContent;
+      // regex reDef: captura tudo entre '[' e ']', antes e depois do '='
+      const reDef = /\[([^=\]]+)=([^\]]+)\]/gu;
+      let m;
+      while ((m = reDef.exec(text))) {
+        // m[1]: chave (variável), m[2]: valor (com vírgula decimal)
+        elemento._vars[m[1].trim()] = m[2].replace(',', '.');
+      //}
+    }
+
+
     let selecao = window.getSelection().toString().trim();
     if (!selecao) return;
 
@@ -3109,8 +3207,7 @@ document.addEventListener('keydown', function(event) {
 
 
   // Cria balão próximo à seleção
-  function criarBalaoNaSelecao(valor) {
-  console.log("criarBalaoNaSelecao");
+  function criarBalaoNaSelecao(valor) {                     //  console.log("criarBalaoNaSelecao");
     const sel = window.getSelection(); if (!sel.rangeCount) return;
     const rect = sel.getRangeAt(0).getBoundingClientRect();
     const balao = document.createElement('div');
@@ -3121,8 +3218,7 @@ document.addEventListener('keydown', function(event) {
   }
 
   // Placeholder: converte funções de planilha para JS
-function funcaoSheetToJS(eqSheet   /*,indice*/){ 
-console.log("funcaoSheetToJS");
+function funcaoSheetToJS(eqSheet   /*,indice*/){                      //console.log("funcaoSheetToJS");
 
     //Transforma em texto a equação e substitui "," por "." || ";" por "," ||"=" por "==" ||"&" por "+" || "<>" por "!="
     var eqSheetSemParen = String(eqSheet).replaceAll(/(\d),(\d)|(\w*)%|;|TRUE|FALSE|=|\^|&|<>/g, (match, p1, p2, p3) => {
