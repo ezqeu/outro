@@ -992,7 +992,7 @@ function parseJwt(token) {
 
 
 
-
+console.log("location.search.slice(1): "+location.search.slice(1))
 // Verifica se há uma credencial salva ao carregar a página
 const savedCredential = localStorage.getItem('google_credential');
 if (savedCredential) {console.log("Já logado!")
@@ -1008,7 +1008,8 @@ if (savedCredential) {console.log("Já logado!")
   const data = parseJwt(savedCredential);
   document.getElementById("user-info").innerHTML = data.email;
   atualizarTabela();
-}
+
+}else if(location.search.slice(1) == "padrao"){atualizarTabela();}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
@@ -1127,8 +1128,7 @@ function enviarArray(funcaoQueRecebeDeVolta) {//alert(funcaoQueRecebeDeVolta)
       return function(...args) {
         let dadosDoHTML = args;
         //(typeof window[funcao] === 'function') ? window[funcao](...args) : undefined;
-console.log("dadosDoHTML: "+dadosDoHTML)
-console.log("location.search.slice(1): "+location.search.slice(1))
+//console.log("Dados Enviados Do HTML: "+dadosDoHTML)
 //////////id: se não tiver "id_token" do Google envia do link "https://www.......?padrao" o texto: "padrao".
 let usuario = window.id_token || location.search.slice(1)/* || "padrao"*/; //CORRIGIR: excluir opção "padrao"
 		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML, id:  usuario  };
