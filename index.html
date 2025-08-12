@@ -1058,12 +1058,15 @@ function inicio() {
     function(tabelaDadosQEA){          console.log("tabelaDadosQEA: "+tabelaDadosQEA);
       if(tabelaDadosQEA){telaInicial(tabelaDadosQEA);
       document.getElementById("deixarSessao").style.display = "block";
+      document.getElementById("botaoLogin").style.display = "none";
       
       }
       else{ /* COMANDO PARA MOSTRAR O BALÃO DE LOGIN DO GOOGLE */ 
         // Autenticação falhou.
         console.log("Autenticação falhou. Solicitando login via Google.");
         document.getElementById("botaoLogin").style.display = "block";
+        document.getElementById('identificacao').innerHTML = "<h1>Entre em sua conta com seu e-mail institucional.<\h1>";
+        alert("Por favor, use seu e-mail institucional do IFSC.");
 
 
 /////Não funciona///////
