@@ -1023,11 +1023,7 @@ inicio();
 
 function inicio() {
 
-
-
-console.log("localStorage.getItem('autenticador'): "+localStorage.getItem('autenticador'))
-
-
+  console.log("autenticador: "+ localStorage.getItem('autenticador')+"\ntoken: "+ localStorage.getItem('google_credential'))
 
   let autenticador = localStorage.getItem('autenticador'),token = localStorage.getItem('google_credential');
   
