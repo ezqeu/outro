@@ -1079,6 +1079,23 @@ function sair(){
     <button  onclick='localStorage.removeItem("autenticador");localStorage.removeItem("google_credential");' >remover autenticador e token</button> 
     <script src="https://apis.google.com/js/api.js"></script>
     <button onclick="abrirJanelaLogin()">Entrar com Google</button>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+  function loginGoogle() {
+    google.accounts.id.initialize({
+      client_id: "SEU_CLIENT_ID.apps.googleusercontent.com",
+      callback: respostaGoogle
+    });
+    google.accounts.id.prompt(); // abre o balão/login
+  }
+
+  function respostaGoogle(response) {
+    console.log("Token JWT:", response.credential);
+  }
+</script>
+
+<button onclick="loginGoogle()">Entrar com Google 2</button>
+
 <script>
   
   //  atualizarTabela();   
