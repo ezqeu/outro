@@ -992,10 +992,10 @@ function parseJwt(token) {
 
 
 
-console.log("location.search.slice(1): "+location.search.slice(1))
+//console.log("?padrao: "+location.search.slice(1))
 // Verifica se há uma credencial salva ao carregar a página
 const savedCredential = localStorage.getItem('google_credential');
-if (savedCredential) {console.log("Já logado!")
+if (savedCredential) {console.log("Já logado anteriormente!")
   // Se encontrou, define a variável global 'id_token' que o resto do script usa
   Object.defineProperty(window, "id_token", {
     value: savedCredential,
@@ -1061,7 +1061,7 @@ function sair(){
 </script>
     <button type="button" id="sair_1" value='' onclick='sair()'>sair</button>
     <button  onclick="inicio()">tabela inicial</button>
-    <button  onclick='console.log(localStorage.getItem("autenticador"))' >ver autenticador</button> 
+    <button  onclick='console.log(localStorage.getItem("autenticador"),localStorage.getItem("google_credential"))' >ver autenticador e token</button> 
     <button  onclick='localStorage.setItem("autenticador", "GlMbADwZDRBxES0AQRYGDlhaTBEGQ0kHGkMSAEtIQ34wQ0QoE6SNUVlME1RX94hQV0xdW1JSSmE2OD1yRlJZb1VFKUIRq8AEWkVCNQxIEazOH1INAUFvN0wXqsuvxAJATnw=");' >guardar autenticador</button> 
     <button  onclick='localStorage.removeItem("autenticador");' >remover autenticador</button> 
 <script>
