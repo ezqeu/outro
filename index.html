@@ -1028,7 +1028,7 @@ function inicio() {
   let autenticador = localStorage.getItem('autenticador'),token = localStorage.getItem('google_credential');
   
   enviarArray(  
-    function(tabelaDadosQEA){          console.log(tabelaDadosQEA);
+    function(tabelaDadosQEA){          console.log("tabelaDadosQEA: "+tabelaDadosQEA);
       if(tabelaDadosQEA){telaInicial(tabelaDadosQEA);}
       else{ /* COMANDO PARA MOSTRAR O BALÃO DE LOGIN DO GOOGLE */ 
         // Autenticação falhou.
