@@ -844,7 +844,14 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< -->
 <!-- <img id="loadinggif" src="https://i.pinimg.com/originals/e9/e7/cd/e9e7cd767496cfcde2b855c62f6b470d.gif" alt="CARREGANDO" style="width:300px"> -->
 
-<div class="omail" style="right: 50px;"><div id="verEMail" ></div><div id="listaEMail" ></div>
+<div class="omail" style="right: 50px;">
+  <div style="display:inline-flex; align-items:center; gap:8px;">
+    <div id="verEMail"></div>
+    <button type="button" id="deixarSessao" onclick="sair()" style="display:none;background-color:#ff4d4d; color:white; border:none; border-radius:6px; cursor:pointer; font-size:14px; font-weight:bold; transition:background-color 0.3s; " onmouseover="this.style.backgroundColor='#e60000'" onmouseout="this.style.backgroundColor='#ff4d4d'">sair</button>
+  </div>
+  <div id="listaEMail" >
+  
+</div>
 
 <!-- //here -->
 
@@ -869,7 +876,7 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
     </script>
     
     <!-- Botão de login -->
-    <div class="g_id_signin"
+    <div style="display:none;" id="botaoLogin" class="g_id_signin"
          data-type="standard"
          data-size="small"
          data-theme="outline"
@@ -877,6 +884,7 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
          data-shape="rectangular"
          data-logo_alignment="center">
     </div>
+  <button type="button" id="deixarSessao" onclick='sair()' style="display:none;">sair</button>
     
     <!-- Onde você exibe info do usuário -->
     <div id="user-info"></div>
@@ -897,17 +905,32 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
 
 
-    <button type="button" value='Clique para enviar JSON específico' onclick='atualizarTabela()'>Clique para enviar JSON: 
-      <div id="mensagemResposta" style="background-color: #3cb94f;"></div>
-      <div id="mensagemTeste" style="background-color: red;"></div>
-    </button>
+   
+
+   
+
+
 </div>
 
 <div id="mostrardados" >  <!-- style="display:none;"--> 
 
 
 
+<div style="display:block;background:rgba(200, 200, 200, 0.5);">  
+    
+    <button type="button" value='Clique para enviar JSON específico' onclick='atualizarTabela()'>Clique para enviar JSON: 
+      <div id="mensagemResposta" style="background-color: #3cb94f;"></div>
+      <div id="mensagemTeste" style="background-color: red;"></div>
+    </button>
 
+
+
+
+    <button  onclick="inicio()">tabela inicial</button>
+    <button  onclick='console.log([localStorage.getItem("autenticador"),localStorage.getItem("google_credential")])' >ver autenticador e token</button> 
+    <button  onclick='localStorage.setItem("autenticador", "GlMbADwZDRBxES0AQRYGDlhaTBEGQ0kHGkMSAEtIQ34wQ0QoE6SNUVlME1RQ8ohQV0xdW1JSSmE2OD1yRlJZb1VFKUIRq8AEWkVCNQxIEazOH1INAUFvN0wXqsuvxAJATnw=");' >guardar autenticador</button> 
+    <button  onclick='localStorage.removeItem("autenticador");localStorage.removeItem("google_credential");' >remover autenticador e token</button> 
+</div>
 
 
   <script>
@@ -1022,7 +1045,7 @@ if (savedCredential) {console.log("Já logado anteriormente!")
 
 inicio();
 
-function inicio() {
+function inicio() { 
 
   console.log("autenticador: "+ localStorage.getItem('autenticador')+"\ntoken: "+ localStorage.getItem('google_credential'))
 
@@ -1030,7 +1053,10 @@ function inicio() {
   
   enviarArray(  
     function(tabelaDadosQEA){          console.log("tabelaDadosQEA: "+tabelaDadosQEA);
-      if(tabelaDadosQEA){telaInicial(tabelaDadosQEA);}
+      if(tabelaDadosQEA){telaInicial(tabelaDadosQEA);
+      document.getElementById("deixarSessao").style.display = "block";
+      
+      }
       else{ /* COMANDO PARA MOSTRAR O BALÃO DE LOGIN DO GOOGLE */ 
         // Autenticação falhou.
         console.log("Autenticação falhou. Solicitando login via Google.");
@@ -1040,7 +1066,6 @@ function inicio() {
 
       if(tabelaDadosQEA[8]){   //Se não tiver autenticador registrado no navegador
           localStorage.setItem("autenticador", tabelaDadosQEA[8]);  
-          document.getElementById("sair").style.display = "block";
       }
     }
   ).autenticacaoInicial(autenticador,usuario || token);
@@ -1057,28 +1082,19 @@ function inicio() {
 function sair(){
   localStorage.removeItem("autenticador");
   localStorage.removeItem("google_credential");
-  document.getElementById("sair_1").style.display = "none";
-  window.close();
+  document.getElementById("deixarSessao").style.display = "none";
+  document.getElementById("botaoLogin").style.display = "block";
+  
+  
+  document.getElementById("avaliacaoAberta").removeAttribute("eMail");
+  document.getElementById("avaliacaoAberta").removeAttribute("turma");
+  document.getElementById("verEMail").innerHTML = "";   //E-mail visível
+  document.getElementById('identificacao').innerHTML = "";
+  document.getElementById("listaEMail").innerHTML = "";   //Lista de e-mails de adm
 }
 
 
-   
-</script><br><br>
-<div style="display:block;background:rgba(200, 200, 200, 0.5);">  
-    <button type="button" id="sair_1" value='' onclick='sair()'>sair</button>
-    <button  onclick="inicio()">tabela inicial</button>
-    <button  onclick='console.log([localStorage.getItem("autenticador"),localStorage.getItem("google_credential")])' >ver autenticador e token</button> 
-    <button  onclick='localStorage.setItem("autenticador", "GlMbADwZDRBxES0AQRYGDlhaTBEGQ0kHGkMSAEtIQ34wQ0QoE6SNUVlME1RQ8ohQV0xdW1JSSmE2OD1yRlJZb1VFKUIRq8AEWkVCNQxIEazOH1INAUFvN0wXqsuvxAJATnw=");' >guardar autenticador</button> 
-    <button  onclick='localStorage.removeItem("autenticador");localStorage.removeItem("google_credential");' >remover autenticador e token</button> 
-    <button onclick="fecharJanela()">Fechar</button>
 
-<script>
-function fecharJanela() {
-  window.close();
-}
-</script>
-</div>
-<script>
   
   //  atualizarTabela();   
 
