@@ -1033,6 +1033,7 @@ function inicio() {
       else{ /* COMANDO PARA MOSTRAR O BALÃO DE LOGIN DO GOOGLE */ 
         // Autenticação falhou.
         console.log("Autenticação falhou. Solicitando login via Google.");
+        document.getElementById('g_id_onload').setAttribute('data-auto_select', 'true');
         google.accounts.id.prompt();
       }
 
