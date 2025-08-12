@@ -1033,7 +1033,7 @@ function inicio() {
       if(tabelaDadosQEA){telaInicial(tabelaDadosQEA);}
       else{ /* COMANDO PARA MOSTRAR O BALÃO DE LOGIN DO GOOGLE */ 
         // Autenticação falhou.
-        console.log("Autenticação falhou. Solicitando login via Google.");
+        console.log("Autenticação falhou. Solicitando login via Google.");loginGoogle()
         abrirJanelaLogin();
         document.getElementById('g_id_onload').setAttribute('data-auto_select', 'true');
         google.accounts.id.prompt();
