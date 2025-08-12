@@ -1033,6 +1033,7 @@ function inicio() {
       if(tabelaDadosQEA){telaInicial(tabelaDadosQEA);}
       else{ /* COMANDO PARA MOSTRAR O BALÃO DE LOGIN DO GOOGLE */ 
         // Autenticação falhou.
+        abrirJanelaLogin();
         console.log("Autenticação falhou. Solicitando login via Google.");
         document.getElementById('g_id_onload').setAttribute('data-auto_select', 'true');
         google.accounts.id.prompt();
@@ -1051,6 +1052,17 @@ function inicio() {
       //Logar no google se não já estiver logado
 };
 
+
+function abrirJanelaLogin() {
+  gapi.load('auth2', function() {
+    gapi.auth2.init({
+      client_id: 'SEU_CLIENT_ID.apps.googleusercontent.com'
+    }).signIn().then(function(googleUser) {
+      console.log(googleUser.getBasicProfile().getName());
+    });
+  });
+}
+
 function sair(){
   localStorage.removeItem("autenticador");
   localStorage.removeItem("google_credential");
@@ -1065,6 +1077,8 @@ function sair(){
     <button  onclick='console.log([localStorage.getItem("autenticador"),localStorage.getItem("google_credential")])' >ver autenticador e token</button> 
     <button  onclick='localStorage.setItem("autenticador", "GlMbADwZDRBxES0AQRYGDlhaTBEGQ0kHGkMSAEtIQ34wQ0QoE6SNUVlME1RQ8ohQV0xdW1JSSmE2OD1yRlJZb1VFKUIRq8AEWkVCNQxIEazOH1INAUFvN0wXqsuvxAJATnw=");' >guardar autenticador</button> 
     <button  onclick='localStorage.removeItem("autenticador");localStorage.removeItem("google_credential");' >remover autenticador e token</button> 
+    <script src="https://apis.google.com/js/api.js"></script>
+    <button onclick="abrirJanelaLogin()">Entrar com Google</button>
 <script>
   
   //  atualizarTabela();   
