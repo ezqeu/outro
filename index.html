@@ -905,7 +905,7 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
   <button type="button" id="deixarSessao" onclick='sair()' style="display:none;">sair</button>
     
     <!-- Onde você exibe info do usuário -->
-    <div id="user-info"></div>
+    <!-- <div id="user-info"></div> -->
 
 
 
@@ -963,7 +963,7 @@ Object.defineProperty(window, 'email', {
 
     const data = parseJwt(savedCredential);
     const mail = data.email;
-    document.getElementById("user-info").innerHTML = mail;
+    // document.getElementById("user-info").innerHTML = mail;
     
 
     /*if (!mail.endsWith('ifsc.edu.br')) {// Falha de validação: força novo login e retorna null
@@ -998,7 +998,7 @@ function handleCredentialResponse(response) {
 
   
   let mail = data.email;
-  document.getElementById("user-info").innerHTML = mail;
+  // document.getElementById("user-info").innerHTML = mail;
   /*if (!mail.endsWith('ifsc.edu.br')) {alert("Por favor, use seu e-mail institucional do IFSC.");
     localStorage.removeItem("google_credential");document.getElementById("user-info").innerHTML = ""; google.accounts.id.prompt(); return;  }*/
 
@@ -1032,7 +1032,7 @@ if (savedCredential) {console.log("Já logado anteriormente!")
 
   // Também atualiza a interface do usuário com as informações salvas
   const data = parseJwt(savedCredential);
-  document.getElementById("user-info").innerHTML = data.email;
+  // document.getElementById("user-info").innerHTML = data.email;
 
   inicio();
 
@@ -1257,7 +1257,7 @@ console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
           .then(data => {  ////////////Volta de dados//////////
               console.log('Resposta do GAS:', data);
               if (data.status === "success") { ////////////////// Exibe os dados retornados pelo GAS se der certo./////////
-                document.getElementById("user-info").innerHTML = data.email;
+                // document.getElementById("user-info").innerHTML = data.email;
 
                 saida = JSON.parse(data.message || '["ok"]');  //console.log("saida: "+saida);
                 // document.getElementById('mensagemTeste').innerText = "Pelo meio: "+saida;
