@@ -977,7 +977,7 @@ function handleCredentialResponse(response) {
     localStorage.removeItem("google_credential");document.getElementById("user-info").innerHTML = ""; google.accounts.id.prompt(); return;  }*/
 
   localStorage.setItem("google_credential", response.credential);
-  atualizarTabela();
+  inicio();
   return mail;
 }
 
@@ -1007,9 +1007,10 @@ if (savedCredential) {console.log("Já logado anteriormente!")
   // Também atualiza a interface do usuário com as informações salvas
   const data = parseJwt(savedCredential);
   document.getElementById("user-info").innerHTML = data.email;
-  atualizarTabela();
 
-}  else{ if(location.search.slice(1) == "padrao"){atualizarTabela();}}
+  inicio();
+
+}  else{ if(location.search.slice(1) == "padrao"){inicio();}}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
@@ -1025,7 +1026,7 @@ function inicio() {
 
   console.log("autenticador: "+ localStorage.getItem('autenticador')+"\ntoken: "+ localStorage.getItem('google_credential'))
 
-  let autenticador = localStorage.getItem('autenticador'),token = localStorage.getItem('google_credential');
+  let autenticador = localStorage.getItem('autenticador'),token = localStorage.getItem('google_credential'),usuario = location.search.slice(1);
   
   enviarArray(  
     function(tabelaDadosQEA){          console.log("tabelaDadosQEA: "+tabelaDadosQEA);
@@ -1042,7 +1043,7 @@ function inicio() {
           document.getElementById("sair").style.display = "block";
       }
     }
-  ).autenticacaoInicial(autenticador,token);
+  ).autenticacaoInicial(autenticador,usuario || token);
 
 
       //Chamar tela inicial
