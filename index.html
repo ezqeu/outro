@@ -1075,9 +1075,9 @@ google.accounts.id.prompt();
 ///////////////////////////
       }
 
-      if(tabelaDadosQEA[8]){   //Se não tiver autenticador registrado no navegador
-          localStorage.setItem("autenticador", tabelaDadosQEA[8]);  
-      }
+      
+          localStorage.setItem("autenticador", tabelaDadosQEA[8]);  //Registra o autenticador atualizado no navegador
+      
     }
   ).autenticacaoInicial(autenticador,usuario || token);
 
@@ -1222,7 +1222,7 @@ function enviarArray(funcaoQueRecebeDeVolta) {//alert(funcaoQueRecebeDeVolta)
 //console.log("Dados Enviados Do HTML: "+dadosDoHTML)
 //////////id: se não tiver "id_token" do Google envia do link "https://www.......?padrao" o texto: "padrao".
 let usuario = window.id_token || location.search.slice(1)/* || "padrao"*/; //CORRIGIR: excluir opção "padrao"
-		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML, id:  usuario  };
+		    let jsonParaEnviar = { tipo: funcao, dados: dadosDoHTML, id:  usuario, autenticador: localStorage.getItem('autenticador')  };
 console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
 		//document.getElementById('output').innerText = JSON.stringify(jsonParaEnviar);
 		
