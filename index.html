@@ -1005,17 +1005,13 @@ function handleCredentialResponse(response) {
 
 
 // token = localStorage.getItem('google_credential')
-  console.log("google_credential_handle: "+ localStorage.getItem('google_credential'))
-  console.log("token_handle: "+ localStorage.getItem('id_token'))
+
   console.log("response.credential_handle: "+ response.credential)
-  console.log("data_handle: "+ data)
 
 
 
   localStorage.setItem("google_credential", response.credential);
 
-
-  console.log("google_credential_pós: "+ localStorage.getItem('google_credential'))
 
 
   localStorage.setItem("mail: ", mail );
@@ -1033,7 +1029,7 @@ function parseJwt(token) {
 }
 
 
-
+ /* 
 //console.log("?padrao: "+location.search.slice(1))
 // Verifica se há uma credencial salva ao carregar a página
 const savedCredential = localStorage.getItem('google_credential');
@@ -1052,7 +1048,7 @@ if (savedCredential) {console.log("Já logado anteriormente!")
 
   inicio();
 
-}  else{ if(location.search.slice(1) == "padrao"){inicio();}}
+}  else{ if(location.search.slice(1) == "padrao"){inicio();}} */ 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////  
