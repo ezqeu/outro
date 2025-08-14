@@ -988,8 +988,8 @@ function handleCredentialResponse(response) {
 	////////////////////////////////////////////////////ID Token recebido do login (não modificável e verificável)/////////////////////////////////////////////////////////	
       Object.defineProperty(window, "id_token", {
       value: response.credential,
-      writable: false,      // não permite reatribuir
-      configurable: false,  // não permite redefinir a propriedade
+      writable: true,      // não permite reatribuir
+      configurable: true,  // não permite redefinir a propriedade
       enumerable: true
     });
     //console.log("ID Token recebido não modificável:", window.id_token);
@@ -1026,8 +1026,8 @@ if (savedCredential) {console.log("Já logado anteriormente!")
   // Se encontrou, define a variável global 'id_token' que o resto do script usa
   Object.defineProperty(window, "id_token", {
     value: savedCredential,
-    writable: false,
-    configurable: false,
+    writable: true,
+    configurable: true,
     enumerable: true
   });
 
