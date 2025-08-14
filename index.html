@@ -1005,14 +1005,19 @@ function handleCredentialResponse(response) {
 
 
 // token = localStorage.getItem('google_credential')
-  console.log("google_credential: "+ localStorage.getItem('google_credential'))
-  console.log("token: "+ localStorage.getItem('id_token'))
-  console.log("response.credential: "+ response.credential)
-  console.log("data: "+ data)
+  console.log("google_credential_handle: "+ localStorage.getItem('google_credential'))
+  console.log("token_handle: "+ localStorage.getItem('id_token'))
+  console.log("response.credential_handle: "+ response.credential)
+  console.log("data_handle: "+ data)
 
 
 
   localStorage.setItem("google_credential: ", response.credential);
+
+
+  console.log("google_credential_pós: "+ localStorage.getItem('google_credential'))
+
+
   localStorage.setItem("mail: ", mail );
   inicio();
   return mail;
