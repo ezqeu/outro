@@ -970,7 +970,7 @@ Object.defineProperty(window, 'email', {
       alert('Use seu e-mail institucional do IFSC.'); localStorage.removeItem('google_credential');google.accounts.id.prompt();   return null;}*/
     return mail;  // só devolve se tudo ok
   },
-  configurable: false  // não permite redefine/remover
+  configurable: true  // não permite redefine/remover
 });
 
 // 2) Exemplo de uso em qualquer função, antes ou depois:
