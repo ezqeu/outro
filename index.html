@@ -1002,7 +1002,8 @@ function handleCredentialResponse(response) {
   /*if (!mail.endsWith('ifsc.edu.br')) {alert("Por favor, use seu e-mail institucional do IFSC.");
     localStorage.removeItem("google_credential");document.getElementById("user-info").innerHTML = ""; google.accounts.id.prompt(); return;  }*/
 
-  localStorage.setItem("google_credential", response.credential);
+  localStorage.setItem("google_credential: ", response.credential);
+  localStorage.setItem("mail: ", mail );
   inicio();
   return mail;
 }
