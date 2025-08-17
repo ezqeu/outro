@@ -873,35 +873,9 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
 <!-- //here -->
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://accounts.google.com/gsi/client" ></script>
 
-
-  <div id="g_id_onload"
-         data-client_id="90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com"
-         data-callback="handleCredentialResponse"
-         data-login_hint="@aluno.ifsc.edu.br"
-         data-hosted_domain="aluno.ifsc.edu.br"
-         data-auto_select="false"
-         data-itp_support="true">
-    </div>
-
-    <script>
-      // Verifica se o usuário já está logado através do localStorage
-      if (localStorage.getItem('google_credential')) {
-        // Se estiver, encontra a div do Google e desativa o pop-up automático
-        document.getElementById('g_id_onload').setAttribute('data-auto_select', 'false');
-      }
-    </script>
-    
-    <!-- Botão de login -->
-    <div style="display:none;" id="botaoLogin" class="g_id_signin"
-         data-type="standard"
-         data-size="small"
-         data-theme="outline"
-         data-text="signin"
-         data-shape="rectangular"
-         data-logo_alignment="center">
-    </div>
+<div style="display:none;" id="botaoLogin"></div> 
   <button type="button" id="deixarSessao" onclick='sair()' style="display:none;">sair</button>
     
     <!-- Onde você exibe info do usuário -->
@@ -937,6 +911,26 @@ input:invalid+b:before {content: '⚠️FORMATO INVÁLIDO!⚠️'; color: #98a32
 
 
   <script>
+
+    // Substitua sua função 'inicio' e a chamada 'inicio()' no final do script por isto:
+console.log("GG")
+  // 1. Inicializa o cliente do Google com suas configurações
+  google.accounts.id.initialize({
+    client_id: "90142364675-oeo4houafkfl9sj6fcbqt71injv8v3jj.apps.googleusercontent.com",
+    callback: handleCredentialResponse,
+    login_hint: "@aluno.ifsc.edu.br",
+    hosted_domain: "aluno.ifsc.edu.br"
+  });
+
+  // 2. Renderiza o botão de login dentro da sua div 'botaoLogin'
+  google.accounts.id.renderButton(
+    document.getElementById("botaoLogin"),
+    { theme: "outline", size: "large" }  // Opções de customização do botão
+  );
+
+  // 3. Agora, chame sua função de verificação de login
+  inicio();
+
 //atualizarTabela(9);
 
                                     //antes:   google.script.run.withSuccessHandler(telaInicial).dadosIniciais(numero);
@@ -1049,9 +1043,6 @@ if (savedCredential) {console.log("Já logado anteriormente!")
   inicio();
 
 }  else{ if(location.search.slice(1) == "padrao"){inicio();}} */ 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////  
 
 
 // function atualizarTabela(numero) {google.script.run.withSuccessHandler({ tipo: "atualizarTabela",  dados: [numero,email]}); }
@@ -1082,7 +1073,7 @@ function inicio() {
 
 
 /////Não funciona///////
-document.getElementById('g_id_onload').setAttribute('data-auto_select', 'true');
+//document.getElementById('g_id_onload').setAttribute('data-auto_select', 'true');  //Ativa balão de login do google
 google.accounts.id.prompt();
 ///////////////////////////
       }
@@ -1118,7 +1109,9 @@ function sair(){
 
 
 
-  
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////CHAMAR DADOS DA TABELA DE NOTAS///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////  
   //  atualizarTabela();   
 
  function atualizarTabela(numero) {
@@ -1311,7 +1304,7 @@ console.log("jsonParaEnviar: "+JSON.stringify(jsonParaEnviar))
   
   
 }
-    inicio();
+    // inicio();
 
       
     </script>
